@@ -6,13 +6,13 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import HomeIcon from '@material-ui/icons/Home';
 import firebase from '../../firebase/firebase'
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { Link } from '@material-ui/core';
-
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { removePerson, removeUser } from '../../redux/userSlice';
@@ -86,18 +86,20 @@ export default function ScrollableTabsButtonPrevent() {
           <Tab icon={<HomeIcon />} aria-label="home" {...a11yProps(0)} onClick={() => (
             history.push('/')
           )}></Tab>
-          {!userEmail && <Tab icon={<VpnKeyIcon />} aria-label="favorite" {...a11yProps(1)} onClick={() => (
+          {!userEmail && <Tab icon={<PersonAddIcon />} aria-label="favorite" {...a11yProps(1)} onClick={() => (
             history.push('/signup')
           )}></Tab>}
-          {!userEmail && <Tab icon={<PersonPinIcon />} aria-label="person" {...a11yProps(2)} onClick={() => (
+          {!userEmail && <Tab icon={<VpnKeyIcon />} aria-label="person" {...a11yProps(2)} onClick={() => (
             history.push('/signin')
           )}></Tab>}
           {userEmail && <Tab icon={<ExitToAppIcon />} aria-label="help" {...a11yProps(3)} onClick={() => {
             firebase.auth().signOut()
             dispatch(removeUser())
           }}/>}
-          {/* <Tab icon={<ShoppingBasket />} aria-label="shopping" {...a11yProps(4)} />
-          <Tab icon={<ThumbDown />} aria-label="up" {...a11yProps(5)} />
+          <Tab icon={<AssignmentIndIcon />} aria-label="shopping" {...a11yProps(4)} onClick={() => (
+            history.push('/private-office')
+          )}/>
+          {/* <Tab icon={<ThumbDown />} aria-label="up" {...a11yProps(5)} />
           <Tab icon={<ThumbUp />} aria-label="down" {...a11yProps(6)} /> */}
         </Tabs>
       </AppBar>

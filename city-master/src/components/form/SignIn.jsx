@@ -1,12 +1,14 @@
 import firebase from '../../firebase/firebase'
 import React, { useState } from 'react';
-import { FormHelperText, makeStyles } from '@material-ui/core';
+import { FormHelperText, Grid, makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useForm, Controller } from 'react-hook-form';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../../redux/userSlice';
+import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
 
 
@@ -35,6 +37,8 @@ const SignIn = ({ handleClose }) => {
 
   const { handleSubmit, control } = useForm();
 
+  let history = useHistory()
+
   const { userEmail } = useSelector((state) => state.user);
   
   const dispatch = useDispatch()
@@ -51,7 +55,7 @@ const SignIn = ({ handleClose }) => {
           displayName: firebaseUser.displayName
         }))
       })
-      // props.history.push('/')
+      history.push('/')
     } catch(error) {
       console.log(error)
       error.code === "auth/wrong-password" && setErrorMessagePassword('Неверный пароль');
@@ -113,6 +117,7 @@ const SignIn = ({ handleClose }) => {
           Войти
         </Button>
       </div>
+
     </form>
     </>
   );

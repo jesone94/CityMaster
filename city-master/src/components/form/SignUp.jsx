@@ -4,7 +4,7 @@ import { FormHelperText, makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useForm, Controller } from 'react-hook-form';
-
+import { useHistory } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../../redux/userSlice';
 
@@ -30,6 +30,8 @@ const useStyles = makeStyles(theme => ({
 const SignUp = ({ handleClose }) => {
   const classes = useStyles();
   const { handleSubmit, control } = useForm();
+
+  let history = useHistory()
 
   const [errorMessagePassword, setErrorMessagePassword] = useState(null)
   const [errorMessageEmail, setErrorMessageEmail] = useState(null)
@@ -57,7 +59,7 @@ const SignUp = ({ handleClose }) => {
         }))
       })
       
-      // props.history.push('/')
+      history.push('/')
     } catch(error) {
       console.log(error)
       error.code === "auth/weak-password" && setErrorMessagePassword('Установите минимальную длину пароля не менее 6 символов');
