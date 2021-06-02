@@ -4,13 +4,13 @@ import { Route, Redirect } from "react-router-dom";
 
 
 const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
-  const { user } = useSelector((state) => state.user);
+  const { userEmail } = useSelector((state) => state.user);
 
   return (
     <Route
       {...rest}
       render={(routeProps) =>
-        !!user ? (
+        !!userEmail ? (
           <RouteComponent {...routeProps} />
         ) : (
           <Redirect to={"/signin"} />

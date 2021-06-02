@@ -1,6 +1,6 @@
 import firebase from '../../firebase/firebase'
-import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import React, { useState } from 'react';
+import { FormHelperText, makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useForm, Controller } from 'react-hook-form';
@@ -30,6 +30,9 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = ({ handleClose }) => {
   const classes = useStyles();
+  const [errorMessagePassword, setErrorMessagePassword] = useState(null)
+  const [errorMessageEmail, setErrorMessageEmail] = useState(null)
+
   const { handleSubmit, control } = useForm();
 
   const { userEmail } = useSelector((state) => state.user);
@@ -38,6 +41,8 @@ const SignIn = ({ handleClose }) => {
 
   const onSubmit = async data => {
     const { email, password } = data
+    setErrorMessagePassword(null)
+    setErrorMessageEmail(null)
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password)
       await firebase.auth().onAuthStateChanged(firebaseUser => {
@@ -48,6 +53,10 @@ const SignIn = ({ handleClose }) => {
       })
       // props.history.push('/')
     } catch(error) {
+      console.log(error)
+      error.code === "auth/wrong-password" && setErrorMessagePassword('Неверный пароль');
+      error.code === "auth/user-not-found" && setErrorMessageEmail('Пользователя с таким электронным адресом не существует')
+      error.code === "auth/too-many-requests" && console.log('слишком много запросов')
       // onFinishFailed(error)
     }
   };
@@ -55,6 +64,7 @@ const SignIn = ({ handleClose }) => {
   return (
     <>
     <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
+    <FormHelperText id="my-helper-text">Форма авторизации</FormHelperText>
       <Controller
         name="email"
         control={control}
@@ -62,15 +72,18 @@ const SignIn = ({ handleClose }) => {
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <TextField
             label="Электронная почта"
-            variant="filled"
+            variant="outlined"
             value={value}
-            onChange={onChange}
+            onChange={(e) =>{
+              onChange(e.target.value)
+              setErrorMessageEmail(null)
+            }}
             error={!!error}
-            helperText={error ? error.message : null}
+            helperText={error ? error.message : errorMessageEmail}
             type="email"
           />
         )}
-        rules={{ required: 'Email required' }}
+        rules={{ required: 'Введите вашу электронную почту' }}
       />
       <Controller
         name="password"
@@ -79,15 +92,18 @@ const SignIn = ({ handleClose }) => {
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <TextField
             label="Пароль"
-            variant="filled"
+            variant="outlined"
             value={value}
-            onChange={onChange}
+            onChange={(e) =>{
+              onChange(e.target.value)
+              setErrorMessagePassword(null)
+            }}
             error={!!error}
-            helperText={error ? error.message : null}
+            helperText={error ? error.message : errorMessagePassword}
             type="password"
           />
         )}
-        rules={{ required: 'Password required' }}
+        rules={{ required: 'Введите пароль' }}
       />
       <div>
         <Button variant="contained" onClick={handleClose}>

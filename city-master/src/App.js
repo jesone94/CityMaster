@@ -18,7 +18,7 @@ function App() {
   }, [dispatch])
 
   const { userEmail } = useSelector((state) => state.user);
-  console.log(userEmail)
+ 
   return (
     <>
       {/* <AuthProvider> */}

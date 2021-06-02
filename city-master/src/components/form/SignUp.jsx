@@ -1,6 +1,6 @@
 import firebase from '../../firebase/firebase'
-import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import React, { useState } from 'react';
+import { FormHelperText, makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useForm, Controller } from 'react-hook-form';
@@ -31,12 +31,19 @@ const SignUp = ({ handleClose }) => {
   const classes = useStyles();
   const { handleSubmit, control } = useForm();
 
+  const [errorMessagePassword, setErrorMessagePassword] = useState(null)
+  const [errorMessageEmail, setErrorMessageEmail] = useState(null)
+  // const [errorMessageFirstName, setErrorMessageFirstName] = useState(null)
+  // const [errorMessageLastName, setErrorMessageLastName] = useState(null)
+
   const { userEmail } = useSelector((state) => state.user);
 
   // const { currentUser } = useContext(AuthContext)
   const dispatch = useDispatch()
 
   const onSubmit = async data => {
+    setErrorMessagePassword(null)
+    setErrorMessageEmail(null)
     const { name, lastName, email, password } = data
     try {
       await firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -52,6 +59,9 @@ const SignUp = ({ handleClose }) => {
       
       // props.history.push('/')
     } catch(error) {
+      console.log(error)
+      error.code === "auth/weak-password" && setErrorMessagePassword('Установите минимальную длину пароля не менее 6 символов');
+      error.code === "auth/email-already-in-use" && setErrorMessageEmail('Пользователь с таким электронным адресом уже существует')
       // onFinishFailed(error)
     }
   };
@@ -59,6 +69,7 @@ const SignUp = ({ handleClose }) => {
   return (
     <>
     <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
+    <FormHelperText id="my-helper-text">Форма регистрации</FormHelperText>
       <Controller
         name="name"
         control={control}
@@ -66,14 +77,14 @@ const SignUp = ({ handleClose }) => {
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <TextField
             label="Имя"
-            variant="filled"
+            variant="outlined"
             value={value}
             onChange={onChange}
             error={!!error}
             helperText={error ? error.message : null}
           />
         )}
-        rules={{ required: 'First name required' }}
+        rules={{ required: 'Введите ваше имя' }}
       />
       <Controller
         name="lastName"
@@ -82,14 +93,14 @@ const SignUp = ({ handleClose }) => {
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <TextField
             label="Фамилия"
-            variant="filled"
+            variant="outlined"
             value={value}
             onChange={onChange}
             error={!!error}
             helperText={error ? error.message : null}
           />
         )}
-        rules={{ required: 'Last name required' }}
+        rules={{ required: 'Введите вашу фамилию' }}
       />
       <Controller
         name="email"
@@ -98,11 +109,13 @@ const SignUp = ({ handleClose }) => {
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <TextField
             label="Электронная почта"
-            variant="filled"
+            variant="outlined"
             value={value}
-            onChange={onChange}
+            onChange={(e) => {
+              onChange(e.target.value)
+            }}
             error={!!error}
-            helperText={error ? error.message : null}
+            helperText={error ? error.message : errorMessageEmail}
             type="email"
           />
         )}
@@ -115,11 +128,13 @@ const SignUp = ({ handleClose }) => {
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <TextField
             label="Пароль"
-            variant="filled"
+            variant="outlined"
             value={value}
-            onChange={onChange}
+            onChange={(e) => {
+              onChange(e.target.value)
+            }}
             error={!!error}
-            helperText={error ? error.message : null}
+            helperText={error ? error.message : errorMessagePassword}
             type="password"
           />
         )}
