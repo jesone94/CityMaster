@@ -10,6 +10,8 @@ import { useEffect } from 'react';
 import firebase from './firebase/firebase'
 import { fetchUser } from './redux/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { PrivateOffice } from './components/privateOffice/privateOfiice';
+import { CircularProgress } from '@material-ui/core';
 
 function App() {
   const dispatch = useDispatch()
@@ -32,11 +34,12 @@ function App() {
               <Route exact path="/signin">
                 {!userEmail &&  <SignIn />}
               </Route>
-              <Route exact path="/">
-              
+              <Route exact path="/private-office">
+                <CircularProgress />
+                <PrivateOffice />
               </Route>
               <Route exact path="/">
-              
+
               </Route>
               <Route exact path="/">
                 

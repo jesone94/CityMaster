@@ -17,6 +17,8 @@ export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
         }
       );
     }).then((firebaseUser) => {
+      console.log(firebaseUser)
+      //photoURL
       return {
         displayName: firebaseUser.displayName,
         email: firebaseUser.email,
