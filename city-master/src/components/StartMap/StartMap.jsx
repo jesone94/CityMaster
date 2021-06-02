@@ -1,7 +1,8 @@
 import React, { Children, useEffect, useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { useDispatch } from 'react-redux';
-import { addGameCoodrs } from '../../redux/gameCoordsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addGameCoodrs, fetchLocation } from '../../redux/gameCoordsSlice';
+import { Button } from '@material-ui/core';
 
 var options = {
   enableHighAccuracy: true,
@@ -33,11 +34,18 @@ let center = {
 // console.log(navigator.geolocation.getCurrentPosition());
 
 export default function StartMap() {
+  const { location } = useSelector((state) => state.gameCoords);
   const dispatch = useDispatch();
   let [markerPosition, setMarkerPosition] = useState({});
 
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
+      {location && (
+        <Button size='large' variant='outlined' color='primary'>
+          Выбрать<br></br>
+          {location}
+        </Button>
+      )}
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
@@ -45,7 +53,7 @@ export default function StartMap() {
         onClick={(ev) => {
           const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
           setMarkerPosition(coords);
-          dispatch(addGameCoodrs(coords));
+          dispatch(fetchLocation(coords));
         }}
       >
         <Marker position={markerPosition} />
