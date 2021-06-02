@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import NavBar from './components/navbar/NavBar';
 import { Main } from './components/main/Main';
 import SignUp from './components/form/SignUp';
@@ -36,7 +36,7 @@ function App() {
               </Route>
               <Route exact path="/private-office">
                 <CircularProgress />
-                <PrivateOffice />
+                {userEmail ? <PrivateOffice /> : <Redirect to="signin"/>}
               </Route>
               <Route exact path="/">
 

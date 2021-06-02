@@ -96,9 +96,9 @@ export default function ScrollableTabsButtonPrevent() {
             firebase.auth().signOut()
             dispatch(removeUser())
           }}/>}
-          <Tab icon={<AssignmentIndIcon />} aria-label="shopping" {...a11yProps(4)} onClick={() => (
+          {userEmail && <Tab icon={<AssignmentIndIcon />} aria-label="shopping" {...a11yProps(4)} onClick={() => (
             history.push('/private-office')
-          )}/>
+          )}/>}
           {/* <Tab icon={<ThumbDown />} aria-label="up" {...a11yProps(5)} />
           <Tab icon={<ThumbUp />} aria-label="down" {...a11yProps(6)} /> */}
         </Tabs>
