@@ -1,8 +1,10 @@
+import React from 'react';
+import StartMap from '../StartMap/StartMap';
 
 export const Main = () => {
   return (
     <>
-      <p>Привет, тут должны быть карты</p>
+      <StartMap />
     </>
-  )
-}
+  );
+};
