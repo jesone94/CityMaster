@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -8,9 +8,13 @@ import { Button, CircularProgress, IconButton, Input } from "@material-ui/core";
 import style from "./privateOffice.module.css";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import SaveIcon from "@material-ui/icons/Save";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@material-ui/core/Avatar";
 import CancelIcon from "@material-ui/icons/Cancel";
+import firebase from '../../firebase/firebase';
+import 'firebase/storage'
+import * as functions from "firebase/functions";
+import { addPhoto, removePhoto } from '../../redux/userSlice'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +48,17 @@ export const PrivateOffice = () => {
 
   const [file, setFile] = useState(null);
 
+  const dispatch = useDispatch()
+
+  const { uid } = useSelector((state) => state.user);
+  const { photoURL } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    setFile(photoURL)
+  }, [photoURL])
+
+  const user = useSelector((state) => state.user);
+  console.log(user)
   const reader = new FileReader();
 
   const handleSubmit = (e) => {
@@ -56,13 +71,26 @@ export const PrivateOffice = () => {
     let file = e.target.files[0];
 
     reader.onloadend = () => {
-      setFile({
-        file: file,
-        imagePreviewUrl: reader.result,
-      });
+      setFile(reader.result);
     };
     reader.readAsDataURL(file);
+    upload(file)
     console.log(file);
+  };
+  const upload = async (file) => {
+    const ref = firebase.storage().ref(`avatars/${uid}/${file.name}`);
+    const task = ref.put(file);
+    task.on('state_changed', async (snapshot) => {
+    }, (error) => {
+      console.log(error);
+    }, async () => {
+      const link = await ref.getDownloadURL();
+      console.log(link)
+      await firebase.auth().currentUser.updateProfile({                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+        photoURL: link
+      })
+      dispatch(addPhoto(link))
+    });
   };
   // const Input = styled('input')({
   //   display: 'none',
@@ -100,8 +128,8 @@ export const PrivateOffice = () => {
                     <Avatar className={classes.large}>
                       <img
                         className={classes.img}
-                        alt={file.name}
-                        src={file.imagePreviewUrl}
+                        alt="не найдено"
+                        src={file}
                       />
                     </Avatar>
                     <div className={style.btnPos}>
@@ -109,9 +137,16 @@ export const PrivateOffice = () => {
                         color="primary"
                         aria-label="upload picture"
                         component="span"
-                        onClick={(e) => {
+                        onClick={async (e) => {
                           e.stopPropagation()
                           setFile('')
+                          await firebase.auth().currentUser.updateProfile({                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+                            photoURL: ''
+                          })
+                          dispatch(removePhoto())
+                          // return firebase.storage().bucket().deleteFiles({
+                          //   prefix: `avatars/${uid}`
+                          // });
                         }}
                       >
                         <CancelIcon />
@@ -142,7 +177,7 @@ export const PrivateOffice = () => {
                   {userEmail}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                  ID: {Math.random() * 10000000000000000}
+                  ID: {uid}
                 </Typography>
               </Grid>
               <Grid item>

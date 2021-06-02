@@ -22,6 +22,8 @@ export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
       return {
         displayName: firebaseUser.displayName,
         email: firebaseUser.email,
+        uid: firebaseUser.uid,
+        photoURL: firebaseUser.photoURL,
       };
     });
   } catch (e) {
@@ -34,17 +36,29 @@ const userSlice = createSlice({
   initialState: {
     userEmail: null,
     displayName: null,
+    uid: null,
+    photoURL: undefined,
   },
   reducers: {
     addUser(state, action) {
       state.userEmail = action.payload.email;
       state.displayName = action.payload.displayName;
+      state.uid = action.payload.uid;
+      state.photoURL = action.payload.photoURL;
       state.loading = null;
     },
     removeUser(state) {
       state.userEmail = null;
       state.displayName = null;
+      state.uid = null;
+      state.photoURL = undefined;
       state.loading = null;
+    },
+    addPhoto(state, action) {
+      state.photoURL = action.payload;
+    },
+    removePhoto(state) {
+      state.photoURL = undefined;
     },
   },
   extraReducers: {
@@ -55,6 +69,8 @@ const userSlice = createSlice({
     [fetchUser.fulfilled]: (state, { payload }) => {
       state.userEmail = payload.email;
       state.displayName = payload.displayName;
+      state.uid = payload.uid;
+      state.photoURL = payload.photoURL;
       state.loading = "fulfilled";
     },
     [fetchUser.rejected]: (state, { meta, payload, error }) => {
@@ -65,4 +81,4 @@ const userSlice = createSlice({
 });
 
 export default userSlice;
-export const { addUser, removeUser } = userSlice.actions;
+export const { addUser, removeUser, addPhoto, removePhoto } = userSlice.actions;
