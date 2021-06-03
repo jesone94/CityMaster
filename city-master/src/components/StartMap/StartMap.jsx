@@ -1,25 +1,14 @@
 import React, { Children, useEffect, useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { addGameCoodrs, fetchLocation } from '../../redux/gameCoordsSlice';
+import {
+  addGameCoodrs,
+  fetchLocation,
+  gameStartToggle,
+  searchCoordsToggle,
+} from '../../redux/gameStatusSlice';
 import { Button } from '@material-ui/core';
-
-var options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0,
-};
-
-function success(pos) {
-  var crd = pos.coords;
-  const coords = { lat: crd.latitude, lng: crd.longitude };
-}
-
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-}
-
-navigator.geolocation.getCurrentPosition(success, error, options);
+import cordsRandomazer from './coordRamdomazer';
 
 const containerStyle = {
   width: '800px',
@@ -27,21 +16,28 @@ const containerStyle = {
 };
 
 let center = {
-  lat: 60,
-  lng: 100,
+  lat: 55.76063062407006,
+  lng: 37.6363135809925,
 };
 
 // console.log(navigator.geolocation.getCurrentPosition());
 
 export default function StartMap() {
-  const { location } = useSelector((state) => state.gameCoords);
+  const { location, coords, isGameStarted } = useSelector((state) => state.gameStatus);
   const dispatch = useDispatch();
   let [markerPosition, setMarkerPosition] = useState({});
 
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
       {location && (
-        <Button size='large' variant='outlined' color='primary'>
+        <Button
+          size='large'
+          variant='outlined'
+          color='primary'
+          onClick={() => {
+            dispatch(gameStartToggle());
+          }}
+        >
           Выбрать<br></br>
           {location}
         </Button>
