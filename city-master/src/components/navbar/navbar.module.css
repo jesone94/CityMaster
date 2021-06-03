@@ -34,3 +34,17 @@ li a:hover:not(.active) {
   margin-left: auto;
 }
 /* #9A764E */
+@media screen and (max-width: 1000px) {
+  
+  ul{
+    flex-direction: column;
+  }
+  .righted {
+    flex-grow: unset;
+    order: unset;
+    margin-left: unset;
+  }
+  li a {
+    font-size: 54px;
+  }
+}

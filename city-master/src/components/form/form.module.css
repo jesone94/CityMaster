@@ -33,6 +33,7 @@
   align-items: center;
   width: 100%;
   height: auto;
+  transition: all .33s ease-in;
 }
 .modalColumn {
   display: flex;
@@ -133,4 +134,27 @@ input:active, :hover, :focus {
 }
 .content__transform-style:hover {
 	transform: rotateX(50deg);
+}
+
+
+@media screen and (max-width: 1000px) {
+  .modalWrap {
+    height: 100vh;
+    width: 100vw;
+    background-color: unset;
+    position: relative;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .modalColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: scale(1.4);
+  }
+
 }
