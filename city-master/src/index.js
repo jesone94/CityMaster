@@ -5,10 +5,12 @@ import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/
 import { Provider } from 'react-redux';
 import userSlice from './redux/userSlice';
 import { gameCoordsSlice } from './redux/gameCoordsSlice';
+import loaderSlice from './redux/loaderSlice';
 
 const rootReducer = combineReducers({
   user: userSlice.reducer,
   gameCoords: gameCoordsSlice.reducer,
+  loader: loaderSlice.reducer
 });
 
 const middleware = getDefaultMiddleware({

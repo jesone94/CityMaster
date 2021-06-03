@@ -10,26 +10,9 @@ import { addUser } from '../../redux/userSlice';
 import style from './form.module.css'
 import { Link } from 'react-router-dom';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: theme.spacing(2),
 
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '300px',
-    },
-    '& .MuiButtonBase-root': {
-      margin: theme.spacing(2),
-    },
-  },
-}));
+const SignUp = () => {
 
-const SignUp = ({ handleClose }) => {
-  const classes = useStyles();
   const { handleSubmit, register } = useForm();
 
   let history = useHistory()

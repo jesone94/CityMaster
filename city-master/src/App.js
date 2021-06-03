@@ -8,12 +8,13 @@ import PrivateRoute from './firebase/PrivateRoute';
 import SignIn from './components/form/SignIn';
 import { useEffect } from 'react';
 import firebase from './firebase/firebase'
-import { fetchUser } from './redux/userSlice';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { PrivateOffice } from './components/privateOffice/privateOfiice';
 import { CSSTransition } from 'react-transition-group';
-
-
+import { fetchUser } from './redux/userSliceFetches/fetchUserStart';
+import LoaderContextProvider from './context/LoaderContext';
+import { Loader } from './components/loader/Loader';
 
 function App() {
   const dispatch = useDispatch()
@@ -31,6 +32,8 @@ function App() {
   return (
     <>
       {/* <AuthProvider> */}
+      <LoaderContextProvider >
+       
         <Router>
             <NavBar />
             <Switch>
@@ -66,6 +69,7 @@ function App() {
               </Route>
             </Switch>
           </Router>
+          </LoaderContextProvider>
         {/* </AuthProvider> */}
     </>
   );
