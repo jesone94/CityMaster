@@ -1,5 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500&display=swap');
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Caveat', cursive;
 }
+/* body {
+  background-color:#1a1a1a;
+} */
+.container {
+  position: relative;
+}
+.page {
+  transform: rotateX(90deg);
+  position: absolute;
+  transition: all 1s ease 0s;
+}
+.page-enter {
+  transform: rotateX(90deg);
+}
+
+.page-enter-active {
+  transform: rotateX(0deg);
+  transition: transform 1000ms;
+}
+
+.page-enter-done {
+  transform: rotateX(0deg);
+  transition: transform 1000ms;
+}
+/* .page-exit {
+  opacity: 1;
+  transform: rotateX(90deg);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: rotateX(90deg);
+  transition: transform 1000ms;
+} */
+.modalWrap {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top:0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+

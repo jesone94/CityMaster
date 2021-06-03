@@ -1,64 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import { Button, CircularProgress, IconButton, Input } from "@material-ui/core";
+import { Button } from '../button/Button'
 import style from "./privateOffice.module.css";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
-import SaveIcon from "@material-ui/icons/Save";
-import { useDispatch, useSelector } from "react-redux";
-import Avatar from "@material-ui/core/Avatar";
-import CancelIcon from "@material-ui/icons/Cancel";
-import firebase from '../../firebase/firebase';
-import 'firebase/storage'
-import * as functions from "firebase/functions";
-import { addPhoto, removePhoto } from '../../redux/userSlice'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    margin: "auto",
-    maxWidth: 500,
-  },
-  image: {
-    width: 128,
-    height: 128,
-  },
-  img: {
-    margin: "auto",
-    display: "block",
-    maxWidth: "100%",
-    maxHeight: "100%",
-  },
-  large: {
-    width: theme.spacing(16),
-    height: theme.spacing(16),
-  },
-}));
+import { useDispatch, useSelector } from "react-redux";
+import EditIcon from '@material-ui/icons/Edit';
+import firebase from "../../firebase/firebase";
+import "firebase/storage";
+
+import { addPhoto, editEmail, removePhoto } from "../../redux/userSlice";
+import { IconButton } from "@material-ui/core";
+
 
 export const PrivateOffice = () => {
-  const classes = useStyles();
+  
   const { displayName } = useSelector((state) => state.user);
   const { userEmail } = useSelector((state) => state.user);
-
+  const [email, setEmail] = useState(`${userEmail}`)
+  const [password, setPassword] = useState('')
+  const [emailBoolean, setEmailBoolean] = useState(false)
   const [file, setFile] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null)
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const { uid } = useSelector((state) => state.user);
   const { photoURL } = useSelector((state) => state.user);
 
   useEffect(() => {
-    setFile(photoURL)
-  }, [photoURL])
+    setFile(photoURL);
+  }, [photoURL, userEmail]);
 
   const user = useSelector((state) => state.user);
-  console.log(user)
+
+  const handleEdit = () => {
+
+  }
+
+
+  console.log(user);
   const reader = new FileReader();
 
   const handleSubmit = (e) => {
@@ -74,124 +55,123 @@ export const PrivateOffice = () => {
       setFile(reader.result);
     };
     reader.readAsDataURL(file);
-    upload(file)
+    upload(file);
     console.log(file);
   };
   const upload = async (file) => {
     const ref = firebase.storage().ref(`avatars/${uid}/${file.name}`);
     const task = ref.put(file);
-    task.on('state_changed', async (snapshot) => {
-    }, (error) => {
-      console.log(error);
-    }, async () => {
-      const link = await ref.getDownloadURL();
-      console.log(link)
-      await firebase.auth().currentUser.updateProfile({                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-        photoURL: link
-      })
-      dispatch(addPhoto(link))
-    });
+    task.on(
+      "state_changed",
+      async (snapshot) => {},
+      (error) => {
+        console.log(error);
+      },
+      async () => {
+        const link = await ref.getDownloadURL();
+        console.log(link);
+        await firebase.auth().currentUser.updateProfile({
+          photoURL: link,
+        });
+        dispatch(addPhoto(link));
+      }
+    );
   };
-  // const Input = styled('input')({
-  //   display: 'none',
-  // });
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Grid container spacing={2}>
-          <Grid item>
-            <ButtonBase className={classes.image}>
-              {!file ? (
-                <form onSubmit={(e) => handleSubmit(e)}>
-                  <label htmlFor="contained-button-file">
-                    <Input
-                      className={style.hide}
-                      accept="image/*"
-                      id="contained-button-file"
-                      multiple
-                      type="file"
-                      onChange={(e) => handleImageChange(e)}
-                    />
-                    <IconButton
-                      variant="contained"
-                      component="span"
-                      type="submit"
-                    >
-                      <AddAPhotoIcon />
-                    </IconButton>
-                  </label>
-                </form>
-              ) : (
-                <>
-                  <div className={style.flexColumn}>
-                    <Avatar className={classes.large}>
-                      <img
-                        className={classes.img}
-                        alt="не найдено"
-                        src={file}
-                      />
-                    </Avatar>
-                    <div className={style.btnPos}>
-                      <IconButton
-                        color="primary"
-                        aria-label="upload picture"
-                        component="span"
-                        onClick={async (e) => {
-                          e.stopPropagation()
-                          setFile('')
-                          await firebase.auth().currentUser.updateProfile({                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-                            photoURL: ''
-                          })
-                          dispatch(removePhoto())
-                          // return firebase.storage().bucket().deleteFiles({
-                          //   prefix: `avatars/${uid}`
-                          // });
-                        }}
-                      >
-                        <CancelIcon />
-                      </IconButton>
-                    </div>
-                    {/* <div className={style.btnPosSave}>
-                    <IconButton
-                      color="primary"
-                      aria-label="upload picture"
-                      component="span"
-                    >
-                      <SaveIcon />
-                    </IconButton>
-                    </div> */}
-                  </div>
-                </>
-              )}
-            </ButtonBase>
-          </Grid>
-
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
-                <Typography gutterBottom variant="subtitle1">
-                  {displayName}
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  {userEmail}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  ID: {uid}
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Button type="submit" variant="contained" color="primary">
-                  Редактировать
-                </Button>
-              </Grid>
-            </Grid>
-            <Grid item>
-              <Typography variant="subtitle1">кхм</Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Paper>
-    </div>
+    <>
+      <div className={style.container}>
+        <div className={style.wrapper}>
+          {file && (
+            <div
+              className={style.btnSmall}
+              onClick={async (e) => {
+                e.stopPropagation();
+                setFile("");
+                await firebase.auth().currentUser.updateProfile({
+                  photoURL: "",
+                });
+                dispatch(removePhoto());
+                // return firebase.storage().bucket().deleteFiles({
+                //   prefix: `avatars/${uid}`
+                // });
+              }}
+            ></div>
+          )}
+          {!file ? (
+            <div className={style.uloadDiv}>
+              <form onSubmit={(e) => handleSubmit(e)}>
+                <label htmlFor="contained-button-file">
+                  <input
+                    className={style.hide}
+                    accept="image/*"
+                    id="contained-button-file"
+                    multiple
+                    type="file"
+                    onChange={(e) => handleImageChange(e)}
+                  />
+                  <IconButton
+                    variant="contained"
+                    component="span"
+                    type="submit"
+                  >
+                    <AddAPhotoIcon />
+                  </IconButton>
+                </label>
+              </form>
+            </div>
+          ) : (
+            <img className={style.avatar} alt="не найдено" src={file} />
+          )}
+        </div>
+        <div className={style.content}>
+          <div className={style.info}>
+            <h1>{displayName}&nbsp;</h1><div className={style.editIcon}></div>
+          </div>
+          <div className={style.info}>
+            <p>{userEmail}</p><div className={style.editIcon}><EditIcon onClick={() => {
+              setEmailBoolean((prev) => !prev)
+            }}/></div>
+            <div className={emailBoolean ? style.show : style.hide}>
+            <input placeholder="Электронная почта" type="text" value={email} onChange={(e) => {
+              setEmail(e.target.value)
+            }}/>
+            </div>
+          </div>
+          <div className={style.info}>
+            <p> <b>UID:</b> {uid}</p>
+          </div>
+          {emailBoolean && <Button text="Cохранить" click={
+            async() => {
+              try {
+                if (userEmail === email){
+                  return setErrorMessage('Вы не можете ввести такую же электронную почту');
+                }
+                await firebase.auth()
+                .signInWithEmailAndPassword(userEmail, password)
+                .then(function(userCredential) {
+                    userCredential.user.updateEmail(email)
+                })
+                dispatch(editEmail(email))
+                setEmailBoolean(false)
+              } catch(error) {
+                console.log(error)
+                error.code === "auth/wrong-password" && setErrorMessage('Неверный пароль');
+                error.code === "auth/user-not-found" && setErrorMessage('Пользователя с таким электронным адресом не существует')
+                error.code === "auth/too-many-requests" && setErrorMessage('слишком много запросов')
+                // onFinishFailed(error)
+              }
+              setPassword('')
+            }
+          }></Button>}
+          <div className={emailBoolean ? style.show : style.hide}>
+            <input placeholder="Подтвердите пароль" type="password" value={password} onChange={(e) => {
+              setPassword(e.target.value)
+            }}/>
+            <span className={style.errors}>{errorMessage}</span>
+            </div>
+        </div>
+      </div>
+    </>
   );
 };
