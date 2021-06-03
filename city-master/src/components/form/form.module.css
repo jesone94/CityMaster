@@ -1,0 +1,136 @@
+.modalWrap {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top:0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  padding: 20px;
+  background-color: white;
+  border-radius: 5px;
+  animation: show-modal 800ms forwards ease-in-out;
+}
+
+@keyframes show-modal {
+  0% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+.containerForm {
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+}
+.modalColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.btnWrapFrom {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+}
+.righted {
+  flex-grow: 0;
+  order: 100;
+  margin-left: auto;
+}
+
+a {
+  color:#9A764E;
+}
+
+.errors {
+  color:#9A764E;
+  font-size: 18px;
+  animation: errors forwards .6s ease-in;
+}
+@keyframes errors {
+  0%{
+    transform: scale(0);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+
+
+
+
+input {
+  width: 130px;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 24px;
+  background-color: white;
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 12px;
+  margin: 10px 0;
+  width: 100%;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+input::-webkit-input-placeholder {
+  position: relative;
+  top: 0px;
+  display: block;
+  transition: all .6s ease-in-out;
+}
+input:hover::-webkit-input-placeholder { 
+  font-size: 0; 
+}
+input:active::-webkit-input-placeholder { 
+  font-size: 0; 
+}
+
+input:active, :hover, :focus {
+  outline: 0 !important;
+  outline-offset: 0;
+}
+.input:focus {
+  outline: none;
+}
+
+
+.content__transform-style-wrapper {
+	width: 150px;
+	height: 150px;
+	background-color: rgba(255, 255, 255, 0.1);
+	perspective: 400px;
+	transform-style: preserve-3d;
+}
+.content__transform-style {
+	display: flex;
+	text-transform: uppercase;
+	justify-content: center;
+	align-items: center;
+	letter-spacing: 1px;
+	text-align: center;
+	transition: all 0.8s ease 0s;
+	width: 150px;
+	height: 150px;
+	transform: rotateX(0deg);
+	background-color: #7a956b;
+}
+.content__transform-style:hover {
+	transform: rotateX(50deg);
+}

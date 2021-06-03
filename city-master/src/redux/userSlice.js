@@ -37,7 +37,7 @@ const userSlice = createSlice({
     userEmail: null,
     displayName: null,
     uid: null,
-    photoURL: undefined,
+    photoURL: null,
   },
   reducers: {
     addUser(state, action) {
@@ -54,11 +54,14 @@ const userSlice = createSlice({
       state.photoURL = undefined;
       state.loading = null;
     },
+    editEmail(state, action) {
+      state.userEmail = action.payload;
+    },
     addPhoto(state, action) {
       state.photoURL = action.payload;
     },
     removePhoto(state) {
-      state.photoURL = undefined;
+      state.photoURL = null;
     },
   },
   extraReducers: {
@@ -81,4 +84,4 @@ const userSlice = createSlice({
 });
 
 export default userSlice;
-export const { addUser, removeUser, addPhoto, removePhoto } = userSlice.actions;
+export const { addUser, removeUser, addPhoto, removePhoto, editEmail } = userSlice.actions;

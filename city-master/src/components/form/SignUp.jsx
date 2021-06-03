@@ -2,12 +2,13 @@ import firebase from '../../firebase/firebase'
 import React, { useState } from 'react';
 import { FormHelperText, makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import { Button } from '../button/Button'
 import { useForm, Controller } from 'react-hook-form';
 import { useHistory } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../../redux/userSlice';
-
+import style from './form.module.css'
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,14 +30,14 @@ const useStyles = makeStyles(theme => ({
 
 const SignUp = ({ handleClose }) => {
   const classes = useStyles();
-  const { handleSubmit, control } = useForm();
+  const { handleSubmit, register } = useForm();
 
   let history = useHistory()
 
   const [errorMessagePassword, setErrorMessagePassword] = useState(null)
   const [errorMessageEmail, setErrorMessageEmail] = useState(null)
-  // const [errorMessageFirstName, setErrorMessageFirstName] = useState(null)
-  // const [errorMessageLastName, setErrorMessageLastName] = useState(null)
+  const [errorMessageFirstName, setErrorMessageFirstName] = useState(null)
+  const [errorMessageLastName, setErrorMessageLastName] = useState(null)
 
   const { userEmail } = useSelector((state) => state.user);
 
@@ -46,7 +47,16 @@ const SignUp = ({ handleClose }) => {
   const onSubmit = async data => {
     setErrorMessagePassword(null)
     setErrorMessageEmail(null)
+    setErrorMessageFirstName(null)
+    setErrorMessageLastName(null)
+    
     const { name, lastName, email, password } = data
+    if (!name) {
+      return setErrorMessageFirstName('Поле не может быть пустым')
+    }
+    if (!lastName) {
+      return setErrorMessageLastName('Поле не может быть пустым')
+    }
     try {
       await firebase.auth().createUserWithEmailAndPassword(email, password)
       await firebase.auth().currentUser.updateProfile({                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
@@ -70,87 +80,44 @@ const SignUp = ({ handleClose }) => {
 
   return (
     <>
-    <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
-    <FormHelperText id="my-helper-text">Форма регистрации</FormHelperText>
-      <Controller
-        name="name"
-        control={control}
-        defaultValue=""
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <TextField
-            label="Имя"
-            variant="outlined"
-            value={value}
-            onChange={onChange}
-            error={!!error}
-            helperText={error ? error.message : null}
-          />
-        )}
-        rules={{ required: 'Введите ваше имя' }}
-      />
-      <Controller
-        name="lastName"
-        control={control}
-        defaultValue=""
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <TextField
-            label="Фамилия"
-            variant="outlined"
-            value={value}
-            onChange={onChange}
-            error={!!error}
-            helperText={error ? error.message : null}
-          />
-        )}
-        rules={{ required: 'Введите вашу фамилию' }}
-      />
-      <Controller
-        name="email"
-        control={control}
-        defaultValue=""
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <TextField
-            label="Электронная почта"
-            variant="outlined"
-            value={value}
-            onChange={(e) => {
-              onChange(e.target.value)
-            }}
-            error={!!error}
-            helperText={error ? error.message : errorMessageEmail}
-            type="email"
-          />
-        )}
-        rules={{ required: 'Email required' }}
-      />
-      <Controller
-        name="password"
-        control={control}
-        defaultValue=""
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <TextField
-            label="Пароль"
-            variant="outlined"
-            value={value}
-            onChange={(e) => {
-              onChange(e.target.value)
-            }}
-            error={!!error}
-            helperText={error ? error.message : errorMessagePassword}
-            type="password"
-          />
-        )}
-        rules={{ required: 'Password required' }}
-      />
-      <div>
-        <Button variant="contained" onClick={handleClose}>
-          Отмена
-        </Button>
-        <Button type="submit" variant="contained" color="primary">
-          Зарегистрироваться
-        </Button>
+    <div className={style.containerForm}>
+    <div
+        onClick={() => {}}
+        className={style.modalWrap}
+      >
+        <div className={style.modalColumn} onClick={(e) => e.stopPropagation()}>
+          <div className={style.modalContent}>
+            <div className={style.modalColumn}>
+              <form onSubmit={handleSubmit(onSubmit)}>
+              <div>
+              <label>Имя</label>
+              <input placeholder="Имя" type="text" {...register('name')}/>
+              <span className={style.errors}>{errorMessageFirstName}</span>
+              <div></div>
+              <label>Фамилия</label>
+              <input placeholder="Фамилия" type="text" {...register('lastName')}/>
+              <span className={style.errors}>{errorMessageLastName}</span>
+              <div></div>
+              <label>Электронная почта</label>
+              <input placeholder="Электронная почта" type="text" {...register('email')}/>
+              <span className={style.errors}>{errorMessageEmail}</span>
+              <div></div>
+              <label>Пароль</label>
+              <input placeholder="Пароль" type="password" {...register('password')}/>
+              <span className={style.errors}>{errorMessagePassword}</span>
+              </div>
+              <div className={style.btnWrapFrom}>
+              <label>есть аккаунт?.. <Link to="/signin">Войти</Link></label>
+                <div className={style.righted}>
+                  <Button text='Регистрация' />
+                </div>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
-    </form>
+    </div>
     </>
   );
 };
