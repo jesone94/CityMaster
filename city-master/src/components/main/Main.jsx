@@ -5,7 +5,7 @@ import StartMap from '../StartMap/StartMap';
 
 export const Main = () => {
   const { isGameStarted } = useSelector((state) => state.gameStatus);
-  console.log(isGameStarted);
+
   return (
     <>
       {!isGameStarted && <StartMap />}

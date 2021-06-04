@@ -16,6 +16,8 @@ export const gameStatusSlice = createSlice({
     location: '',
     isGameStarted: false,
     searchCoords: {},
+    currentImgUrl: '',
+    currentImgCoords: {},
   },
   reducers: {
     gameStartToggle(state) {
@@ -24,10 +26,15 @@ export const gameStatusSlice = createSlice({
     searchCoordsToggle(state, { payload }) {
       state.searchCoords = payload;
     },
+    toggleCurrentImg(state, { payload }) {
+      const url = `https://maps.googleapis.com/maps/api/streetview?size=600x300&location=${payload.lat},${payload.lng}&heading=151.78&pitch=-0.76&key=AIzaSyD3H4_6o49rkozd-z0jJZWH-4GbRFpMsMU&return_error_codes=true`;
+      state.currentImgUrl = url;
+      state.currentImgCoords = payload;
+    },
   },
   extraReducers: {
     [fetchLocation.pending]: (state) => {
-      console.log('pending')
+      console.log('pending');
     },
     [fetchLocation.fulfilled]: (state, { payload }) => {
       return { ...state, ...payload };
@@ -35,4 +42,4 @@ export const gameStatusSlice = createSlice({
   },
 });
 
-export const { gameStartToggle, searchCoordsToggle } = gameStatusSlice.actions;
+export const { gameStartToggle, searchCoordsToggle, toggleCurrentImg } = gameStatusSlice.actions;
