@@ -20,6 +20,9 @@ export const gameStatusSlice = createSlice({
     currentImgCoords: {},
   },
   reducers: {
+    nullLocation(state) {
+      state.location = '';
+    },
     gameStartToggle(state) {
       state.isGameStarted = !state.isGameStarted;
     },
@@ -42,4 +45,4 @@ export const gameStatusSlice = createSlice({
   },
 });
 
-export const { gameStartToggle, searchCoordsToggle, toggleCurrentImg } = gameStatusSlice.actions;
+export const { gameStartToggle, searchCoordsToggle, toggleCurrentImg, nullLocation } = gameStatusSlice.actions;

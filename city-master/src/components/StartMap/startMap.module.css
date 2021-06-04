@@ -31,14 +31,39 @@
   top: 0;
   left: 0;
 }
-.btnWrapFrom {
-  margin-top: 15px;
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-}
+
 .righted {
-  flex-grow: 0;
-  order: 100;
-  margin-left: auto;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+.btnSmall{
+  position: relative;
+  top: -20px;
+  left: -20px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: .22s ease-in-out;
+}
+.btnSmall:before{
+  background-color:#9A764E;
+  top: 14px;
+  left: 8px;
+  content: '';
+  width: 25px;
+  height: 5px;
+  position: absolute;
+  transform: rotate(45deg);
+}
+.btnSmall::after{
+  background-color:#9A764E;
+  top: 14px;
+  left: 8px;
+  content: '';
+  width: 25px;
+  height: 5px;
+  position: absolute;
+  transform: rotate(-45deg);
 }

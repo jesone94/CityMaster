@@ -5,12 +5,14 @@ import {
   addGameCoodrs,
   fetchLocation,
   gameStartToggle,
+  nullLocation,
   searchCoordsToggle,
 } from "../../redux/gameStatusSlice";
-
 import style from "./startMap.module.css";
 import { Spinner } from "./Spinner";
 import { Button } from "../button/Button";
+import { CSSTransition } from "react-transition-group";
+import './location.css'
 
 const containerStyle = {
   width: "800px",
@@ -33,17 +35,28 @@ export default function StartMap() {
 
   return (
     <>
-      <div className={style.mapContainer}>
-        {location && (
+      <div className={style.mapContainer} onClick={(e) => {
+        e.stopPropagation()
+      }}>
+        <CSSTransition 
+          in={location}
+          timeout={500}
+          classNames='location'
+          mountOnEnter
+          unmountOnExit
+        >
           <div className={style.modalContent}>
             <div
-              className={style.modalColumn}
-              onClick={(e) => e.stopPropagation()}
-            >
+              className={style.btnSmall}
+              onClick={async (e) => {
+                e.stopPropagation();
+                dispatch(nullLocation())
+              }}
+            ></div>
               <div className={style.modalColumn}>
-                <label>{location}</label>
+                <h3>{location}</h3>
                 <hr />
-                <div className={style.btnWrapFrom}></div>
+                <div className={style.btnWrap}></div>
                 <div className={style.righted}>
                   <Button
                     text="Выбрать"
@@ -51,11 +64,10 @@ export default function StartMap() {
                       dispatch(gameStartToggle());
                     }}
                   ></Button>
-                </div>
               </div>
             </div>
           </div>
-        )}
+          </CSSTransition>
         <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
           <GoogleMap
             mapContainerStyle={containerStyle}
