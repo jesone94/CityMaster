@@ -1,10 +1,11 @@
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchCoordsToggle, toggleCurrentImg } from '../../redux/gameStatusSlice';
 import cordsRandomazer from '../StartMap/coordRamdomazer';
 
 export default function Game() {
+  const [answerCoords, setAnswerCoords] = useState({});
   const containerStyle = {
     width: '600px',
     height: '300px',
@@ -47,8 +48,20 @@ export default function Game() {
         <div>
           <img src={currentImgUrl}></img>
         </div>
+        <button>Это здесь!</button>
         <div>
-          <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10} />
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={10}
+            onClick={(ev) => {
+              const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
+              setAnswerCoords(coords);
+              console.log(answerCoords);
+            }}
+          >
+            <Marker position={answerCoords} />
+          </GoogleMap>
         </div>
       </div>
     </LoadScript>
