@@ -4,22 +4,22 @@
 'exiting'
 'exited' */
 
-.location-enter-active {
+.modal-enter-active {
   z-index: 1000;
   position: absolute;
-  animation: locationShow 700ms forwards;
+  animation: gameModalShow 700ms forwards;
 }
-.location-enter-done {
+.modal-enter-done {
   z-index: 1000;
   position: absolute;
-  animation: locationScale 700ms alternate-reverse;
+  animation: gameModalScale 700ms alternate-reverse;
 }
-.location-exit-active { 
+.modal-exit-active { 
   z-index: 1000;
   position: absolute;
-  animation: locationShow 700ms alternate-reverse;
+  animation: gameModalShow 700ms alternate-reverse;
 }
-@keyframes locationShow {
+@keyframes gameModalShow {
   0% {
     transform: translateY(-400px);
     opacity: 0;
@@ -34,7 +34,7 @@
     transform: scale(1);
   }
 }
-@keyframes locationScale {
+@keyframes gameModalScale {
   0% {
     transform: scale(1);
   }

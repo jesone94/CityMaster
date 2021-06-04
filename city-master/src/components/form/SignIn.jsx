@@ -5,13 +5,12 @@ import { useForm, Controller } from "react-hook-form";
 import style from "./form.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, nullError } from "../../redux/userSlice";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import { useLoaderContext } from "../../context/LoaderContext";
 import { Loader } from "../loader/Loader";
 import { fetchUserSignIn } from "../../redux/userSliceFetches/fetchUserSignIn";
-
 
 const SignIn = () => {
   // const [active, setActive] = useState(true)
@@ -19,32 +18,32 @@ const SignIn = () => {
   //   event.preventDefault();
   //   setActive(false);
   // };
+
   const [input, setInput] = useState("");
   const { loader } = useLoaderContext();
 
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const { handleSubmit, formState: { errors }, register } = useForm();
-
-  let history = useHistory();
+  const {
+    handleSubmit,
+    register,
+  } = useForm();
 
   const { userEmail } = useSelector((state) => state.user);
   const { error } = useSelector((state) => state.user);
 
-  
-
   useEffect(() => {
-    setErrorMessage(error)
-  }, [error])
+    setErrorMessage(error);
+  }, [error]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(nullError())
-  }, [dispatch])
+    dispatch(nullError());
+  }, [dispatch]);
 
   const onSubmit = async (data) => {
-    dispatch(fetchUserSignIn(data))
+    dispatch(fetchUserSignIn(data));
     // history.push('/')
   };
 
@@ -76,14 +75,14 @@ const SignIn = () => {
                         type="password"
                         {...register("password")}
                       />
-                      <p className={style.errors}>
-                        {errorMessage}
-                      </p>
+                      <p className={style.errors}>{errorMessage}</p>
                     </div>
                     <div className={style.btnWrapFrom}>
                       <label>
                         нет аккаунта?..{" "}
-                        <Link to="/signup"><h3>Зарегистрироваться</h3></Link>
+                        <Link to="/signup">
+                          <h3>Зарегистрироваться</h3>
+                        </Link>
                       </label>
                       <div className={style.righted}>
                         <Button text="Войти" />

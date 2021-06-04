@@ -1,14 +1,21 @@
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { searchCoordsToggle, toggleCurrentImg } from '../../redux/gameStatusSlice';
-import cordsRandomazer from '../StartMap/coordRamdomazer';
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { CSSTransition } from "react-transition-group";
+import {
+  searchCoordsToggle,
+  toggleCurrentImg,
+} from "../../redux/gameStatusSlice";
+import cordsRandomazer from "../StartMap/coordRamdomazer";
+import { Button } from "../button/Button";
+import "./modalGame.css";
+import style from "./game.module.css";
 
 export default function Game() {
   const [answerCoords, setAnswerCoords] = useState({});
   const containerStyle = {
-    width: '600px',
-    height: '300px',
+    width: "600px",
+    height: "300px",
   };
 
   let center = {
@@ -25,7 +32,7 @@ export default function Game() {
     const response = await fetch(url);
     const result = await response.json();
     console.log(result.status);
-    if (result.status === 'OK') {
+    if (result.status === "OK") {
       console.log(result);
       dispatch(toggleCurrentImg(result.location));
       return;
@@ -38,17 +45,55 @@ export default function Game() {
     searchLocation();
   }, [searchLocation]);
 
+  const [toggler, setToggler] = useState(false);
+
   useEffect(() => {
     dispatch(searchCoordsToggle(cordsRandomazer(coords)));
   }, []);
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
-      <div className='game'>
-        {' '}
+      <div
+        className={style.gameContainer}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <CSSTransition
+          in={toggler}
+          timeout={700}
+          classNames="modal"
+          mountOnEnter
+          unmountOnExit
+        >
+          <div className={style.modalContent}>
+            <div
+              className={style.btnSmall}
+              onClick={async (e) => {
+                e.stopPropagation();
+                setToggler(false)
+              }}
+            ></div>
+            <div className={style.modalColumn}>
+              <h3>AAAAAAAAa</h3>
+              <hr />
+              <div className={style.btnWrap}></div>
+              <div className={style.righted}>
+                <Button text="Выбрать"></Button>
+              </div>
+            </div>
+          </div>
+        </CSSTransition>
         <div>
           <img src={currentImgUrl}></img>
         </div>
-        <button>Это здесь!</button>
+        <div className={style.btnThisIsLocation}>
+        <Button
+          text="Это здесь!"
+          click={() => {
+            setToggler((prev) => !prev);
+          }}
+        />
+        </div>
         <div>
           <GoogleMap
             mapContainerStyle={containerStyle}
