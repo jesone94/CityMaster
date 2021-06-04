@@ -1,0 +1,47 @@
+/* 
+'entering'
+'entered'
+'exiting'
+'exited' */
+
+.location-enter-active {
+  z-index: 1000;
+  position: absolute;
+  animation: locationShow 500ms forwards;
+}
+.location-enter-done {
+  z-index: 1000;
+  position: absolute;
+  animation: locationScale 500ms alternate-reverse;
+}
+.location-exit-active { 
+  z-index: 1000;
+  position: absolute;
+  animation: locationShow 500ms alternate-reverse;
+}
+@keyframes locationShow {
+  0% {
+    transform: translateY(-400px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(100px);
+    transform: scale(2.2);
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes locationScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
