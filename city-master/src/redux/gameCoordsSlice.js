@@ -21,6 +21,9 @@ export const gameCoordsSlice = createSlice({
     },
   },
   extraReducers: {
+    [fetchLocation.pending]: (state) => {
+      console.log('pending')
+    },
     [fetchLocation.fulfilled]: (state, { payload }) => {
       return payload;
     },

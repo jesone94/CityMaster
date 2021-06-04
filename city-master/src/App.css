@@ -12,7 +12,7 @@
   position: relative;
 }
 .page {
-  transform: rotateX(90deg);
+  transform: rotateX(0deg);
   position: absolute;
   transition: all 1s ease 0s;
 }

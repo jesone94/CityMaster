@@ -3,6 +3,8 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { addGameCoodrs, fetchLocation } from '../../redux/gameCoordsSlice';
 import { Button } from '@material-ui/core';
+import style from './startMap.module.css'
+import { Spinner } from './Spinner';
 
 var options = {
   enableHighAccuracy: true,
@@ -39,6 +41,11 @@ export default function StartMap() {
   let [markerPosition, setMarkerPosition] = useState({});
 
   return (
+    <div className={style.mapContainer}>
+     {/* <div className={style.spinnerModal}><Spinner /></div> */}
+      <div className={style.modalContent}>
+        
+      
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
       {location && (
         <Button size='large' variant='outlined' color='primary'>
@@ -59,5 +66,8 @@ export default function StartMap() {
         <Marker position={markerPosition} />
       </GoogleMap>
     </LoadScript>
+    </div>
+
+    </div>
   );
 }

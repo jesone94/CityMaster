@@ -1,69 +1,53 @@
 import firebase from '../../firebase/firebase'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormHelperText, makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '../button/Button'
 import { useForm, Controller } from 'react-hook-form';
 import { useHistory } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux';
-import { addUser } from '../../redux/userSlice';
+import { addUser, nullError } from '../../redux/userSlice';
 import style from './form.module.css'
 import { Link } from 'react-router-dom';
+import { fetchUserSignUp } from '../../redux/userSliceFetches/fetchUserSignUp';
+import { useLoaderContext } from '../../context/LoaderContext';
+import { Loader } from '../loader/Loader';
 
 
 const SignUp = () => {
-
+  const { loader } = useLoaderContext();
   const { handleSubmit, register } = useForm();
 
   let history = useHistory()
 
-  const [errorMessagePassword, setErrorMessagePassword] = useState(null)
-  const [errorMessageEmail, setErrorMessageEmail] = useState(null)
-  const [errorMessageFirstName, setErrorMessageFirstName] = useState(null)
-  const [errorMessageLastName, setErrorMessageLastName] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+
 
   const { userEmail } = useSelector((state) => state.user);
 
-  // const { currentUser } = useContext(AuthContext)
+  const { error } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    setErrorMessage(error)
+  }, [error])
+
   const dispatch = useDispatch()
 
-  const onSubmit = async data => {
-    setErrorMessagePassword(null)
-    setErrorMessageEmail(null)
-    setErrorMessageFirstName(null)
-    setErrorMessageLastName(null)
-    
-    const { name, lastName, email, password } = data
-    if (!name) {
-      return setErrorMessageFirstName('Поле не может быть пустым')
-    }
-    if (!lastName) {
-      return setErrorMessageLastName('Поле не может быть пустым')
-    }
-    try {
-      await firebase.auth().createUserWithEmailAndPassword(email, password)
-      await firebase.auth().currentUser.updateProfile({                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-        displayName: `${name} ${lastName}`
-      })
-      await firebase.auth().onAuthStateChanged(firebaseUser => {
-        dispatch(addUser({
-          email: firebaseUser.email,
-          displayName: firebaseUser.displayName
-        }))
-      })
-      
-      history.push('/')
-    } catch(error) {
-      console.log(error)
-      error.code === "auth/weak-password" && setErrorMessagePassword('Установите минимальную длину пароля не менее 6 символов');
-      error.code === "auth/email-already-in-use" && setErrorMessageEmail('Пользователь с таким электронным адресом уже существует')
-      // onFinishFailed(error)
-    }
+  useEffect(() => {
+    dispatch(nullError())
+  }, [dispatch])
+  // const { currentUser } = useContext(AuthContext)
+  
+
+  const onSubmit = async (data) => {
+    const { name, email, password } = data
+    dispatch(fetchUserSignUp(data))
+    // history.push('/')
   };
 
   return (
     <>
-    <div className={style.containerForm}>
+    {loader ? <Loader /> : <div className={style.containerForm}>
     <div
         onClick={() => {}}
         className={style.modalWrap}
@@ -71,26 +55,22 @@ const SignUp = () => {
         <div className={style.modalColumn} onClick={(e) => e.stopPropagation()}>
           <div className={style.modalContent}>
             <div className={style.modalColumn}>
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <form onSubmit={ handleSubmit(onSubmit)}>
               <div>
               <label>Имя</label>
               <input placeholder="Имя" type="text" {...register('name')}/>
-              <span className={style.errors}>{errorMessageFirstName}</span>
+           
               <div></div>
-              <label>Фамилия</label>
-              <input placeholder="Фамилия" type="text" {...register('lastName')}/>
-              <span className={style.errors}>{errorMessageLastName}</span>
-              <div></div>
-              <label>Электронная почта</label>
+              <label>Электронная почта *</label>
               <input placeholder="Электронная почта" type="text" {...register('email')}/>
-              <span className={style.errors}>{errorMessageEmail}</span>
+       
               <div></div>
-              <label>Пароль</label>
+              <label>Пароль *</label>
               <input placeholder="Пароль" type="password" {...register('password')}/>
-              <span className={style.errors}>{errorMessagePassword}</span>
+              <span className={style.errors}>{errorMessage}</span>
               </div>
               <div className={style.btnWrapFrom}>
-              <label>есть аккаунт?.. <Link to="/signin">Войти</Link></label>
+              <label>есть аккаунт?.. <Link to="/signin"><h3>Войти в профиль</h3></Link></label>
                 <div className={style.righted}>
                   <Button text='Регистрация' />
                 </div>
@@ -100,7 +80,8 @@ const SignUp = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div>}
+    
     </>
   );
 };

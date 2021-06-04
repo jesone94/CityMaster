@@ -1,18 +1,17 @@
 import firebase from "../../firebase/firebase";
 import React, { useEffect, useState } from "react";
-import { FormHelperText, Grid, makeStyles } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
 import { Button } from "../button/Button";
 import { useForm, Controller } from "react-hook-form";
 import style from "./form.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "../../redux/userSlice";
+import { addUser, nullError } from "../../redux/userSlice";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import { useLoaderContext } from "../../context/LoaderContext";
 import { Loader } from "../loader/Loader";
 import { fetchUserSignIn } from "../../redux/userSliceFetches/fetchUserSignIn";
+
 
 const SignIn = () => {
   // const [active, setActive] = useState(true)
@@ -23,25 +22,30 @@ const SignIn = () => {
   const [input, setInput] = useState("");
   const { loader } = useLoaderContext();
 
-  const [errorMessagePassword, setErrorMessagePassword] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, formState: { errors }, register } = useForm();
 
   let history = useHistory();
 
   const { userEmail } = useSelector((state) => state.user);
   const { error } = useSelector((state) => state.user);
 
+  
+
   useEffect(() => {
-    setErrorMessagePassword(error)
+    setErrorMessage(error)
   }, [error])
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(nullError())
+  }, [dispatch])
+
   const onSubmit = async (data) => {
     dispatch(fetchUserSignIn(data))
-    setErrorMessagePassword(null);
-    history.push('/')
+    // history.push('/')
   };
 
   return (
@@ -59,27 +63,27 @@ const SignIn = () => {
                 <div className={style.modalColumn}>
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
-                      <label>Электронная почта</label>
+                      <label>Электронная почта *</label>
                       <input
-                        placeholder="Электронная почта"
+                        placeholder="Электронная почта *"
                         type="text"
                         {...register("email")}
                       />
                       <div></div>
-                      <label>Пароль</label>
+                      <label>Пароль *</label>
                       <input
-                        placeholder="Пароль"
+                        placeholder="Пароль *"
                         type="password"
                         {...register("password")}
                       />
-                      <span className={style.errors}>
-                        {errorMessagePassword}
-                      </span>
+                      <p className={style.errors}>
+                        {errorMessage}
+                      </p>
                     </div>
                     <div className={style.btnWrapFrom}>
                       <label>
                         нет аккаунта?..{" "}
-                        <Link to="/signup">Зарегистрироваться</Link>
+                        <Link to="/signup"><h3>Зарегистрироваться</h3></Link>
                       </label>
                       <div className={style.righted}>
                         <Button text="Войти" />

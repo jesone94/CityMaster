@@ -6,7 +6,7 @@ export const fetchUserRemovePhoto = createAsyncThunk("user/fetchUserRemovePhoto"
     return await firebase.auth().currentUser.updateProfile({
       photoURL: "",
     });
-  } catch (e) {
-    return console.log(e);
+  } catch (error) {
+    new Error(error);
   }
 });
