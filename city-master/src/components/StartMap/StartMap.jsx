@@ -40,7 +40,7 @@ export default function StartMap() {
       }}>
         <CSSTransition 
           in={location}
-          timeout={500}
+          timeout={700}
           classNames='location'
           mountOnEnter
           unmountOnExit

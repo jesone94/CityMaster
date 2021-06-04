@@ -18,7 +18,6 @@ const SignUp = () => {
   const { loader } = useLoaderContext();
   const { handleSubmit, register } = useForm();
 
-  let history = useHistory()
 
   const [errorMessage, setErrorMessage] = useState(null)
 
