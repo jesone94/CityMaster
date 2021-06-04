@@ -7,9 +7,10 @@ import {
   gameStartToggle,
   searchCoordsToggle,
 } from "../../redux/gameStatusSlice";
-import { Button } from "@material-ui/core";
+
 import style from "./startMap.module.css";
 import { Spinner } from "./Spinner";
+import { Button } from "../button/Button";
 
 const containerStyle = {
   width: "800px",
@@ -33,51 +34,42 @@ export default function StartMap() {
   return (
     <>
       <div className={style.mapContainer}>
-      {location && (
-      
+        {location && (
           <div className={style.modalContent}>
             <div
               className={style.modalColumn}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className={style.modalContent}>
-                <div className={style.modalColumn}>
-                  <label>{location}</label>
-                  <hr />
-                  <div className={style.btnWrapFrom}></div>
-                  <div className={style.righted}>
-                    <Button
-                      size="large"
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => {
-                        dispatch(gameStartToggle());
-                      }}
-                    >
-                      Выбрать
-                    </Button>
-                  </div>
+              <div className={style.modalColumn}>
+                <label>{location}</label>
+                <hr />
+                <div className={style.btnWrapFrom}></div>
+                <div className={style.righted}>
+                  <Button
+                    text="Выбрать"
+                    click={() => {
+                      dispatch(gameStartToggle());
+                    }}
+                  ></Button>
                 </div>
               </div>
             </div>
           </div>
-     
-      )}
-      <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
-        
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={10}
-          onClick={(ev) => {
-            const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
-            setMarkerPosition(coords);
-            dispatch(fetchLocation(coords));
-          }}
-        >
-          <Marker position={markerPosition} />
-        </GoogleMap>
-      </LoadScript>
+        )}
+        <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={10}
+            onClick={(ev) => {
+              const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
+              setMarkerPosition(coords);
+              dispatch(fetchLocation(coords));
+            }}
+          >
+            <Marker position={markerPosition} />
+          </GoogleMap>
+        </LoadScript>
       </div>
     </>
   );
