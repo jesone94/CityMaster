@@ -8,7 +8,9 @@ import {
   searchCoordsToggle,
 } from '../../redux/gameStatusSlice';
 import { Button } from '@material-ui/core';
-import cordsRandomazer from './coordRamdomazer';
+import style from './startMap.module.css'
+import { Spinner } from './Spinner';
+
 
 const containerStyle = {
   width: '800px',
@@ -28,6 +30,11 @@ export default function StartMap() {
   let [markerPosition, setMarkerPosition] = useState({});
 
   return (
+    <div className={style.mapContainer}>
+     {/* <div className={style.spinnerModal}><Spinner /></div> */}
+      <div className={style.modalContent}>
+        
+      
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
       {location && (
         <Button
@@ -55,5 +62,8 @@ export default function StartMap() {
         <Marker position={markerPosition} />
       </GoogleMap>
     </LoadScript>
+    </div>
+
+    </div>
   );
 }

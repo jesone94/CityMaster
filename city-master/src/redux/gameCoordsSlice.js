@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-export const fetchLocation = createAsyncThunk('gameStatus/fetchLocation', async (coords) => {
+export const fetchLocation = createAsyncThunk('gameCoords/fetchLocation', async (coords) => {
   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.lat},${coords.lng}&key=${process.env.REACT_APP_GMAPS_API_KEY}`;
 
   const response = await fetch(url);
@@ -9,20 +9,15 @@ export const fetchLocation = createAsyncThunk('gameStatus/fetchLocation', async 
   return { coords, location: result.results[5].formatted_address };
 });
 
-export const gameStatusSlice = createSlice({
-  name: 'gameStatus',
+export const gameCoordsSlice = createSlice({
+  name: 'gameCoords',
   initialState: {
     coords: {},
     location: '',
-    isGameStarted: false,
-    searchCoords: {},
   },
   reducers: {
-    gameStartToggle(state) {
-      state.isGameStarted = !state.isGameStarted;
-    },
-    searchCoordsToggle(state, { payload }) {
-      state.searchCoords = payload;
+    addGameCoodrs(state, action) {
+      return action.payload;
     },
   },
   extraReducers: {
@@ -30,9 +25,9 @@ export const gameStatusSlice = createSlice({
       console.log('pending')
     },
     [fetchLocation.fulfilled]: (state, { payload }) => {
-      return { ...state, ...payload };
+      return payload;
     },
   },
 });
 
-export const { gameStartToggle, searchCoordsToggle } = gameStatusSlice.actions;
+export const { addGameCoodrs } = gameCoordsSlice.actions;

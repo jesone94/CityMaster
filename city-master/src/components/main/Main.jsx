@@ -4,8 +4,9 @@ import Game from '../Game/Game';
 import StartMap from '../StartMap/StartMap';
 
 export const Main = () => {
-  const { isGameStarted } = useSelector((state) => state.gameStatus);
 
+  const  isGameStarted  = useSelector((state) => state);
+  console.log(isGameStarted)
   return (
     <>
       {!isGameStarted && <StartMap />}

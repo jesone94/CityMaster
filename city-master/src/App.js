@@ -14,7 +14,7 @@ import { PrivateOffice } from './components/privateOffice/privateOfiice';
 import { CSSTransition } from 'react-transition-group';
 import { fetchUser } from './redux/userSliceFetches/fetchUserStart';
 import LoaderContextProvider from './context/LoaderContext';
-import { Loader } from './components/loader/Loader';
+
 
 function App() {
   const dispatch = useDispatch()
@@ -42,7 +42,7 @@ function App() {
                 {!userEmail &&  <SignUp />}
               </Route>
               <Route exact path="/signin">
-                {!userEmail &&  <SignIn />}
+                {!userEmail ?  <SignIn /> : <Redirect to="/"/>}
               </Route>
               {/* <div clasName="container">
               {routes.map(({path, Component}) => <Route key={path} exact path={path}>

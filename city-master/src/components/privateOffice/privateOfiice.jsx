@@ -8,7 +8,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import firebase from "../../firebase/firebase";
 import "firebase/storage";
 
-import { addLoading } from "../../redux/userSlice";
+import { addLoading, nullError } from "../../redux/userSlice";
 import { IconButton } from "@material-ui/core";
 import { fetchUserRemovePhoto } from "../../redux/userSliceFetches/fetchUserRemovePhoto";
 import { fetchUserAddPhotoURL } from "../../redux/userSliceFetches/fetchUserAddPhotoURL";
@@ -21,11 +21,11 @@ import { addLoader } from "../../redux/loaderSlice";
 
 export const PrivateOffice = () => {
   const { loader } = useLoaderContext();
-  console.log(loader)
+
   const { displayName } = useSelector((state) => state.user);
   const { userEmail } = useSelector((state) => state.user);
-  const [email, setEmail] = useState(`${userEmail}`)
-  const [displayNameInput, setDisplayNameInput] = useState(`${displayName}`)
+  const [email, setEmail] = useState(userEmail)
+  const [displayNameInput, setDisplayNameInput] = useState(displayName)
   const [password, setPassword] = useState('')
   const [emailBoolean, setEmailBoolean] = useState(false)
   const [displayNameBoolean, setDisplayNameBoolean] = useState(false)
@@ -42,7 +42,17 @@ export const PrivateOffice = () => {
   }, [photoURL, userEmail]);
 
   useSelector((state) => state.user);
+  const { error } = useSelector((state) => state.user);
 
+
+  useEffect(() => {
+    setErrorMessage(error)
+  }, [error])
+
+
+  useEffect(() => {
+    dispatch(nullError())
+  }, [dispatch])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -82,7 +92,7 @@ export const PrivateOffice = () => {
 
   return (
     <>
-    {loader && <Loader />} <div className={style.container}>
+    {loader ? <Loader /> : <div className={style.container}>
         <div className={style.wrapper}>
           {file && (
             <div
@@ -112,7 +122,7 @@ export const PrivateOffice = () => {
                     component="span"
                     type="submit"
                   >
-                    <AddAPhotoIcon />
+                    <div className={style.photoIcon}><AddAPhotoIcon /></div>
                   </IconButton>
                 </label>
               </form>
@@ -125,12 +135,12 @@ export const PrivateOffice = () => {
         </div>
         <div className={style.content}>
           <div className={style.info}>
-            <h1>{displayName}&nbsp;</h1><div className={style.editIcon}><EditIcon onClick={() => {
+            <h1>{displayName ? displayName : "Без имени"}&nbsp;</h1><div className={style.editIcon}><EditIcon onClick={() => {
               setDisplayNameBoolean((prev) => !prev)
               setEmailBoolean(false)
             }}/></div>
             <div className={displayNameBoolean ? style.show : style.hide}>
-            <input className={style.input} placeholder="Электронная почта" type="text" value={displayNameInput} onChange={(e) => {
+            <input className={style.input} placeholder="Ваше имя" type="text" value={displayNameInput} onChange={(e) => {
               setDisplayNameInput(e.target.value)
             }}/>
             </div>
@@ -153,26 +163,20 @@ export const PrivateOffice = () => {
             <input className={style.input} placeholder="Подтвердите пароль" type="password" value={password} onChange={(e) => {
               setPassword(e.target.value)
             }}/>
-            <span className={style.errors}>{!errorMessage && "для изменения почты требуется ваш пароль"}</span>
+            <p className={style.errors}>{!errorMessage ? "для изменения почты требуется ваш пароль" : errorMessage}</p>
             </div>
           
           {emailBoolean || displayNameBoolean ? <div className={style.btnWrap}><div className={style.righted}><Button text="Cохранить" click={
             async() => {
               if (emailBoolean){
-                try {
+
                   if (userEmail === email){
                     return setErrorMessage('Вы не можете ввести такую же электронную почту');
                   }
-                  dispatch(fetchUserEditEmail(userEmail, password, email))
-                  setEmailBoolean(false)
-                } catch(error) {
-                  console.log(error)
-                  error.code === "auth/wrong-password" && setErrorMessage('Неверный пароль');
-                  error.code === "auth/user-not-found" && setErrorMessage('Пользователя с таким электронным адресом не существует')
-                  error.code === "auth/too-many-requests" && setErrorMessage('слишком много запросов')
-                  // onFinishFailed(error)
-                }
-                setPassword('')
+                  dispatch(fetchUserEditEmail({userEmail, password, email}))
+                  !errorMessage && setEmailBoolean(false)
+
+                  setPassword('')
               } else if(displayNameBoolean){
                 try {
                   if (!displayNameInput) {
@@ -191,7 +195,7 @@ export const PrivateOffice = () => {
           }></Button></div></div>  : <div></div>}
 
         </div>
-      </div>
+      </div>}
 
     </>
   );

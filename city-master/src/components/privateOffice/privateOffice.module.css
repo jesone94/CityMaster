@@ -26,6 +26,7 @@
   width: 100%;
   display: flex;
   flex-flow: row wrap;
+  margin-top: 10px;
 }
 .righted {
   flex-grow: 0;
@@ -33,7 +34,7 @@
   margin-left: auto;
 }
 .content {
-  margin: 0 0 0 50px;
+  margin: 0 0 50px 50px;
   height: auto;
 }
 .avatar {
@@ -55,7 +56,17 @@
   flex-direction: row;
   align-items: center;
 }
-/* #9A764E */
+
+.photoIcon {
+  transform: scale(4);
+}
+
+.errors {
+  color:#9A764E;
+  font-size: 18px;
+  animation: errors forwards .6s ease-in;
+}
+
 .btnSmall{
   position: relative;
   top: 20px;
@@ -126,5 +137,8 @@
   }
   .btnSmall {
     transform: scale(1.5);
+  }
+  .content {
+    margin: 0 0 50px 0;
   }
 }

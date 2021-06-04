@@ -16,6 +16,7 @@
   background-color: white;
   border-radius: 5px;
   animation: show-modal 800ms forwards ease-in-out;
+  max-width: 480px;
 }
 
 @keyframes show-modal {
@@ -42,6 +43,7 @@
   align-items: center;
 }
 .btnWrapFrom {
+  margin-top: 15px;
   width: 100%;
   display: flex;
   flex-flow: row wrap;
@@ -69,8 +71,6 @@ a {
     transform: scale(1);
   }
 }
-
-
 
 
 input {
