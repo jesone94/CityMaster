@@ -14,6 +14,7 @@ import { PrivateOffice } from './components/privateOffice/privateOfiice';
 import { CSSTransition } from 'react-transition-group';
 import { fetchUser } from './redux/userSliceFetches/fetchUserStart';
 import LoaderContextProvider from './context/LoaderContext';
+import ModalContextProvider from './context/ModalChooseLocation';
 
 
 function App() {
@@ -33,7 +34,7 @@ function App() {
     <>
       {/* <AuthProvider> */}
       <LoaderContextProvider >
-       
+       <ModalContextProvider>
         <Router>
             <NavBar />
             <Switch>
@@ -69,6 +70,7 @@ function App() {
               </Route>
             </Switch>
           </Router>
+          </ModalContextProvider>
           </LoaderContextProvider>
         {/* </AuthProvider> */}
     </>

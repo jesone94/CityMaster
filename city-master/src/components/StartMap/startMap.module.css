@@ -1,9 +1,9 @@
 .mapContainer {
   height: 100vh;
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.4);
   top:0;
   left: 0;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,10 +11,12 @@
 }
 
 .modalContent {
+  position: absolute;
   padding: 20px;
   background-color: white;
   border-radius: 5px;
   animation: show-modal 800ms forwards ease-in-out; 
+  z-index: 10000000000000000;
 }
 @keyframes show-modal {
   0% {
@@ -28,4 +30,15 @@
   position: fixed;
   top: 0;
   left: 0;
+}
+.btnWrapFrom {
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+}
+.righted {
+  flex-grow: 0;
+  order: 100;
+  margin-left: auto;
 }

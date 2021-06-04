@@ -1,19 +1,19 @@
-import React, { Children, useEffect, useState } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { Children, useEffect, useState } from "react";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addGameCoodrs,
   fetchLocation,
   gameStartToggle,
   searchCoordsToggle,
-} from '../../redux/gameStatusSlice';
-import { Button } from '@material-ui/core';
-import style from './startMap.module.css';
-import { Spinner } from './Spinner';
+} from "../../redux/gameStatusSlice";
+import { Button } from "@material-ui/core";
+import style from "./startMap.module.css";
+import { Spinner } from "./Spinner";
 
 const containerStyle = {
-  width: '800px',
-  height: '600px',
+  width: "800px",
+  height: "600px",
 };
 
 let center = {
@@ -24,37 +24,61 @@ let center = {
 // console.log(navigator.geolocation.getCurrentPosition());
 
 export default function StartMap() {
-  const { location, coords, isGameStarted } = useSelector((state) => state.gameStatus);
+  const { location, coords, isGameStarted } = useSelector(
+    (state) => state.gameStatus
+  );
   const dispatch = useDispatch();
   let [markerPosition, setMarkerPosition] = useState({});
 
   return (
-    <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
+    <>
+      <div className={style.mapContainer}>
       {location && (
-        <Button
-          size='large'
-          variant='outlined'
-          color='primary'
-          onClick={() => {
-            dispatch(gameStartToggle());
+      
+          <div className={style.modalContent}>
+            <div
+              className={style.modalColumn}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={style.modalContent}>
+                <div className={style.modalColumn}>
+                  <label>{location}</label>
+                  <hr />
+                  <div className={style.btnWrapFrom}></div>
+                  <div className={style.righted}>
+                    <Button
+                      size="large"
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => {
+                        dispatch(gameStartToggle());
+                      }}
+                    >
+                      Выбрать
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+     
+      )}
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
+        
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={10}
+          onClick={(ev) => {
+            const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
+            setMarkerPosition(coords);
+            dispatch(fetchLocation(coords));
           }}
         >
-          Выбрать<br></br>
-          {location}
-        </Button>
-      )}
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-        onClick={(ev) => {
-          const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
-          setMarkerPosition(coords);
-          dispatch(fetchLocation(coords));
-        }}
-      >
-        <Marker position={markerPosition} />
-      </GoogleMap>
-    </LoadScript>
+          <Marker position={markerPosition} />
+        </GoogleMap>
+      </LoadScript>
+      </div>
+    </>
   );
 }
