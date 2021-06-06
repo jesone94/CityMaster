@@ -1,0 +1,37 @@
+/* 
+'entering'
+'entered'
+'exiting'
+'exited' */
+
+@keyframes logoutScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.logout-btn-enter-active {
+  animation: logout-button 400ms forwards;
+}
+
+.logout-btn-exit-active {
+  animation: logout-button 400ms alternate-reverse;
+}
+@keyframes logout-button {
+  0% {
+    opacity: 0;
+    transform: translateX(300px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+

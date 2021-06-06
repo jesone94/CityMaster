@@ -9,8 +9,7 @@ import {
   searchCoordsToggle,
 } from "../../redux/gameStatusSlice";
 import style from "./startMap.module.css";
-import { Spinner } from "./Spinner";
-import { Button } from "../button/Button";
+import { Button } from '../button/Button'
 import { CSSTransition } from "react-transition-group";
 import './location.css'
 

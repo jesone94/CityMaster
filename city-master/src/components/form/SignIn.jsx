@@ -1,13 +1,10 @@
-import firebase from "../../firebase/firebase";
 import React, { useEffect, useState } from "react";
 import { Button } from "../button/Button";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import style from "./form.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser, nullError } from "../../redux/userSlice";
-import { useHistory, useLocation } from "react-router";
+import { nullError } from "../../redux/userSlice";
 import { Link } from "react-router-dom";
-import { CSSTransition } from "react-transition-group";
 import { useLoaderContext } from "../../context/LoaderContext";
 import { Loader } from "../loader/Loader";
 import { fetchUserSignIn } from "../../redux/userSliceFetches/fetchUserSignIn";
@@ -24,10 +21,7 @@ const SignIn = () => {
 
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const {
-    handleSubmit,
-    register,
-  } = useForm();
+  const { handleSubmit, register } = useForm();
 
   const { userEmail } = useSelector((state) => state.user);
   const { error } = useSelector((state) => state.user);

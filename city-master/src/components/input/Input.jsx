@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import style from './input.module.css'
+
 
 export const Input = ({placeholder, type, label}) => {
-  const [labelParams, setlabelParams] = useState(false)
+
   const [input, setInput] = useState('')
   return (
     <>
