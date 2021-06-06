@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./navBar.css";
 import { Link, NavLink } from "react-router-dom";
 import { ButtonClose } from "../buttonClose/buttonClose";
@@ -18,8 +18,23 @@ export default function ScrollableTabsButtonPrevent() {
   const [toggler, setToggler] = useState(false);
   const dispatch = useDispatch();
   const { userEmail } = useSelector((state) => state.user);
-
+  
   const [togglerMenu, setTogglerMenu] = useState(false);
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
+
+  useEffect(() => {
+    setWindowSize(window.innerWidth);
+    windowSize > 1000 && setTogglerMenu(true)
+  }, [setWindowSize, windowSize]);
+
+  const handleWindowResize = useCallback(event => {
+    setWindowSize(window.innerWidth);
+  }, []); 
+
+
+useEffect(() => {
+  window.addEventListener('resize', handleWindowResize);
+}, [handleWindowResize]);
 
   return (
     <>
