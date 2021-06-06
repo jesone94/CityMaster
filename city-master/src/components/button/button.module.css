@@ -19,12 +19,14 @@
 	touch-action: manipulation;  
 	vertical-align: top;
 	transition: box-shadow 0.2s;
+  animation: btn 200ms ease-in-out;
 }
 
 .btn:hover {
 	transition: all 0.2s;
 	box-shadow: 0 7px 14px rgb(65 132 144 / 30%), 0 3px 6px rgb(0 0 0 / 28%);
 }
+
 .btn:active {
 	background-color:#5e4a34;
 }
@@ -46,5 +48,13 @@
     line-height: 46px;
     font-size: 40px;
     font-weight: 600;
+  }
+}
+@keyframes btn {
+  0% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
   }
 }

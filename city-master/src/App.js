@@ -46,14 +46,14 @@ function App() {
           <Router>
             <NavBar />
             <Switch>
-              {/* <PrivateRoute exact path="/" component={Main} /> */}
+              <PrivateRoute exact path="/" component={Main} />
               <Route exact path="/signup">
-                {!userEmail ? <SignUp /> : <Redirect to='/' />}
+                {!userEmail ? <SignUp /> : <Redirect to="/" />}
               </Route>
               <Route exact path="/signin">
                 {!userEmail ? <SignIn /> : <Redirect to="/" />}
               </Route>
-              <div clasName="container">
+              {/* <div clasName="container">
               {routes.map(({path, Component}) => <Route key={path} exact path={path}>
                 {({match}) => 
                     <CSSTransition
@@ -68,12 +68,12 @@ function App() {
                   </CSSTransition>
                 }
               </Route>)}
-              </div>
-              {/* <PrivateRoute
+              </div> */}
+              <PrivateRoute
                 exact
                 path="/private-office"
                 component={PrivateOffice}
-              /> */}
+              />
               <Route exact path="/fade"></Route>
               <Route exact path="/"></Route>
             </Switch>

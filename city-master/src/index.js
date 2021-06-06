@@ -24,7 +24,7 @@ const store = configureStore({
   reducer: rootReducer,
   middleware: middleware,
 });
-// console.log(store.getState());
+
 // store.subscribe(() => {
 //   console.log('=== сработала подписка ===');
 //   console.log(store.getState());

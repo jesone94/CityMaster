@@ -1,7 +1,6 @@
 import { CSSTransition } from "react-transition-group";
 import "./spinner.css";
 import { useLoaderContext } from "../../context/LoaderContext";
-import StartMap from "./StartMap";
 
 export const Spinner = () => {
  
