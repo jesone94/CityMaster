@@ -8,27 +8,32 @@ import EditIcon from "@material-ui/icons/Edit";
 import firebase from "../../firebase/firebase";
 import "firebase/storage";
 
-import { nullError, addPhotoLoading } from "../../redux/userSlice";
+import { nullError, addPhotoLoading, addLoading } from "../../redux/userSlice";
 import { IconButton } from "@material-ui/core";
 import { fetchUserRemovePhoto } from "../../redux/userSliceFetches/fetchUserRemovePhoto";
 import { fetchUserAddPhotoURL } from "../../redux/userSliceFetches/fetchUserAddPhotoURL";
-import { Loader } from "../loader/Loader";
+
 import { fetchUserEditEmail } from "../../redux/userSliceFetches/fetchUserEditEmail";
 import { fetchUserDisplayName } from "../../redux/userSliceFetches/fetchUserDisplayName";
 import { useLoaderContext } from "../../context/LoaderContext";
 import "./gridOfiice.css";
 import { Link } from "react-router-dom";
 import { fetchUserEditPassword } from "../../redux/userSliceFetches/fetchUserEditPassword";
-import { MiniLoader } from "../button/Mini-loader";
-import { MiniLoaderM, MiniLoader_M } from "../button/Mini-loaderM";
+
+import { MiniLoaderM } from "../button/Mini-loaderM";
+import { addFileName, addScore } from "../../redux/database/firebaseDatabse";
+import { addLoader } from "../../redux/loaderSlice";
 
 export const PrivateOffice = () => {
   const { loader, photoLoader } = useLoaderContext();
 
   const { displayName } = useSelector((state) => state.user);
   const { userEmail } = useSelector((state) => state.user);
+  const { uid } = useSelector((state) => state.user);
+  const { photoURL } = useSelector((state) => state.user);
+
   const [email, setEmail] = useState(userEmail);
-  const [displayNameInput, setDisplayNameInput] = useState(displayName);
+  const [displayNameInput, setDisplayNameInput] = useState(`${displayName}`);
   const [editPasswordBoolean, setEditPasswordBoolean] = useState(false);
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -38,9 +43,6 @@ export const PrivateOffice = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const dispatch = useDispatch();
-
-  const { uid } = useSelector((state) => state.user);
-  const { photoURL } = useSelector((state) => state.user);
 
   useEffect(() => {
     setFile(photoURL);
@@ -76,6 +78,7 @@ export const PrivateOffice = () => {
   const upload = async (file) => {
     const ref = firebase.storage().ref(`avatars/${uid}/${file.name}`);
     const task = ref.put(file);
+    addFileName(uid, file.name)
     task.on(
       "state_changed",
       async (snapshot) => {},
@@ -98,7 +101,7 @@ export const PrivateOffice = () => {
       {/* {loader ? (
         <Loader />
       ) : ( */}
-      <div className="gridBody">
+      <div className="gridBody" >
         <div className="gridItem gridItem1">
           <div>
             {file && (
@@ -106,8 +109,8 @@ export const PrivateOffice = () => {
                 className={style.btnSmall}
                 onClick={async (e) => {
                   e.stopPropagation();
-                  setFile("");
-                  dispatch(fetchUserRemovePhoto());
+                  dispatch(addPhotoLoading());
+                  dispatch(fetchUserRemovePhoto({uid}));
                 }}
               ></div>
             )}
@@ -130,9 +133,7 @@ export const PrivateOffice = () => {
                       type="submit"
                     >
                       <div className={style.photoIcon}>
-                        <AddAPhotoIcon 
-                          style={{ color: "#fff" }} 
-                        />
+                        <AddAPhotoIcon style={{ color: "#fff" }} />
                       </div>
                     </IconButton>
                   </label>
@@ -141,7 +142,9 @@ export const PrivateOffice = () => {
             ) : (
               <div>
                 {photoLoader ? (
-                  <div className={style.uloadDiv}><MiniLoaderM /></div>
+                  <div className={style.uloadDiv}>
+                    <MiniLoaderM />
+                  </div>
                 ) : (
                   <img className={style.avatar} alt="не найдено" src={file} />
                 )}
@@ -272,6 +275,7 @@ export const PrivateOffice = () => {
                         if (password === "") {
                           return setErrorMessage("Поле не может быть пустым");
                         }
+                        dispatch(addLoading())
                         dispatch(
                           fetchUserEditEmail({ userEmail, password, email })
                         );
@@ -286,7 +290,8 @@ export const PrivateOffice = () => {
                           if (displayNameInput === displayName) {
                             return setErrorMessage("Вы не внесли изменений");
                           }
-                          dispatch(fetchUserDisplayName(displayNameInput));
+                          dispatch(addLoading())
+                          dispatch(fetchUserDisplayName({uid, displayNameInput}));
                         } catch (e) {
                           console.log(e);
                         }
@@ -295,6 +300,7 @@ export const PrivateOffice = () => {
                         if (password === newPassword) {
                           return setErrorMessage("Пароли не могут совпадать");
                         }
+                        dispatch(addLoading())
                         dispatch(
                           fetchUserEditPassword({
                             userEmail,
@@ -302,6 +308,7 @@ export const PrivateOffice = () => {
                             newPassword,
                           })
                         );
+                        !error && setEditPasswordBoolean(false)
                       }
                     }}
                   />

@@ -1,36 +1,73 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import "./navBar.css";
 import { Link, NavLink } from "react-router-dom";
-
+import { ButtonClose } from "../buttonClose/buttonClose";
 import { useDispatch, useSelector } from "react-redux";
 import style from "./navbar.module.css";
 import firebase from "../../firebase/firebase";
 import { removeUser } from "../../redux/userSlice";
 import "./logout.css";
-import { CSSTransition, SwitchTransition } from "react-transition-group";
+import {
+  CSSTransition,
+  SwitchTransition,
+  TransitionGroup,
+} from "react-transition-group";
 import { Button } from "../button/Button";
 
 export default function ScrollableTabsButtonPrevent() {
   const [toggler, setToggler] = useState(false);
   const dispatch = useDispatch();
-
   const { userEmail } = useSelector((state) => state.user);
+
+  const [togglerMenu, setTogglerMenu] = useState(false);
 
   return (
     <>
       <ul>
         <li>
-          <NavLink to="/">На главную</NavLink>
+          <div className={style.itemWrapper}>
+            <ButtonClose
+              click={() => setTogglerMenu((prev) => !prev)}
+            ></ButtonClose>
+          </div>
+        </li>
+        <li>
+          <CSSTransition
+            in={togglerMenu}
+            timeout={400}
+            classNames="navBar"
+            mountOnEnter
+            unmountOnExit
+          >
+            <NavLink to="/">На главную</NavLink>
+          </CSSTransition>
         </li>
         {userEmail && (
           <li>
-            <NavLink to="/private-office">Личный кабинет</NavLink>
+            <CSSTransition
+              in={togglerMenu}
+              timeout={400}
+              classNames="navBar"
+              mountOnEnter
+              unmountOnExit
+            >
+              <NavLink to="/private-office">Личный кабинет</NavLink>
+            </CSSTransition>
           </li>
         )}
         {/* {!userEmail && <li><Link to="/signin">Войти</Link ></li>}
         {!userEmail && <li><Link to="/signup">Зарегистрироваться</Link ></li>} */}
-
+        {/* </CSSTransition>
+        </TransitionGroup > */}
+        
         <li className={style.righted}>
+        <CSSTransition
+              in={togglerMenu}
+              timeout={400}
+              classNames="navBar"
+              mountOnEnter
+              unmountOnExit
+            >
           <SwitchTransition mode="out-in">
             <CSSTransition key={toggler} timeout={400} classNames="logout-btn">
               {!toggler ? (
@@ -66,6 +103,7 @@ export default function ScrollableTabsButtonPrevent() {
               )}
             </CSSTransition>
           </SwitchTransition>
+          </CSSTransition>
         </li>
       </ul>
     </>

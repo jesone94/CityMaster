@@ -1,2 +1,2 @@
 https://material-ui.com/ru/getting-started/templates/ 
-https://dev.to/wseai/firebase-auth-with-react-la0
+https://dev.to/wseai/firebase-auth-with-react-la0 
