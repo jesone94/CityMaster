@@ -1,0 +1,70 @@
+.menuIcon {
+  position: relative;
+  width: 30px;
+  height: 5px;
+  background-color: white;
+}
+.menuIconWrapper {
+  cursor: pointer;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+.menuIconWrapper:hover {
+  background-color: #111;
+}
+.menuIcon::before {
+  position: absolute;
+  left: 0;
+  top: -10px;
+  content: "";
+  display: block;
+  width: 30px;
+  height: 5px;
+  background-color: rgb(255, 255, 255);
+  transition: transform 0.2s ease-in, top 0.2s linear 0.2s;
+}
+.menuIcon::after {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  content: "";
+  display: block;
+  width: 30px;
+  height: 5px;
+  background-color: rgb(255, 255, 255);
+  transition: transform 0.2s ease-in, top 0.2s linear 0.2s;
+}
+.menuIconActive {
+  background-color: transparent;
+}
+.menuIconActive::before {
+  position: relative;
+  display: block;
+  content: "";
+  display: block;
+  width: 30px;
+  height: 5px;
+  background-color: rgb(255, 255, 255);
+  transform: rotate(45deg);
+  top: 0;
+  transition: top 0.2s linear, transform 0.2s ease-in 0.2s;
+}
+.menuIconActive::after {
+  margin-top: -5px;
+  position: relative;
+  content: "";
+  display: block;
+  width: 30px;
+  height: 5px;
+  background-color: rgb(255, 255, 255);
+  transform: rotate(-45deg);
+  top: 0;
+  transition: top 0.2s linear, transform 0.2s ease-in 0.2s;
+}
+.inner {
+  position: absolute;
+}

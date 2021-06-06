@@ -4,7 +4,6 @@ import firebase from "../../firebase/firebase";
 export const fetchUserEditPassword = createAsyncThunk(
   "user/fetchUserEditPassword",
   async ({ userEmail, password, newPassword }) => {
-    console.log(userEmail, "старый пароль -", password, newPassword);
     // try {
     //   return new Promise((resolve, reject) => {
     //     firebase

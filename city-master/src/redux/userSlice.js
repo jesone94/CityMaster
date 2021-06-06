@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchUser } from './userSliceFetches/fetchUserStart';
-import { fetchUserRemovePhoto } from './userSliceFetches/fetchUserRemovePhoto'
+import { fetchUser } from "./userSliceFetches/fetchUserStart";
+import { fetchUserRemovePhoto } from "./userSliceFetches/fetchUserRemovePhoto";
 import { fetchUserAddPhotoURL } from "./userSliceFetches/fetchUserAddPhotoURL";
 import { fetchUserEditEmail } from "./userSliceFetches/fetchUserEditEmail";
 import { fetchUserDisplayName } from "./userSliceFetches/fetchUserDisplayName";
 import { fetchUserSignIn } from "./userSliceFetches/fetchUserSignIn";
 import { fetchUserSignUp } from "./userSliceFetches/fetchUserSignUp";
-import { fetchUserEditPassword } from "./userSliceFetches/fetchUserEditPassword"
+import { fetchUserEditPassword } from "./userSliceFetches/fetchUserEditPassword";
 
 const userSlice = createSlice({
   name: "user",
@@ -46,12 +46,15 @@ const userSlice = createSlice({
     addPhotoLoading(state) {
       state.photoLoading = true;
     },
+    removePhotoLoading(state) {
+      state.photoLoading = false;
+    },
     removeLoading(state) {
       state.loading = false;
     },
-    nullError(state){
+    nullError(state) {
       state.error = null;
-    }
+    },
   },
   extraReducers: {
     // Add reducers for additional action types here, and handle loading state as needed
@@ -73,28 +76,27 @@ const userSlice = createSlice({
     },
     [fetchUserRemovePhoto.fulfilled]: (state) => {
       state.photoURL = null;
+      state.photoLoading = false;
     },
     [fetchUserAddPhotoURL.pending]: (state, action) => {
-      console.log('pending photo')
       state.photoLoading = true;
     },
     [fetchUserAddPhotoURL.fulfilled]: (state, action) => {
-      console.log('fullified photo')
       state.photoLoading = false;
       state.photoURL = action.payload;
     },
-    [fetchUserAddPhotoURL.rejected]: (state, {error}) => {
-      state.error = error.message
+    [fetchUserAddPhotoURL.rejected]: (state, { error }) => {
+      state.error = error.message;
       state.photoLoading = false;
     },
     [fetchUserEditEmail.pending]: (state, action) => {
       state.loading = true;
     },
     [fetchUserEditEmail.fulfilled]: (state, action) => {
-      state.loading = false
+      state.loading = false;
       state.userEmail = action.payload;
     },
-    [fetchUserEditEmail.rejected]: (state, {error}) => {
+    [fetchUserEditEmail.rejected]: (state, { error }) => {
       state.loading = false;
       state.error = error.message;
     },
@@ -113,7 +115,7 @@ const userSlice = createSlice({
       state.loading = false;
     },
     [fetchUserSignIn.rejected]: (state, { meta, payload, error }) => {
-      state.error = error.message
+      state.error = error.message;
       state.loading = false;
     },
     [fetchUserSignUp.pending]: (state) => {
@@ -133,17 +135,26 @@ const userSlice = createSlice({
     [fetchUserEditPassword.pending]: (state) => {
       state.loading = true;
     },
-    [fetchUserEditPassword.fulfilled]: (state) => {
+    [fetchUserEditPassword.fulfilled]: (state, payload) => {
       state.error = "";
       state.loading = false;
     },
-    [fetchUserEditPassword.rejected]: (state, {error}) => {
+    [fetchUserEditPassword.rejected]: (state, { error }) => {
       state.loading = false;
       state.error = error.message;
-    }
+    },
   },
 });
 
 export default userSlice;
-export const { addUser, removeUser, addPhoto, removePhoto, addLoading, removeLoading, nullError, addPhotoLoading } =
-  userSlice.actions;
+export const {
+  addUser,
+  removeUser,
+  addPhoto,
+  removePhoto,
+  addLoading,
+  removeLoading,
+  nullError,
+  addPhotoLoading,
+  removePhotoLoading,
+} = userSlice.actions;

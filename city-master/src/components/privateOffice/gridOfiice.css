@@ -44,6 +44,6 @@
   }
   .pointer {
     transform: scale(2);
-    margin-left: 10px;
+    margin: 0 0 10px 10px;
   }
 }
