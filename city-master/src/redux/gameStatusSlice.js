@@ -18,6 +18,8 @@ export const gameStatusSlice = createSlice({
     searchCoords: {},
     currentImgUrl: '',
     currentImgCoords: {},
+    answerCoords: {},
+    answerDistance: 0,
   },
   reducers: {
     nullLocation(state) {
@@ -34,6 +36,12 @@ export const gameStatusSlice = createSlice({
       state.currentImgUrl = url;
       state.currentImgCoords = payload;
     },
+    toggleDistance(state, { payload }) {
+      state.answerDistance = payload;
+    },
+    toggleAnswerCoords(state, { payload }) {
+      state.answerCoords = payload;
+    },
   },
   extraReducers: {
     [fetchLocation.pending]: (state) => {
@@ -45,4 +53,11 @@ export const gameStatusSlice = createSlice({
   },
 });
 
-export const { gameStartToggle, searchCoordsToggle, toggleCurrentImg, nullLocation } = gameStatusSlice.actions;
+export const {
+  gameStartToggle,
+  searchCoordsToggle,
+  toggleCurrentImg,
+  nullLocation,
+  toggleDistance,
+  toggleAnswerCoords,
+} = gameStatusSlice.actions;
