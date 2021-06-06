@@ -18,9 +18,11 @@ export default function ScrollableTabsButtonPrevent() {
   const [toggler, setToggler] = useState(false);
   const dispatch = useDispatch();
   const { userEmail } = useSelector((state) => state.user);
-
+  
   const [togglerMenu, setTogglerMenu] = useState(false);
-
+  useEffect(() => {
+    window.innerWidth > 1000 && setTogglerMenu(true)
+  }, [])
   return (
     <>
       <ul>
