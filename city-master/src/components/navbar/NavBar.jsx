@@ -23,7 +23,6 @@ export default function ScrollableTabsButtonPrevent() {
   const [windowSize, setWindowSize] = useState(window.innerWidth);
 
   useEffect(() => {
-    setWindowSize(window.innerWidth);
     windowSize > 1000 && setTogglerMenu(true)
   }, [setWindowSize, windowSize]);
 
@@ -42,6 +41,7 @@ useEffect(() => {
         <li>
           <div className={style.itemWrapper}>
             <ButtonClose
+              booleanToggle={!togglerMenu}
               click={() => setTogglerMenu((prev) => !prev)}
             ></ButtonClose>
           </div>
