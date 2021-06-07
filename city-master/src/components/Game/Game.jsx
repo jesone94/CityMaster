@@ -1,8 +1,16 @@
-import { GoogleMap, LoadScript, Marker, Polyline } from '@react-google-maps/api';
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  Polyline,
+  StreetViewPanorama,
+} from '@react-google-maps/api';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import {
+  clearCurrentImgUrl,
+  resetGameStatus,
   searchCoordsToggle,
   toggleAnswerCoords,
   toggleCurrentImg,
@@ -13,9 +21,19 @@ import { Button } from '../button/Button';
 import './modalGame.css';
 import style from './game.module.css';
 import * as geokit from 'geokit';
+import { addScore, reducecore } from '../../redux/database/firebaseDatabse';
+import { Loader } from '../loader/Loader';
 
 export default function Game() {
-  // const [answerCoords, setAnswerCoords] = useState({});
+  const panoramaOptions = {
+    addressControl: false,
+    motionTrackingControl: false,
+    linksControl: false,
+    enableCloseButton: false,
+    showRoadLabels: false,
+    clickToGo: false,
+    disableDefaultUI: true,
+  };
   const options = {
     strokeColor: '#FF0000',
     strokeOpacity: 0.8,
@@ -36,6 +54,7 @@ export default function Game() {
   };
 
   const state = useSelector((state) => state.gameStatus);
+  const { uid } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const { coords, searchCoords, currentImgUrl, currentImgCoords, answerDistance, answerCoords } =
@@ -107,33 +126,75 @@ export default function Game() {
                 <Button
                   text='Продолжить'
                   click={() => {
+                    if (answerDistance <= 1) {
+                      addScore(uid, 150);
+                      console.log('+');
+                    } else if (answerDistance > 1 && answerDistance <= 3) {
+                      addScore(uid, 100);
+                    } else if (answerDistance > 3 && answerDistance <= 7) {
+                      addScore(uid, 50);
+                    } else if (answerDistance > 7 && answerDistance <= 10) {
+                      addScore(uid, 0);
+                    } else {
+                      console.log('минус');
+                      addScore(uid, -75);
+                    }
+
                     dispatch(searchCoordsToggle(cordsRandomazer(coords)));
                     dispatch(toggleDistance(0));
+                    dispatch(toggleAnswerCoords(null));
+                    dispatch(clearCurrentImgUrl());
                     setToggler(false);
-                    dispatch(toggleAnswerCoords({}));
                   }}
                 ></Button>
               </div>
             </div>
           </div>
         </CSSTransition>
-        <div>
-          <img src={currentImgUrl}></img>
-        </div>
-        <div className={style.btnThisIsLocation}>
-          <Button
-            text='Это здесь!'
-            click={() => {
-              dispatch(toggleDistance(geokit.distance(currentImgCoords, answerCoords)));
-              setToggler((prev) => !prev);
-            }}
-          />
-        </div>
+
         <div>
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={coords}
             zoom={10}
+            streetView={false}
+            onClick={(ev) => {
+              if (!toggler) {
+                const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
+                dispatch(toggleAnswerCoords(coords));
+              }
+            }}
+          >
+            <StreetViewPanorama
+              position={currentImgCoords}
+              visible={true}
+              options={panoramaOptions}
+            />
+          </GoogleMap>
+        </div>
+        <div className={style.btnThisIsLocation}>
+          {answerCoords && (
+            <Button
+              text='Это здесь!'
+              click={() => {
+                dispatch(toggleDistance(geokit.distance(currentImgCoords, answerCoords)));
+                setToggler((prev) => !prev);
+              }}
+            />
+          )}
+        </div>
+        <Button
+          text={'Сменить локацию'}
+          click={() => {
+            dispatch(resetGameStatus());
+          }}
+        />
+        <div>
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={coords}
+            zoom={10}
+            streetView={false}
             onClick={(ev) => {
               if (!toggler) {
                 const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
