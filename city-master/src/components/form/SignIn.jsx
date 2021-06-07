@@ -3,7 +3,7 @@ import { Button } from "../button/Button";
 import { useForm } from "react-hook-form";
 import style from "./form.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { nullError } from "../../redux/userSlice";
+import { nullErrorAndStatus } from "../../redux/userSlice";
 import { Link } from "react-router-dom";
 import { useLoaderContext } from "../../context/LoaderContext";
 import { Loader } from "../loader/Loader";
@@ -21,7 +21,11 @@ const SignIn = () => {
 
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const { handleSubmit, register } = useForm();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
 
   const { userEmail } = useSelector((state) => state.user);
   const { error } = useSelector((state) => state.user);
@@ -33,7 +37,7 @@ const SignIn = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(nullError());
+    dispatch(nullErrorAndStatus());
   }, [dispatch]);
 
   const onSubmit = async (data) => {
@@ -57,17 +61,34 @@ const SignIn = () => {
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                       <label>Электронная почта *</label>
+                      <span className={style.errors}>
+                        {errors.email?.type === "required" &&
+                          " Обязательно для заполнения"}
+                      </span>
+                      <span className={style.errors}>
+                        {errors.email?.type === "pattern" &&
+                          " Не соответствует формату электронной почты"}
+                      </span>
                       <input
                         placeholder="Электронная почта *"
                         type="text"
-                        {...register("email")}
+                        {...register("email", {
+                          required: true,
+                          pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/gi,
+                        })}
                       />
                       <div></div>
                       <label>Пароль *</label>
+                      <span className={style.errors}>
+                        {errors.password?.type === "required" &&
+                          " Обязательно для заполнения"}
+                        {errors.password?.type === "minLength" &&
+                          " Пароль должен быть длиннее 6 символов"}
+                      </span>
                       <input
                         placeholder="Пароль *"
                         type="password"
-                        {...register("password")}
+                        {...register("password", { required: true, minLength: 6 })}
                       />
                       <p className={style.errors}>{errorMessage}</p>
                     </div>

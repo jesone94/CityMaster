@@ -18,6 +18,7 @@ export const fetchUserEditEmail = createAsyncThunk("user/fetchUserEditEmail", as
   // } catch (error) {
   //   new Error(error);
   // }
+
   try {
     return new Promise((resolve, reject) => {
       firebase.auth()
@@ -26,13 +27,11 @@ export const fetchUserEditEmail = createAsyncThunk("user/fetchUserEditEmail", as
           
           userCredential.user.updateEmail(email)
           resolve(email)
-        }, 
-        (err) => {
-          reject(err);
-        })
+        },)
+        .catch((e) => reject(e))
     }).then((email) => {
       return email
-    });
+    })
   } catch (error) {
     throw new Error(error);
   }

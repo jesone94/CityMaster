@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, ButtonLoader } from "../button/Button";
+import { Button, ButtonLoader, ButtonCls } from "../button/Button";
 import style from "./privateOffice.module.css";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 
@@ -8,7 +8,11 @@ import EditIcon from "@material-ui/icons/Edit";
 import firebase from "../../firebase/firebase";
 import "firebase/storage";
 
-import { nullError, addPhotoLoading, addLoading } from "../../redux/userSlice";
+import {
+  addPhotoLoading,
+  addLoading,
+  nullErrorAndStatus,
+} from "../../redux/userSlice";
 import { IconButton } from "@material-ui/core";
 import { fetchUserRemovePhoto } from "../../redux/userSliceFetches/fetchUserRemovePhoto";
 import { fetchUserAddPhotoURL } from "../../redux/userSliceFetches/fetchUserAddPhotoURL";
@@ -27,20 +31,23 @@ import { addLoader } from "../../redux/loaderSlice";
 export const PrivateOffice = () => {
   const { loader, photoLoader } = useLoaderContext();
 
+  const { error } = useSelector((state) => state.user);
   const { displayName } = useSelector((state) => state.user);
   const { userEmail } = useSelector((state) => state.user);
   const { uid } = useSelector((state) => state.user);
   const { photoURL } = useSelector((state) => state.user);
+  const { editStatus } = useSelector((state) => state.user);
 
   const [email, setEmail] = useState(userEmail);
   const [displayNameInput, setDisplayNameInput] = useState(`${displayName}`);
   const [editPasswordBoolean, setEditPasswordBoolean] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [emailBoolean, setEmailBoolean] = useState(false);
   const [displayNameBoolean, setDisplayNameBoolean] = useState(false);
   const [file, setFile] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(error);
 
   const dispatch = useDispatch();
 
@@ -49,15 +56,15 @@ export const PrivateOffice = () => {
   }, [photoURL, userEmail]);
 
   useSelector((state) => state.user);
-  const { error } = useSelector((state) => state.user);
 
   useEffect(() => {
+    editStatus && setErrorMessage("Успешно");
     setErrorMessage(error);
-  }, [error]);
+  }, [error, editStatus]);
 
-  useEffect(() => {
-    dispatch(nullError());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(nullErrorAndStatus());
+  // }, [dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -78,7 +85,7 @@ export const PrivateOffice = () => {
   const upload = async (file) => {
     const ref = firebase.storage().ref(`avatars/${uid}/${file.name}`);
     const task = ref.put(file);
-    addFileName(uid, file.name)
+    addFileName(uid, file.name);
     task.on(
       "state_changed",
       async (snapshot) => {},
@@ -101,16 +108,17 @@ export const PrivateOffice = () => {
       {/* {loader ? (
         <Loader />
       ) : ( */}
-      <div className="gridBody" >
+      <div className="gridBody">
         <div className="gridItem gridItem1">
           <div>
             {file && (
               <div
                 className={style.btnSmall}
                 onClick={async (e) => {
+                  dispatch(nullErrorAndStatus());
                   e.stopPropagation();
                   dispatch(addPhotoLoading());
-                  dispatch(fetchUserRemovePhoto({uid}));
+                  dispatch(fetchUserRemovePhoto({ uid }));
                 }}
               ></div>
             )}
@@ -159,6 +167,7 @@ export const PrivateOffice = () => {
               <EditIcon
                 className="pointer"
                 onClick={() => {
+                  dispatch(nullErrorAndStatus());
                   setDisplayNameBoolean((prev) => !prev);
                   setEditPasswordBoolean(false);
                   setEmailBoolean(false);
@@ -172,6 +181,7 @@ export const PrivateOffice = () => {
               <EditIcon
                 className="pointer"
                 onClick={() => {
+                  dispatch(nullErrorAndStatus());
                   setEmailBoolean((prev) => !prev);
                   setDisplayNameBoolean(false);
                   setEditPasswordBoolean(false);
@@ -187,6 +197,7 @@ export const PrivateOffice = () => {
           <div className="subGridItem">
             <Link
               onClick={() => {
+                dispatch(nullErrorAndStatus());
                 setEditPasswordBoolean((prev) => !prev);
                 setDisplayNameBoolean(false);
                 setEmailBoolean(false);
@@ -200,7 +211,8 @@ export const PrivateOffice = () => {
           <h1>CONTENT</h1>
         </div>
         <div className="gridItem">
-          <div className={displayNameBoolean ? style.show : style.hide}>
+          {displayNameBoolean && <div className={style.show}>
+          <span>новое имя:</span>
             <input
               className={style.input}
               placeholder="Ваше имя"
@@ -210,19 +222,10 @@ export const PrivateOffice = () => {
                 setDisplayNameInput(e.target.value);
               }}
             />
-          </div>
-          <div className={editPasswordBoolean ? style.show : style.hide}>
-            <input
-              className={style.input}
-              placeholder="Ваш новый пароль"
-              type="password"
-              value={newPassword}
-              onChange={(e) => {
-                setNewPassword(e.target.value);
-              }}
-            />
-          </div>
-          <div className={emailBoolean ? style.show : style.hide}>
+            <p className={style.errors}>{errorMessage && errorMessage}</p>
+          </div>}
+          {emailBoolean && <div className={style.show}>
+          <span>новая электронная почта:</span>
             <input
               className={style.input}
               placeholder="Электронная почта"
@@ -232,38 +235,51 @@ export const PrivateOffice = () => {
                 setEmail(e.target.value);
               }}
             />
-          </div>
-          <div
-            className={
-              emailBoolean || editPasswordBoolean ? style.show : style.hide
-            }
-          >
+          </div>}
+          {emailBoolean && <div className={style.show}>
+            <span>для изменений требуется ваш пароль:</span>
             <input
               className={style.input}
-              placeholder={
-                emailBoolean
-                  ? "Подтвердите пароль"
-                  : "Введите ваш старый пароль"
-              }
+              placeholder="Подтвердите пароль"
               type="password"
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
             />
-            <p className={style.errors}>
-              {!errorMessage
-                ? emailBoolean
-                  ? "для изменения почты требуется ваш пароль"
-                  : "для потдверждения требуется старый пароль"
-                : errorMessage}
-            </p>
-          </div>
-          {emailBoolean || displayNameBoolean || editPasswordBoolean ? (
+            <p className={style.errors}>{errorMessage && errorMessage}</p>
+          </div>}
+          {editPasswordBoolean && <div className={style.show}>
+          <span>ваш новый пароль:</span>
+            <input
+              className={style.input}
+              placeholder="Ваш новый пароль"
+              type="password"
+              value={newPassword}
+              onChange={(e) => {
+                setNewPassword(e.target.value);
+              }}
+            />
+          </div>}
+
+          {editPasswordBoolean && <div className={style.show}>
+            <span>для изменений требуется ваш текущий пароль:</span>
+            <input
+              className={style.input}
+              placeholder="Подтвердите пароль"
+              type="password"
+              value={passwordInput}
+              onChange={(e) => {
+                setPasswordInput(e.target.value);
+              }}
+            />
+            <p className={style.errors}>{errorMessage && errorMessage}</p>
+          </div>}
+          {emailBoolean && (
             <div className={style.btnWrap}>
               <div className={style.righted}>
                 {!loader ? (
-                  <Button
+                  <><Button
                     text="Cохранить"
                     click={() => {
                       if (emailBoolean) {
@@ -275,50 +291,87 @@ export const PrivateOffice = () => {
                         if (password === "") {
                           return setErrorMessage("Поле не может быть пустым");
                         }
-                        dispatch(addLoading())
-                        dispatch(
-                          fetchUserEditEmail({ userEmail, password, email })
-                        );
-                        !errorMessage && setEmailBoolean(false);
-
-                        setPassword("");
-                      } else if (displayNameBoolean) {
                         try {
-                          if (!displayNameInput) {
-                            return setErrorMessage("Вы оставили поле пустым");
-                          }
-                          if (displayNameInput === displayName) {
-                            return setErrorMessage("Вы не внесли изменений");
-                          }
-                          dispatch(addLoading())
-                          dispatch(fetchUserDisplayName({uid, displayNameInput}));
+                          dispatch(addLoading());
+                          dispatch(
+                            fetchUserEditEmail({ userEmail, password, email })
+                          );
+                          setErrorMessage(null);
                         } catch (e) {
-                          console.log(e);
+                          setEmailBoolean(true);
                         }
-                        setDisplayNameBoolean(false);
-                      } else if (setEditPasswordBoolean) {
-                        if (password === newPassword) {
-                          return setErrorMessage("Пароли не могут совпадать");
-                        }
-                        dispatch(addLoading())
-                        dispatch(
-                          fetchUserEditPassword({
-                            userEmail,
-                            password,
-                            newPassword,
-                          })
-                        );
-                        !error && setEditPasswordBoolean(false)
+                        setPassword("");
                       }
                     }}
-                  />
+                  /><ButtonCls text="Закрыть" click={() => setEmailBoolean(false)}/></>
                 ) : (
                   <ButtonLoader />
                 )}
               </div>
             </div>
-          ) : (
-            <div></div>
+          )}
+          {displayNameBoolean && (
+            <div className={style.btnWrap}>
+              <div className={style.righted}>
+                {!loader ? (
+                 <> <Button
+                    text="Cохранить"
+                    click={() => {
+                      if (!displayNameInput) {
+                        return setErrorMessage("Вы оставили поле пустым");
+                      }
+                      if (displayNameInput === displayName) {
+                        return setErrorMessage("Вы не внесли изменений");
+                      }
+                      try {
+                        dispatch(addLoading());
+                        dispatch(
+                          fetchUserDisplayName({ uid, displayNameInput })
+                        );
+                        setDisplayNameBoolean(false);
+                      } catch (e) {
+                        console.log(e);
+                      }
+                    }}
+                  /><ButtonCls text="Закрыть" click={() => setDisplayNameBoolean(false)}/></>
+                ) : (
+                  <ButtonLoader />
+                )}
+              </div>
+            </div>
+          )}
+          {editPasswordBoolean && (
+            <div className={style.btnWrap}>
+              <div className={style.righted}>
+                {!loader ? (
+                 <> <Button
+                    text="Cохранить"
+                    click={() => {
+                      if (password === newPassword) {
+                        return setErrorMessage("Пароли не могут совпадать");
+                      }
+                      try {
+                        dispatch(addLoading());
+                        dispatch(
+                          fetchUserEditPassword({
+                            userEmail,
+                            passwordInput,
+                            newPassword,
+                          })
+                        );
+                        setErrorMessage(null);
+                        // errorMessage ? setEditPasswordBoolean(true) : setEditPasswordBoolean(false)
+                        // !errorMessage && setEditPasswordBoolean(false);
+                      } catch (e) {
+                        setEditPasswordBoolean(true);
+                      }
+                    }}
+                  /><ButtonCls text="Закрыть" click={() => setEditPasswordBoolean(false)}/></>
+                ) : (
+                  <ButtonLoader />
+                )}
+              </div>
+            </div>
           )}
         </div>
         <div className="gridItem">

@@ -13,40 +13,45 @@ import {
   TransitionGroup,
 } from "react-transition-group";
 import { Button } from "../button/Button";
-
+import logo from './logo.png'
 export default function ScrollableTabsButtonPrevent() {
   const [toggler, setToggler] = useState(false);
   const dispatch = useDispatch();
   const { userEmail } = useSelector((state) => state.user);
-  
+
   const [togglerMenu, setTogglerMenu] = useState(false);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
 
   useEffect(() => {
-    windowSize > 1000 && setTogglerMenu(true)
+    windowSize > 1000 && setTogglerMenu(true);
   }, [setWindowSize, windowSize]);
 
-  const handleWindowResize = useCallback(event => {
+  const handleWindowResize = useCallback((event) => {
     setWindowSize(window.innerWidth);
-  }, []); 
+  }, []);
 
-
-useEffect(() => {
-  window.addEventListener('resize', handleWindowResize);
-}, [handleWindowResize]);
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+  }, [handleWindowResize]);
 
   return (
     <>
-      <ul>
-        <li>
-          <div className={style.itemWrapper}>
-            <ButtonClose
-              booleanToggle={!togglerMenu}
-              click={() => setTogglerMenu((prev) => !prev)}
-            ></ButtonClose>
-          </div>
-        </li>
-        <li>
+      {!userEmail ? (
+        <ul>
+          <li>
+            <Link>CityKong</Link>
+          </li>
+        </ul>
+      ) : (
+        <ul>
+          <li>
+            <div className={style.itemWrapper}>
+              <ButtonClose
+                booleanToggle={toggler}
+                click={() => setTogglerMenu((prev) => !prev)}
+              ></ButtonClose>
+            </div>
+          </li>
           <CSSTransition
             in={togglerMenu}
             timeout={400}
@@ -54,11 +59,11 @@ useEffect(() => {
             mountOnEnter
             unmountOnExit
           >
-            <NavLink to="/">На главную</NavLink>
+            <li>
+              <NavLink to="/">На главную</NavLink>
+            </li>
           </CSSTransition>
-        </li>
-        {userEmail && (
-          <li>
+          {userEmail && (
             <CSSTransition
               in={togglerMenu}
               timeout={400}
@@ -66,61 +71,69 @@ useEffect(() => {
               mountOnEnter
               unmountOnExit
             >
-              <NavLink to="/private-office">Личный кабинет</NavLink>
+              <li>
+                <NavLink to="/private-office">Личный кабинет</NavLink>
+              </li>
             </CSSTransition>
-          </li>
-        )}
-        {/* {!userEmail && <li><Link to="/signin">Войти</Link ></li>}
+          )}
+          {/* {!userEmail && <li><Link to="/signin">Войти</Link ></li>}
         {!userEmail && <li><Link to="/signup">Зарегистрироваться</Link ></li>} */}
-        {/* </CSSTransition>
+          {/* </CSSTransition>
         </TransitionGroup > */}
-        
-        <li className={style.righted}>
-        <CSSTransition
-              in={togglerMenu}
-              timeout={400}
-              classNames="navBar"
-              mountOnEnter
-              unmountOnExit
-            >
-          <SwitchTransition mode="out-in">
-            <CSSTransition key={toggler} timeout={400} classNames="logout-btn">
-              {!toggler ? (
-                <Link
-                  onClick={() => {
-                    setToggler((prev) => !prev);
-                  }}
+          <CSSTransition
+            in={togglerMenu}
+            timeout={400}
+            classNames="navBar"
+            mountOnEnter
+            unmountOnExit
+          >
+            <li className={style.righted}>
+              <SwitchTransition mode="out-in">
+                <CSSTransition
+                  key={toggler}
+                  timeout={400}
+                  classNames="logout-btn"
                 >
-                  Выйти
-                </Link>
-              ) : (
-                <div className={style.modalContent}>
-                  <div
-                    className={style.btnSmall}
-                    onClick={(e) => {
-                      setToggler((prev) => !prev);
-                      e.stopPropagation();
-                    }}
-                  ></div>
-                  <div className={style.modalRow}>
-                    <h3>Вы точно хотите выйти?&nbsp;&nbsp;&nbsp;&nbsp;</h3>
-                    <div className={style.btnWrap}></div>
-                    <Button
-                      text="Да"
-                      click={async () => {
-                        setToggler(false);
-                        dispatch(removeUser());
-                        await firebase.auth().signOut();
+                  {!toggler ? (
+                    <Link
+                      onClick={() => {
+                        setToggler((prev) => !prev);
                       }}
-                    ></Button>
-                  </div>
-                </div>
-              )}
-            </CSSTransition>
-          </SwitchTransition>
+                    >
+                      Выйти
+                    </Link>
+                  ) : (
+                    <div className={style.modalContent}>
+                      <div
+                        className={style.btnSmall}
+                        onClick={(e) => {
+                          setToggler((prev) => !prev);
+                          e.stopPropagation();
+                        }}
+                      ></div>
+                      <div className={style.modalRow}>
+                        <h3>Вы точно хотите выйти?&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                        <div className={style.btnWrap}></div>
+                        <Button
+                          text="Да"
+                          click={async () => {
+                            setToggler(false);
+                            dispatch(removeUser());
+                            await firebase.auth().signOut();
+                          }}
+                        ></Button>
+                      </div>
+                    </div>
+                  )}
+                </CSSTransition>
+              </SwitchTransition>
+            </li>
           </CSSTransition>
-        </li>
-      </ul>
+        </ul>
+      )}
+      <div className={style.logoWrapper}>
+        <img alt="не найдено" src={logo}/>
+      </div>
     </>
   );
 }

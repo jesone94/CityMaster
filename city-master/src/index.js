@@ -25,10 +25,10 @@ const store = configureStore({
   middleware: middleware,
 });
 
-// store.subscribe(() => {
-//   console.log('=== сработала подписка ===');
-//   console.log(store.getState());
-// });
+store.subscribe(() => {
+  console.log('=== сработала подписка ===');
+  console.log(store.getState());
+});
 
 ReactDOM.render(
   <React.StrictMode>

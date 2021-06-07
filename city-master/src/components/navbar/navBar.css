@@ -1,21 +1,21 @@
 
 .navBar-enter-active {
-  animation: logout-button 400ms forwards;
+  animation: logout-navBar 400ms forwards;
 }
-.navBar-entar-done {
-  position: relative;
-}
+
 .navBar-exit-active {
-  animation: logout-button 400ms alternate-reverse;
+  animation: logout-navBar 400ms alternate-reverse;
 }
-@keyframes logout-button {
+
+@keyframes logout-navBar {
   0% {
     opacity: 0;
-    transform: translateX(300px);
+    transform: rotateX(90deg);
   }
 
   100% {
     opacity: 1;
-    transform: translateX(0);
+    transform: rotateX(0);
   }
 }
+

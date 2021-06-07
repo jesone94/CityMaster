@@ -16,7 +16,8 @@ const userSlice = createSlice({
     uid: null,
     photoURL: null,
     loading: false,
-    error: "",
+    error: null,
+    editStatus: false,
   },
   reducers: {
     addUser(state, action) {
@@ -52,7 +53,8 @@ const userSlice = createSlice({
     removeLoading(state) {
       state.loading = false;
     },
-    nullError(state) {
+    nullErrorAndStatus (state) {
+      state.editStatus = false;
       state.error = null;
     },
   },
@@ -93,16 +95,28 @@ const userSlice = createSlice({
       state.loading = true;
     },
     [fetchUserEditEmail.fulfilled]: (state, action) => {
+      state.editStatus = true;
       state.loading = false;
+      state.error = null;
       state.userEmail = action.payload;
     },
     [fetchUserEditEmail.rejected]: (state, { error }) => {
+      state.editStatus = false;
       state.loading = false;
       state.error = error.message;
     },
     [fetchUserDisplayName.fulfilled]: (state, action) => {
+      state.editStatus = true;
       state.displayName = action.payload;
       state.error = null;
+      state.loading = false;
+    },
+    [fetchUserDisplayName.rejected]: (state, action) => {
+      state.editStatus = false;
+      state.editStatus = true;
+      state.displayName = action.payload;
+      state.error = null;
+      state.loading = false;
     },
     [fetchUserSignIn.pending]: (state) => {
       state.loading = true;
@@ -135,13 +149,17 @@ const userSlice = createSlice({
     [fetchUserEditPassword.pending]: (state) => {
       state.loading = true;
     },
-    [fetchUserEditPassword.fulfilled]: (state, payload) => {
-      state.error = "";
-      state.loading = false;
-    },
     [fetchUserEditPassword.rejected]: (state, { error }) => {
+      console.log(error.message)
+      state.editStatus = false;
       state.loading = false;
       state.error = error.message;
+    },
+    [fetchUserEditPassword.fulfilled]: (state, payload) => {
+      console.log('sucsess')
+      state.editStatus = true;
+      state.loading = false;
+      state.error = null;
     },
   },
 });
@@ -154,7 +172,7 @@ export const {
   removePhoto,
   addLoading,
   removeLoading,
-  nullError,
+  nullErrorAndStatus,
   addPhotoLoading,
   removePhotoLoading,
 } = userSlice.actions;
