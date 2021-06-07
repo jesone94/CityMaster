@@ -279,7 +279,7 @@ export const PrivateOffice = () => {
             <div className={style.btnWrap}>
               <div className={style.righted}>
                 {!loader ? (
-                  <Button
+                  <><Button
                     text="Cохранить"
                     click={() => {
                       if (emailBoolean) {
@@ -303,7 +303,7 @@ export const PrivateOffice = () => {
                         setPassword("");
                       }
                     }}
-                  />
+                  /><ButtonCls text="Закрыть" click={() => setEmailBoolean(false)}/></>
                 ) : (
                   <ButtonLoader />
                 )}
@@ -344,7 +344,7 @@ export const PrivateOffice = () => {
             <div className={style.btnWrap}>
               <div className={style.righted}>
                 {!loader ? (
-                  <Button
+                 <> <Button
                     text="Cохранить"
                     click={() => {
                       if (password === newPassword) {
@@ -366,7 +366,7 @@ export const PrivateOffice = () => {
                         setEditPasswordBoolean(true);
                       }
                     }}
-                  />
+                  /><ButtonCls text="Закрыть" click={() => setEditPasswordBoolean(false)}/></>
                 ) : (
                   <ButtonLoader />
                 )}
