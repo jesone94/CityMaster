@@ -18,8 +18,10 @@ export const fetchUserEditEmail = createAsyncThunk("user/fetchUserEditEmail", as
   // } catch (error) {
   //   new Error(error);
   // }
+  console.log({userEmail, password, email})
   try {
     return new Promise((resolve, reject) => {
+      
       firebase.auth()
         .signInWithEmailAndPassword(userEmail, password)
         .then((userCredential) => {

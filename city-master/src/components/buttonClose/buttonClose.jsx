@@ -11,7 +11,9 @@ export const ButtonClose = ({ text, click, booleanToggle }) => {
   return (
     <div className={style.menuIconWrapper}  onClick={() => {
       setToggler(prev => !prev)
-      click && click()
+      if(click){
+        click();
+      } 
     }}>
       <div className={toggler ? style.menuIcon : style.menuIconActive}>
         {text}

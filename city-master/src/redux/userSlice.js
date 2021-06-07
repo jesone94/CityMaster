@@ -103,6 +103,7 @@ const userSlice = createSlice({
     [fetchUserDisplayName.fulfilled]: (state, action) => {
       state.displayName = action.payload;
       state.error = null;
+      state.loading = false;
     },
     [fetchUserSignIn.pending]: (state) => {
       state.loading = true;

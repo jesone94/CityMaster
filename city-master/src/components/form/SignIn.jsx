@@ -21,7 +21,11 @@ const SignIn = () => {
 
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const { handleSubmit, register } = useForm();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
 
   const { userEmail } = useSelector((state) => state.user);
   const { error } = useSelector((state) => state.user);
@@ -57,17 +61,34 @@ const SignIn = () => {
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                       <label>Электронная почта *</label>
+                      <span className={style.errors}>
+                        {errors.email?.type === "required" &&
+                          " Обязательно для заполнения"}
+                      </span>
+                      <span className={style.errors}>
+                        {errors.email?.type === "pattern" &&
+                          " Не соответствует формату электронной почты"}
+                      </span>
                       <input
                         placeholder="Электронная почта *"
                         type="text"
-                        {...register("email")}
+                        {...register("email", {
+                          required: true,
+                          pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/gi,
+                        })}
                       />
                       <div></div>
                       <label>Пароль *</label>
+                      <span className={style.errors}>
+                        {errors.password?.type === "required" &&
+                          " Обязательно для заполнения"}
+                        {errors.password?.type === "minLength" &&
+                          " Пароль должен быть длиннее 6 символов"}
+                      </span>
                       <input
                         placeholder="Пароль *"
                         type="password"
-                        {...register("password")}
+                        {...register("password", { required: true, minLength: 6 })}
                       />
                       <p className={style.errors}>{errorMessage}</p>
                     </div>

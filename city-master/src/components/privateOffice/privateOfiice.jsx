@@ -308,7 +308,7 @@ export const PrivateOffice = () => {
                             newPassword,
                           })
                         );
-                        !error && setEditPasswordBoolean(false)
+                        !errorMessage && setEditPasswordBoolean(false)
                       }
                     }}
                   />
