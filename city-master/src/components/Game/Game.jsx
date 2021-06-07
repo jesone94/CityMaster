@@ -65,7 +65,7 @@ export default function Game() {
 
     const response = await fetch(url);
     const result = await response.json();
-    console.log(result.status);
+    console.log(result);
     if (result.status === 'OK') {
       console.log(result);
       dispatch(toggleCurrentImg(result.location));
