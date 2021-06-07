@@ -8,12 +8,6 @@ import './map.css';
 
 export const Main = () => {
   const { isGameStarted } = useSelector((state) => state.gameStatus);
-  useEffect(async () => {
-    const all = await allUsers();
-    const arr = Object.values(all);
-
-    console.log(arr.sort((a, b) => b.score - a.score));
-  });
 
   return (
     <>
