@@ -98,7 +98,7 @@ export const PrivateOffice = () => {
         // await firebase.auth().currentUser.updateProfile({
         //   photoURL: link,
         // });
-        dispatch(fetchUserAddPhotoURL(link));
+        dispatch(fetchUserAddPhotoURL({uid, link}));
       }
     );
   };
