@@ -3,7 +3,7 @@ import { Button } from "../button/Button";
 import { useForm } from "react-hook-form";
 import style from "./form.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { nullError } from "../../redux/userSlice";
+import { nullErrorAndStatus } from "../../redux/userSlice";
 import { Link } from "react-router-dom";
 import { useLoaderContext } from "../../context/LoaderContext";
 import { Loader } from "../loader/Loader";
@@ -37,7 +37,7 @@ const SignIn = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(nullError());
+    dispatch(nullErrorAndStatus());
   }, [dispatch]);
 
   const onSubmit = async (data) => {

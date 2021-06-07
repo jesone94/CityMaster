@@ -37,12 +37,7 @@ li a:hover:not(.active) {
 /* #9A764E */
 
 .itemWrapper{
-  border-radius: 50%;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: none;
 }
 
 .logoWrapper{

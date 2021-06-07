@@ -20,19 +20,19 @@ export default function ScrollableTabsButtonPrevent() {
   const { userEmail } = useSelector((state) => state.user);
 
   const [togglerMenu, setTogglerMenu] = useState(false);
-  // const [windowSize, setWindowSize] = useState(window.innerWidth);
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
 
-  // useEffect(() => {
-  //   windowSize > 1000 && setTogglerMenu(true);
-  // }, [setWindowSize, windowSize]);
+  useEffect(() => {
+    windowSize > 1000 && setTogglerMenu(true);
+  }, [setWindowSize, windowSize]);
 
-  // const handleWindowResize = useCallback((event) => {
-  //   setWindowSize(window.innerWidth);
-  // }, []);
+  const handleWindowResize = useCallback((event) => {
+    setWindowSize(window.innerWidth);
+  }, []);
 
-  // useEffect(() => {
-  //   window.addEventListener("resize", handleWindowResize);
-  // }, [handleWindowResize]);
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+  }, [handleWindowResize]);
 
   return (
     <>
@@ -47,7 +47,7 @@ export default function ScrollableTabsButtonPrevent() {
           <li>
             <div className={style.itemWrapper}>
               <ButtonClose
-                booleanToggle={!toggler}
+                booleanToggle={toggler}
                 click={() => setTogglerMenu((prev) => !prev)}
               ></ButtonClose>
             </div>

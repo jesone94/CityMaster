@@ -151,3 +151,37 @@
     </div>
   </div>
 )}
+else if (displayNameBoolean) {
+  if (!displayNameInput) {
+    return setErrorMessage("Вы оставили поле пустым");
+  }
+  if (displayNameInput === displayName) {
+    return setErrorMessage("Вы не внесли изменений");
+  }
+  try {
+    dispatch(addLoading());
+    dispatch(
+      fetchUserDisplayName({ uid, displayNameInput })
+    );
+    setDisplayNameBoolean(false);
+  } catch (e) {
+    console.log(e);
+  }
+} else if (editPasswordBoolean) {
+  if (password === newPassword) {
+    return setErrorMessage("Пароли не могут совпадать");
+  }
+  try {
+    dispatch(addLoading());
+    dispatch(
+      fetchUserEditPassword({
+        userEmail,
+        passwordInput,
+        newPassword,
+      })
+    );
+    !errorMessage && setEditPasswordBoolean(false);
+  } catch (e) {
+    console.log(e);
+  }
+}

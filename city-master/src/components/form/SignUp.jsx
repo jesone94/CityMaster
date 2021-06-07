@@ -3,7 +3,7 @@ import { Button } from "../button/Button";
 import { useForm } from "react-hook-form";
 
 import { useDispatch, useSelector } from "react-redux";
-import { nullError } from "../../redux/userSlice";
+import {  nullErrorAndStatus } from "../../redux/userSlice";
 import style from "./form.module.css";
 import { Link } from "react-router-dom";
 import { fetchUserSignUp } from "../../redux/userSliceFetches/fetchUserSignUp";
@@ -31,7 +31,7 @@ const SignUp = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(nullError());
+    dispatch(nullErrorAndStatus());
   }, [dispatch]);
   // const { currentUser } = useContext(AuthContext)
 
