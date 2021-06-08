@@ -1,0 +1,19 @@
+/* 
+'entering'
+'entered'
+'exiting'
+'exited' */
+
+
+.btn-like-exit-active {
+  animation: btn-like 400ms alternate-reverse;
+}
+@keyframes btn-like {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+

@@ -1,0 +1,15 @@
+.favoritesContainer {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-direction: column;
+  margin: 40px 0;
+}
+
+.favorites {
+  display: flex;
+  flex-direction: row;
+}
+.btnWrapperFav {
+  margin: 0 0 0 30px;
+}

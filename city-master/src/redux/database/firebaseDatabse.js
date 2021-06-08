@@ -8,6 +8,7 @@ export function addUserData(uid, displayName) {
     file: null,
     displayName,
     urlImg: null,
+    favorites: [],
   });
 }
 
@@ -29,7 +30,7 @@ export const addScore = (uid, num) =>
       console.error(error);
     });
 
-export const reducecore = (uid, num) =>
+export const reduceScore = (uid, num) =>
   firebase
     .database()
     .ref(`/users/${uid}`)
@@ -102,3 +103,6 @@ export const removePhotoFromStorage = async (uid) => {
       console.log('Uh-oh, an error occurred!');
     });
 };
+
+
+

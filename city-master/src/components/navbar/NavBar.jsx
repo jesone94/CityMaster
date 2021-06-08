@@ -1,15 +1,21 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import './navBar.css';
-import { Link, NavLink } from 'react-router-dom';
-import { ButtonClose } from '../buttonClose/buttonClose';
-import { useDispatch, useSelector } from 'react-redux';
-import style from './navbar.module.css';
-import firebase from '../../firebase/firebase';
-import { removeUser } from '../../redux/userSlice';
-import './logout.css';
-import { CSSTransition, SwitchTransition, TransitionGroup } from 'react-transition-group';
-import { Button } from '../button/Button';
-import logo from './logo.png';
+
+import React, { useCallback, useEffect, useState } from "react";
+import "./navBar.css";
+import { Link, NavLink } from "react-router-dom";
+import { ButtonClose } from "../buttonClose/buttonClose";
+import { useDispatch, useSelector } from "react-redux";
+import style from "./navbar.module.css";
+import firebase from "../../firebase/firebase";
+import { removeUser } from "../../redux/userSlice";
+import "./logout.css";
+import {
+  CSSTransition,
+  SwitchTransition,
+  TransitionGroup,
+} from "react-transition-group";
+import { Button, ButtonLike } from "../button/Button";
+import logo from '../../images/logo.png'
+
 export default function ScrollableTabsButtonPrevent() {
   const [toggler, setToggler] = useState(false);
   const dispatch = useDispatch();
@@ -20,6 +26,7 @@ export default function ScrollableTabsButtonPrevent() {
 
   useEffect(() => {
     windowSize > 1000 && setTogglerMenu(true);
+    windowSize <= 1000 && setTogglerMenu(false);
   }, [setWindowSize, windowSize]);
 
   const handleWindowResize = useCallback((event) => {
@@ -43,7 +50,7 @@ export default function ScrollableTabsButtonPrevent() {
           <li>
             <div className={style.itemWrapper}>
               <ButtonClose
-                booleanToggle={toggler}
+
                 click={() => setTogglerMenu((prev) => !prev)}
               ></ButtonClose>
             </div>
@@ -72,9 +79,25 @@ export default function ScrollableTabsButtonPrevent() {
               </li>
             </CSSTransition>
           )}
+
+           {userEmail && (
+            <CSSTransition
+              in={togglerMenu}
+              timeout={400}
+              classNames="navBar"
+              mountOnEnter
+              unmountOnExit
+            >
+              <li>
+                <NavLink to="/favorites">Избранное</NavLink>
+              </li>
+            </CSSTransition>
+          )}
+
           <li>
             <NavLink to='/stats'>Рейтинги</NavLink>
           </li>
+
           {/* {!userEmail && <li><Link to="/signin">Войти</Link ></li>}
         {!userEmail && <li><Link to="/signup">Зарегистрироваться</Link ></li>} */}
           {/* </CSSTransition>

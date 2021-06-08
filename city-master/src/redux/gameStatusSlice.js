@@ -5,7 +5,7 @@ export const fetchLocation = createAsyncThunk('gameStatus/fetchLocation', async 
 
   const response = await fetch(url);
   const result = await response.json();
-  console.log(result.results[5].formatted_address);
+  // console.log(result.results[5].formatted_address);
   return { coords, location: result.results[5].formatted_address };
 });
 

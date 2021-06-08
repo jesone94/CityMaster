@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { fetchUserSignUp } from "../../redux/userSliceFetches/fetchUserSignUp";
 import { useLoaderContext } from "../../context/LoaderContext";
 import { Loader } from "../loader/Loader";
+import { fetchUserScrore } from "../../redux/userSliceFetches/fetchUserScore";
 
 const SignUp = () => {
   const { loader } = useLoaderContext();
@@ -20,15 +21,18 @@ const SignUp = () => {
 
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const { userEmail } = useSelector((state) => state.user);
+  const { userEmail, uid, error } = useSelector((state) => state.user);
 
-  const { error } = useSelector((state) => state.user);
 
   useEffect(() => {
     setErrorMessage(error);
   }, [error]);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUserScrore(uid));
+  }, [dispatch, uid]);
 
   useEffect(() => {
     dispatch(nullErrorAndStatus());

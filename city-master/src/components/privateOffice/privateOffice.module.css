@@ -70,6 +70,10 @@
   animation: errors forwards .6s ease-in;
 }
 
+.editPasswordWrap {
+  
+}
+
 .btnSmall{
   position: relative;
   top: 20px;
@@ -121,5 +125,10 @@
   }
   .input {
     font-size: 36px;
+  }
+  .score {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
   }
 }

@@ -4,10 +4,10 @@ import {
   Marker,
   Polyline,
   StreetViewPanorama,
-} from '@react-google-maps/api';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { CSSTransition } from 'react-transition-group';
+} from "@react-google-maps/api";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { CSSTransition } from "react-transition-group";
 import {
   clearCurrentImgUrl,
   resetGameStatus,
@@ -15,14 +15,17 @@ import {
   toggleAnswerCoords,
   toggleCurrentImg,
   toggleDistance,
-} from '../../redux/gameStatusSlice';
-import cordsRandomazer from '../StartMap/coordRamdomazer';
-import { Button } from '../button/Button';
-import './modalGame.css';
-import style from './game.module.css';
-import * as geokit from 'geokit';
-import { addScore, reducecore } from '../../redux/database/firebaseDatabse';
-import { Loader } from '../loader/Loader';
+} from "../../redux/gameStatusSlice";
+import cordsRandomazer from "../StartMap/coordRamdomazer";
+import { Button, ButtonLike } from "../button/Button";
+import "./modalGame.css";
+import style from "./game.module.css";
+import * as geokit from "geokit";
+import { addScore, reduceScore } from "../../redux/database/firebaseDatabse";
+import { Loader } from "../loader/Loader";
+import { fetchUserHandleLike } from "../../redux/userSliceFetches/fetchUserHandleLike";
+import './btn.css'
+import { userAddScore, userReduceScore } from "../../redux/userSlice";
 
 export default function Game() {
   const panoramaOptions = {
@@ -35,10 +38,10 @@ export default function Game() {
     disableDefaultUI: true,
   };
   const options = {
-    strokeColor: '#FF0000',
+    strokeColor: "#FF0000",
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
+    fillColor: "#FF0000",
     fillOpacity: 0.35,
     clickable: false,
     draggable: false,
@@ -49,24 +52,33 @@ export default function Game() {
     zIndex: 1,
   };
   const containerStyle = {
-    width: '600px',
-    height: '300px',
+    width: "600px",
+    height: "300px",
   };
 
   const state = useSelector((state) => state.gameStatus);
   const { uid } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [click, setClick] = useState(true)
 
-  const { coords, searchCoords, currentImgUrl, currentImgCoords, answerDistance, answerCoords } =
-    state;
+  const {
+    coords,
+    searchCoords,
+    currentImgUrl,
+    currentImgCoords,
+    answerDistance,
+    answerCoords,
+  } = state;
 
   const searchLocation = useCallback(async () => {
     const url = `https://maps.googleapis.com/maps/api/streetview/metadata?size=600x300&location=${searchCoords.lat},${searchCoords.lng}&fov=90&heading=235&pitch=10&key=${process.env.REACT_APP_GMAPS_API_KEY}`;
-
+    /// вот на этот адрес отправляешь
     const response = await fetch(url);
     const result = await response.json();
+
     console.log(result);
     if (result.status === 'OK') {
+
       console.log(result);
       dispatch(toggleCurrentImg(result.location));
       return;
@@ -85,6 +97,11 @@ export default function Game() {
     dispatch(searchCoordsToggle(cordsRandomazer(coords)));
   }, []);
 
+  const handleLike = async () => {
+    dispatch(fetchUserHandleLike({searchCoords, uid}))
+
+  }
+
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
       <div
@@ -93,7 +110,13 @@ export default function Game() {
           e.stopPropagation();
         }}
       >
-        <CSSTransition in={toggler} timeout={700} classNames='modal' mountOnEnter unmountOnExit>
+        <CSSTransition
+          in={toggler}
+          timeout={700}
+          classNames="modal"
+          mountOnEnter
+          unmountOnExit
+        >
           <div className={style.modalContent}>
             <div
               className={style.btnSmall}
@@ -104,40 +127,54 @@ export default function Game() {
             ></div>
             <div className={style.modalColumn}>
               {answerDistance !== 0 && (
-                <h3>Ваше расстояние от точки вопроса {String(answerDistance.toFixed(2))} км </h3>
+                <h3>
+                  Ваше расстояние от точки вопроса{" "}
+                  {String(answerDistance.toFixed(2))} км{" "}
+                </h3>
               )}
               <hr />
 
-              <GoogleMap mapContainerStyle={containerStyle} center={currentImgCoords} zoom={11}>
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={currentImgCoords}
+                zoom={11}
+              >
                 <Marker position={currentImgCoords} key={1} />
                 <Marker
                   position={answerCoords}
                   key={2}
                   icon={
-                    'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+                    "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
                   }
                 />
 
-                <Polyline path={[currentImgCoords, answerCoords]} options={options} />
+                <Polyline
+                  path={[currentImgCoords, answerCoords]}
+                  options={options}
+                />
               </GoogleMap>
 
               <div className={style.btnWrap}></div>
               <div className={style.righted}>
                 <Button
-                  text='Продолжить'
+                  text="Продолжить"
                   click={() => {
                     if (answerDistance <= 1) {
                       addScore(uid, 150);
-                      console.log('+');
+                      dispatch(userAddScore(150))
+                      console.log("+");
                     } else if (answerDistance > 1 && answerDistance <= 3) {
                       addScore(uid, 100);
+                      dispatch(userAddScore(150))
                     } else if (answerDistance > 3 && answerDistance <= 7) {
                       addScore(uid, 50);
+                      dispatch(userAddScore(150))
                     } else if (answerDistance > 7 && answerDistance <= 10) {
                       addScore(uid, 0);
                     } else {
-                      console.log('минус');
-                      addScore(uid, -75);
+                      console.log("минус");
+                      reduceScore(uid, 75);
+                      dispatch(userReduceScore(75))
                     }
 
                     dispatch(searchCoordsToggle(cordsRandomazer(coords)));
@@ -145,6 +182,7 @@ export default function Game() {
                     dispatch(toggleAnswerCoords(null));
                     dispatch(clearCurrentImgUrl());
                     setToggler(false);
+                    setClick(true);
                   }}
                 ></Button>
               </div>
@@ -153,42 +191,63 @@ export default function Game() {
         </CSSTransition>
 
         <div>
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={coords}
-            zoom={10}
-            streetView={false}
-            onClick={(ev) => {
-              if (!toggler) {
-                const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
-                dispatch(toggleAnswerCoords(coords));
-              }
-            }}
-          >
-            <StreetViewPanorama
-              position={currentImgCoords}
-              visible={true}
-              options={panoramaOptions}
-            />
-          </GoogleMap>
-        </div>
-        <div className={style.btnThisIsLocation}>
-          {answerCoords && (
-            <Button
-              text='Это здесь!'
-              click={() => {
-                dispatch(toggleDistance(geokit.distance(currentImgCoords, answerCoords)));
-                setToggler((prev) => !prev);
+          <div className={style.wrapperPanorama}>
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={coords}
+              zoom={10}
+              streetView={false}
+              onClick={(ev) => {
+                if (!toggler) {
+                  const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
+                  dispatch(toggleAnswerCoords(coords));
+                }
               }}
-            />
-          )}
+            >
+              <StreetViewPanorama
+                position={currentImgCoords}
+                visible={true}
+                options={panoramaOptions}
+              />
+            </GoogleMap>
+            <div className={style.gameButtonLike}>
+              <CSSTransition in={click}
+                classNames="btn-like"
+                timeout={400}
+                unmountOnExit
+                mountOnEnter
+              >
+              <ButtonLike click={() => {
+                handleLike()
+                setClick(false)
+              }}/>
+              </CSSTransition>
+            </div>
+          </div>
         </div>
-        <Button
-          text={'Сменить локацию'}
-          click={() => {
-            dispatch(resetGameStatus());
-          }}
-        />
+        <div className={style.modalColumn}>
+          {answerCoords && (
+            <div className={style.btnThisIsLocation}>
+              <Button
+                text="Это здесь!"
+                click={() => {
+                  dispatch(
+                    toggleDistance(
+                      geokit.distance(currentImgCoords, answerCoords)
+                    )
+                  );
+                  setToggler((prev) => !prev);
+                }}
+              />
+            </div>
+          )}
+          <Button
+            text={"Сменить локацию"}
+            click={() => {
+              dispatch(resetGameStatus());
+            }}
+          />
+        </div>
         <div>
           <GoogleMap
             mapContainerStyle={containerStyle}
@@ -205,7 +264,7 @@ export default function Game() {
             <Marker
               position={answerCoords}
               icon={
-                'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+                "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
               }
             />
           </GoogleMap>

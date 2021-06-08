@@ -44,7 +44,7 @@
 }
 .spinner {
   margin: 100px auto;
-  width: 50px;
+  width: 55px;
   height: 40px;
   text-align: center;
   font-size: 10px;
@@ -54,9 +54,9 @@
 .spinner > div {
   background-color: #333;
   height: 100%;
-  width: 6px;
+  width: 11px;
   display: inline-block;
-  
+  box-shadow: 0 4px 6px rgb(65 132 144 / 20%), 0 1px 3px rgb(0 0 0 / 18%);
   -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
   animation: sk-stretchdelay 1.2s infinite ease-in-out;
 }
