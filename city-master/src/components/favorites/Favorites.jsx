@@ -5,6 +5,8 @@ import { FavoritesElement } from "./FavoritesElement";
 import style from "./favorites.module.css";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import './favoriteTransition.css'
+
+
 export const Favorites = () => {
   const dispatch = useDispatch();
   const { favorites, uid } = useSelector((state) => state.user);
@@ -16,10 +18,11 @@ export const Favorites = () => {
   }, [dispatch, uid, favorites]);
 
   return (
+  
     <div className={style.favoritesContainer}>
       <div className={style.favoritesWrapper}>
       <TransitionGroup component='div'>
-      {favorites.length && favorites.map((el) => 
+      {favorites && favorites.length && favorites.map((el) => 
         <CSSTransition
         key={el.id}
         timeout={600}
@@ -29,7 +32,9 @@ export const Favorites = () => {
        </CSSTransition>
       )}
       </TransitionGroup>
+  
       </div>
     </div>
+
   );
 };

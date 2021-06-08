@@ -1,5 +1,8 @@
 import firebase from '../../firebase/firebase';
 import 'firebase/storage';
+import axios from "axios";
+
+ const url = process.env.REACT_APP_DATABASE_URL;
 
 export function addUserData(uid, displayName) {
   firebase.database().ref(`users/${uid}`).set({
@@ -9,10 +12,11 @@ export function addUserData(uid, displayName) {
     displayName,
     urlImg: null,
     favorites: [],
+    statistic: [],
   });
 }
 
-export const addScore = (uid, num) =>
+export const addScore = async (uid, num) => {
   firebase
     .database()
     .ref(`/users/${uid}`)
@@ -22,6 +26,9 @@ export const addScore = (uid, num) =>
         let { score } = snapshot.val();
         score += num;
         firebase.database().ref(`users/${uid}`).update({ score });
+        firebase.database().ref(`users/${uid}/statistic`).push({num, data: new Date().toJSON(), action: "ADD"})
+          .then(() => console.log('Успешно добавлено в базу ADD'))
+          .catch((e) => console.log(e))
       } else {
         console.log('No data available');
       }
@@ -29,8 +36,9 @@ export const addScore = (uid, num) =>
     .catch((error) => {
       console.error(error);
     });
+  }
+export const reduceScore = async (uid, num) => {
 
-export const reduceScore = (uid, num) =>
   firebase
     .database()
     .ref(`/users/${uid}`)
@@ -40,6 +48,9 @@ export const reduceScore = (uid, num) =>
         let { score } = snapshot.val();
         score -= num;
         firebase.database().ref(`users/${uid}`).update({ score });
+        firebase.database().ref(`users/${uid}/statistic`).push({num, data: new Date().toJSON(), action: "REDUCE"})
+        .then(() => console.log('Успешно добавлено в базу REDUCE'))
+        .catch((e) => console.log(e))
       } else {
         console.log('No data available');
       }
@@ -47,6 +58,8 @@ export const reduceScore = (uid, num) =>
     .catch((error) => {
       console.error(error);
     });
+}
+  
 
 export const score = (uid) =>
   firebase

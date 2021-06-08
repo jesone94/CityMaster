@@ -101,7 +101,7 @@ export default function Game() {
     dispatch(fetchUserHandleLike({searchCoords, uid}))
 
   }
-
+  console.log(currentImgCoords, "CURRENT IMG COORDS")
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
       <div
@@ -165,12 +165,13 @@ export default function Game() {
                       console.log("+");
                     } else if (answerDistance > 1 && answerDistance <= 3) {
                       addScore(uid, 100);
-                      dispatch(userAddScore(150))
+                      dispatch(userAddScore(100))
                     } else if (answerDistance > 3 && answerDistance <= 7) {
                       addScore(uid, 50);
-                      dispatch(userAddScore(150))
+                      dispatch(userAddScore(50))
                     } else if (answerDistance > 7 && answerDistance <= 10) {
                       addScore(uid, 0);
+                      dispatch(userAddScore(0))
                     } else {
                       console.log("минус");
                       reduceScore(uid, 75);

@@ -1,4 +1,3 @@
-
 import React, { useCallback, useEffect, useState } from "react";
 import "./navBar.css";
 import { Link, NavLink } from "react-router-dom";
@@ -14,7 +13,7 @@ import {
   TransitionGroup,
 } from "react-transition-group";
 import { Button, ButtonLike } from "../button/Button";
-import logo from '../../images/logo.png'
+import logo from "../../images/logo.png";
 
 export default function ScrollableTabsButtonPrevent() {
   const [toggler, setToggler] = useState(false);
@@ -34,7 +33,7 @@ export default function ScrollableTabsButtonPrevent() {
   }, []);
 
   useEffect(() => {
-    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
   }, [handleWindowResize]);
 
   return (
@@ -50,7 +49,6 @@ export default function ScrollableTabsButtonPrevent() {
           <li>
             <div className={style.itemWrapper}>
               <ButtonClose
-
                 click={() => setTogglerMenu((prev) => !prev)}
               ></ButtonClose>
             </div>
@@ -58,29 +56,29 @@ export default function ScrollableTabsButtonPrevent() {
           <CSSTransition
             in={togglerMenu}
             timeout={400}
-            classNames='navBar'
+            classNames="navBar"
             mountOnEnter
             unmountOnExit
           >
             <li>
-              <NavLink to='/'>На главную</NavLink>
+              <NavLink to="/">На главную</NavLink>
             </li>
           </CSSTransition>
           {userEmail && (
             <CSSTransition
               in={togglerMenu}
               timeout={400}
-              classNames='navBar'
+              classNames="navBar"
               mountOnEnter
               unmountOnExit
             >
               <li>
-                <NavLink to='/private-office'>Личный кабинет</NavLink>
+                <NavLink to="/private-office">Личный кабинет</NavLink>
               </li>
             </CSSTransition>
           )}
 
-           {userEmail && (
+          {userEmail && (
             <CSSTransition
               in={togglerMenu}
               timeout={400}
@@ -94,9 +92,19 @@ export default function ScrollableTabsButtonPrevent() {
             </CSSTransition>
           )}
 
-          <li>
-            <NavLink to='/stats'>Рейтинги</NavLink>
-          </li>
+          {userEmail && (
+            <CSSTransition
+              in={togglerMenu}
+              timeout={400}
+              classNames="navBar"
+              mountOnEnter
+              unmountOnExit
+            >
+              <li>
+                <NavLink to="/stats">Рейтинги</NavLink>
+              </li>
+            </CSSTransition>
+          )}
 
           {/* {!userEmail && <li><Link to="/signin">Войти</Link ></li>}
         {!userEmail && <li><Link to="/signup">Зарегистрироваться</Link ></li>} */}
@@ -105,13 +113,17 @@ export default function ScrollableTabsButtonPrevent() {
           <CSSTransition
             in={togglerMenu}
             timeout={400}
-            classNames='navBar'
+            classNames="navBar"
             mountOnEnter
             unmountOnExit
           >
             <li className={style.righted}>
-              <SwitchTransition mode='out-in'>
-                <CSSTransition key={toggler} timeout={400} classNames='logout-btn'>
+              <SwitchTransition mode="out-in">
+                <CSSTransition
+                  key={toggler}
+                  timeout={400}
+                  classNames="logout-btn"
+                >
                   {!toggler ? (
                     <Link
                       onClick={() => {
@@ -133,7 +145,7 @@ export default function ScrollableTabsButtonPrevent() {
                         <h3>Вы точно хотите выйти?&nbsp;&nbsp;&nbsp;&nbsp;</h3>
                         <div className={style.btnWrap}></div>
                         <Button
-                          text='Да'
+                          text="Да"
                           click={async () => {
                             setToggler(false);
                             dispatch(removeUser());
@@ -150,7 +162,7 @@ export default function ScrollableTabsButtonPrevent() {
         </ul>
       )}
       <div className={style.logoWrapper}>
-        <img alt='не найдено' src={logo} />
+        <img alt="не найдено" src={logo} />
       </div>
     </>
   );
