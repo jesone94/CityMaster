@@ -14,7 +14,7 @@ export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
         }
       );
     }).then((firebaseUser) => {
-      fetchFavorites(firebaseUser.uid);
+
       return {
         displayName: firebaseUser.displayName,
         email: firebaseUser.email,
