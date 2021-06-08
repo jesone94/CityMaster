@@ -1,4 +1,4 @@
-import "./App.css";
+import './App.css';
 import {
   BrowserRouter as Router,
   Redirect,
@@ -6,6 +6,7 @@ import {
   Switch,
   NavLink,
   useLocation,
+
 } from "react-router-dom";
 import NavBar from "./components/navbar/NavBar";
 import { Main } from "./components/main/Main";
@@ -26,6 +27,8 @@ import { loadFavorites } from "./redux/userSlice";
 import { fetchUserAllFavorites } from "./redux/userSliceFetches/fetchUserAllFavorites";
 import { fetchUserScrore } from "./redux/userSliceFetches/fetchUserScore";
 import { Favorites } from "./components/favorites/Favorites";
+import Statistic from './components/Statistic/Statistic.jsx';
+
 
 function App() {
   const dispatch = useDispatch();
@@ -41,8 +44,8 @@ function App() {
   }, [dispatch, uid]);
 
   const routes = [
-    { path: "/", Component: Main },
-    { path: "/private-office", Component: PrivateOffice },
+    { path: '/', Component: Main },
+    { path: '/private-office', Component: PrivateOffice },
   ];
 
   const { userEmail } = useSelector((state) => state.user);
@@ -58,13 +61,19 @@ function App() {
             <NavBar />
             <div className="bckgrnd-url"> </div>
             <Switch>
+
               
               <PrivateRoute exact path="/" component={Main} />
               <Route exact path="/signup">
                 {!userEmail ? <SignUp /> : <Redirect to="/" />}
+      </Route>
+      
+              <Route exact path='/signup'>
+                {!userEmail ? <SignUp /> : <Redirect to='/' />}
+
               </Route>
-              <Route exact path="/signin">
-                {!userEmail ? <SignIn /> : <Redirect to="/" />}
+              <Route exact path='/signin'>
+                {!userEmail ? <SignIn /> : <Redirect to='/' />}
               </Route>
               {/* <div clasName="container">
               {routes.map(({path, Component}) => <Route key={path} exact path={path}>
@@ -82,6 +91,7 @@ function App() {
                 }
               </Route>)}
               </div> */}
+
               <PrivateRoute
                 exact
                 path="/private-office"
@@ -90,6 +100,13 @@ function App() {
               <Route exact path="/fade"></Route>
               <PrivateRoute exact path="/favorites" component={Favorites} />
              
+
+              <PrivateRoute exact path='/private-office' component={PrivateOffice} />
+              <Route exact path='/stats'>
+                <Statistic />
+              </Route>
+              <Route exact path='/'></Route>
+
             </Switch>
           </Router>
         </ModalContextProvider>

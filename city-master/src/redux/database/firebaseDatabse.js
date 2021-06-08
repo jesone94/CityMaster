@@ -1,5 +1,5 @@
-import firebase from "../../firebase/firebase";
-import "firebase/storage";
+import firebase from '../../firebase/firebase';
+import 'firebase/storage';
 
 export function addUserData(uid, displayName) {
   firebase.database().ref(`users/${uid}`).set({
@@ -23,7 +23,7 @@ export const addScore = (uid, num) =>
         score += num;
         firebase.database().ref(`users/${uid}`).update({ score });
       } else {
-        console.log("No data available");
+        console.log('No data available');
       }
     })
     .catch((error) => {
@@ -41,7 +41,7 @@ export const reduceScore = (uid, num) =>
         score -= num;
         firebase.database().ref(`users/${uid}`).update({ score });
       } else {
-        console.log("No data available");
+        console.log('No data available');
       }
     })
     .catch((error) => {
@@ -57,7 +57,7 @@ export const score = (uid) =>
       if (snapshot.exists()) {
         return snapshot.val().score;
       }
-      console.log("No data available");
+      console.log('No data available');
     });
 
 export const allUsers = () =>
@@ -67,9 +67,9 @@ export const allUsers = () =>
     .get()
     .then((snapshot) => {
       if (snapshot.exists()) {
-        return snapshot.val();
+        return Object.values(snapshot.val()).sort((a, b) => b.score - a.score);
       }
-      console.log("No data available");
+      console.log('No data available');
     });
 
 export const addFileName = (uid, filename) =>
@@ -97,10 +97,10 @@ export const removePhotoFromStorage = async (uid) => {
     .ref(`avatars/${uid}/${filename}`)
     .delete()
     .then(() => {
-      console.log("File deleted successfully");
+      console.log('File deleted successfully');
     })
     .catch((error) => {
-      console.log("Uh-oh, an error occurred!");
+      console.log('Uh-oh, an error occurred!');
     });
 };
 

@@ -75,8 +75,10 @@ export default function Game() {
     /// вот на этот адрес отправляешь
     const response = await fetch(url);
     const result = await response.json();
-    console.log(result, "result");
-    if (result.status === "OK") {
+
+    console.log(result);
+    if (result.status === 'OK') {
+
       console.log(result);
       dispatch(toggleCurrentImg(result.location));
       return;
