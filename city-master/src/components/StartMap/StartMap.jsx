@@ -14,8 +14,8 @@ import { CSSTransition } from "react-transition-group";
 import './location.css'
 
 const containerStyle = {
-  width: "800px",
-  height: "600px",
+  width: "1000px",
+  height: "750px",
 };
 
 let center = {
@@ -67,7 +67,9 @@ export default function StartMap() {
             </div>
           </div>
           </CSSTransition>
+      
         <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
+        <div className={style.map}>
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
@@ -79,8 +81,11 @@ export default function StartMap() {
             }}
           >
             <Marker position={markerPosition} />
+           
           </GoogleMap>
+          </div>
         </LoadScript>
+       
       </div>
     </>
   );

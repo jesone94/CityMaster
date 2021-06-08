@@ -12,8 +12,8 @@ import {
   SwitchTransition,
   TransitionGroup,
 } from "react-transition-group";
-import { Button } from "../button/Button";
-import logo from './logo.png'
+import { Button, ButtonLike } from "../button/Button";
+import logo from '../../images/logo.png'
 export default function ScrollableTabsButtonPrevent() {
   const [toggler, setToggler] = useState(false);
   const dispatch = useDispatch();
@@ -24,6 +24,7 @@ export default function ScrollableTabsButtonPrevent() {
 
   useEffect(() => {
     windowSize > 1000 && setTogglerMenu(true);
+    windowSize <= 1000 && setTogglerMenu(false);
   }, [setWindowSize, windowSize]);
 
   const handleWindowResize = useCallback((event) => {
@@ -47,7 +48,7 @@ export default function ScrollableTabsButtonPrevent() {
           <li>
             <div className={style.itemWrapper}>
               <ButtonClose
-                booleanToggle={toggler}
+
                 click={() => setTogglerMenu((prev) => !prev)}
               ></ButtonClose>
             </div>
@@ -73,6 +74,19 @@ export default function ScrollableTabsButtonPrevent() {
             >
               <li>
                 <NavLink to="/private-office">Личный кабинет</NavLink>
+              </li>
+            </CSSTransition>
+          )}
+           {userEmail && (
+            <CSSTransition
+              in={togglerMenu}
+              timeout={400}
+              classNames="navBar"
+              mountOnEnter
+              unmountOnExit
+            >
+              <li>
+                <NavLink to="/favorites">Избранное</NavLink>
               </li>
             </CSSTransition>
           )}

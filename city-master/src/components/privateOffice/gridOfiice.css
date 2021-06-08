@@ -1,7 +1,7 @@
 .gridBody {
   display: grid;
   grid-template-columns: minmax(350px, 450px) minmax(350px, 500px) 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
 }
 .gridItem {
   display: grid;
@@ -26,6 +26,10 @@
   cursor: pointer;
 }
 @media screen and (max-width: 1000px) {
+  .gridItem {
+    justify-content: center;
+    align-items: center;
+  }
   .gridBody {
     display: flex;
     flex-direction: column;

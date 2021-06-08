@@ -1,0 +1,32 @@
+
+.favoriteTransition-exit-active {
+  animation-name: favoriteTransition;
+  animation-duration: .600s;
+  animation-iteration-count: 1;
+}
+.favoriteTransition-enter-active {
+  animation: favoriteTransition .600s ease-in-out alternate-reverse;
+}
+@keyframes favoriteTransition {
+  0% {
+    opacity: 0;
+    transform: translateX(-300px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes favoriteTransition {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  33% {
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-200px);
+  }
+}

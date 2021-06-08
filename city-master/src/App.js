@@ -15,19 +15,30 @@ import PrivateRoute from "./firebase/PrivateRoute";
 import SignIn from "./components/form/SignIn";
 import { useEffect, useState } from "react";
 import firebase from "./firebase/firebase";
-
+import { fetchFavorites } from "./redux/database/firebaseAllFavorites";
 import { useDispatch, useSelector } from "react-redux";
 import { PrivateOffice } from "./components/privateOffice/privateOfiice";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { fetchUser } from "./redux/userSliceFetches/fetchUserStart";
 import LoaderContextProvider from "./context/LoaderContext";
 import ModalContextProvider from "./context/ModalChooseLocation";
+import { loadFavorites } from "./redux/userSlice";
+import { fetchUserAllFavorites } from "./redux/userSliceFetches/fetchUserAllFavorites";
+import { fetchUserScrore } from "./redux/userSliceFetches/fetchUserScore";
+import { Favorites } from "./components/favorites/Favorites";
 
 function App() {
   const dispatch = useDispatch();
+  const { uid } = useSelector(state => state.user)
+
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchUserAllFavorites(uid));
+    dispatch(fetchUserScrore(uid))
+  }, [dispatch, uid]);
 
   const routes = [
     { path: "/", Component: Main },
@@ -45,7 +56,9 @@ function App() {
         <ModalContextProvider>
           <Router>
             <NavBar />
+            <div className="bckgrnd-url"> </div>
             <Switch>
+              
               <PrivateRoute exact path="/" component={Main} />
               <Route exact path="/signup">
                 {!userEmail ? <SignUp /> : <Redirect to="/" />}
@@ -75,7 +88,8 @@ function App() {
                 component={PrivateOffice}
               />
               <Route exact path="/fade"></Route>
-              <Route exact path="/"></Route>
+              <PrivateRoute exact path="/favorites" component={Favorites} />
+             
             </Switch>
           </Router>
         </ModalContextProvider>

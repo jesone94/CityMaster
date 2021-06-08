@@ -7,6 +7,10 @@ import { fetchUserDisplayName } from "./userSliceFetches/fetchUserDisplayName";
 import { fetchUserSignIn } from "./userSliceFetches/fetchUserSignIn";
 import { fetchUserSignUp } from "./userSliceFetches/fetchUserSignUp";
 import { fetchUserEditPassword } from "./userSliceFetches/fetchUserEditPassword";
+import { fetchUserHandleLike } from "./userSliceFetches/fetchUserHandleLike";
+import { fetchUserAllFavorites } from "./userSliceFetches/fetchUserAllFavorites";
+import { fetchUserScrore } from "./userSliceFetches/fetchUserScore";
+import { fetchUserRemoveFavoriteElement } from "./userSliceFetches/fetchUserRemoveFavoriteElement";
 
 const userSlice = createSlice({
   name: "user",
@@ -18,6 +22,8 @@ const userSlice = createSlice({
     loading: false,
     error: null,
     editStatus: false,
+    favorites: [],
+    score: 0,
   },
   reducers: {
     addUser(state, action) {
@@ -57,6 +63,15 @@ const userSlice = createSlice({
       state.editStatus = false;
       state.error = null;
     },
+    loadFavorites (state, { payload }) {
+      state.favorites = payload
+    },
+    userAddScore(state, { payload }) {
+      state.score += payload
+    },
+    userReduceScore(state, { payload }) {
+      state.score -= payload
+    }
   },
   extraReducers: {
     // Add reducers for additional action types here, and handle loading state as needed
@@ -161,6 +176,18 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    [fetchUserHandleLike.fulfilled]: (state, { payload }) => {
+      state.favorites.push(payload)
+    },
+    [fetchUserAllFavorites.fulfilled]: (state, { payload }) => {
+      state.favorites = payload;
+    },
+    [fetchUserScrore.fulfilled]: (state, { payload }) => {
+      state.score = payload
+    },
+    [fetchUserRemoveFavoriteElement.fulfilled]: (state, { payload }) => {
+     state.favorites.filter(({id}) => id !== payload)
+    }
   },
 });
 
@@ -175,4 +202,6 @@ export const {
   nullErrorAndStatus,
   addPhotoLoading,
   removePhotoLoading,
+  userAddScore,
+  userReduceScore
 } = userSlice.actions;

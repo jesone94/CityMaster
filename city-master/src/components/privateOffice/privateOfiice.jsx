@@ -28,14 +28,13 @@ import { MiniLoaderM } from "../button/Mini-loaderM";
 import { addFileName, addScore } from "../../redux/database/firebaseDatabse";
 import { addLoader } from "../../redux/loaderSlice";
 
+
 export const PrivateOffice = () => {
   const { loader, photoLoader } = useLoaderContext();
 
-  const { error } = useSelector((state) => state.user);
-  const { displayName } = useSelector((state) => state.user);
-  const { userEmail } = useSelector((state) => state.user);
-  const { uid } = useSelector((state) => state.user);
-  const { photoURL } = useSelector((state) => state.user);
+  const { error, userEmail, displayName, uid, photoURL, score, favorites } = useSelector(
+    (state) => state.user
+  );
   const { editStatus } = useSelector((state) => state.user);
 
   const [email, setEmail] = useState(userEmail);
@@ -98,7 +97,7 @@ export const PrivateOffice = () => {
         // await firebase.auth().currentUser.updateProfile({
         //   photoURL: link,
         // });
-        dispatch(fetchUserAddPhotoURL({uid, link}));
+        dispatch(fetchUserAddPhotoURL({ uid, link }));
       }
     );
   };
@@ -195,115 +194,134 @@ export const PrivateOffice = () => {
             </p>
           </div>
           <div className="subGridItem">
-            <Link
-              onClick={() => {
-                dispatch(nullErrorAndStatus());
-                setEditPasswordBoolean((prev) => !prev);
-                setDisplayNameBoolean(false);
-                setEmailBoolean(false);
-              }}
-            >
-              Изменить пароль
-            </Link>
+            <div className={style.editPasswordWrap}>
+              <Button
+                click={() => {
+                  dispatch(nullErrorAndStatus());
+                  setEditPasswordBoolean((prev) => !prev);
+                  setDisplayNameBoolean(false);
+                  setEmailBoolean(false);
+                }}
+                text="Изменить пароль"
+              ></Button>
+            </div>
           </div>
         </div>
         <div className="gridItem">
-          <h1>CONTENT</h1>
+ 
+          <h1>Набрано очков: {score}</h1>
+
         </div>
         <div className="gridItem">
-          {displayNameBoolean && <div className={style.show}>
-          <span>новое имя:</span>
-            <input
-              className={style.input}
-              placeholder="Ваше имя"
-              type="text"
-              value={displayNameInput}
-              onChange={(e) => {
-                setDisplayNameInput(e.target.value);
-              }}
-            />
-            <p className={style.errors}>{errorMessage && errorMessage}</p>
-          </div>}
-          {emailBoolean && <div className={style.show}>
-          <span>новая электронная почта:</span>
-            <input
-              className={style.input}
-              placeholder="Электронная почта"
-              type="text"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-          </div>}
-          {emailBoolean && <div className={style.show}>
-            <span>для изменений требуется ваш пароль:</span>
-            <input
-              className={style.input}
-              placeholder="Подтвердите пароль"
-              type="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
-            <p className={style.errors}>{errorMessage && errorMessage}</p>
-          </div>}
-          {editPasswordBoolean && <div className={style.show}>
-          <span>ваш новый пароль:</span>
-            <input
-              className={style.input}
-              placeholder="Ваш новый пароль"
-              type="password"
-              value={newPassword}
-              onChange={(e) => {
-                setNewPassword(e.target.value);
-              }}
-            />
-          </div>}
+          {displayNameBoolean && (
+            <div className={style.show}>
+              <span>новое имя:</span>
+              <input
+                className={style.input}
+                placeholder="Ваше имя"
+                type="text"
+                value={displayNameInput}
+                onChange={(e) => {
+                  setDisplayNameInput(e.target.value);
+                }}
+              />
+              <p className={style.errors}>{errorMessage && errorMessage}</p>
+            </div>
+          )}
+          {emailBoolean && (
+            <div className={style.show}>
+              <span>новая электронная почта:</span>
+              <input
+                className={style.input}
+                placeholder="Электронная почта"
+                type="text"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
+            </div>
+          )}
+          {emailBoolean && (
+            <div className={style.show}>
+              <span>для изменений требуется ваш пароль:</span>
+              <input
+                className={style.input}
+                placeholder="Подтвердите пароль"
+                type="password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              />
+              <p className={style.errors}>{errorMessage && errorMessage}</p>
+            </div>
+          )}
+          {editPasswordBoolean && (
+            <div className={style.show}>
+              <span>ваш новый пароль:</span>
+              <input
+                className={style.input}
+                placeholder="Ваш новый пароль"
+                type="password"
+                value={newPassword}
+                onChange={(e) => {
+                  setNewPassword(e.target.value);
+                }}
+              />
+            </div>
+          )}
 
-          {editPasswordBoolean && <div className={style.show}>
-            <span>для изменений требуется ваш текущий пароль:</span>
-            <input
-              className={style.input}
-              placeholder="Подтвердите пароль"
-              type="password"
-              value={passwordInput}
-              onChange={(e) => {
-                setPasswordInput(e.target.value);
-              }}
-            />
-            <p className={style.errors}>{errorMessage && errorMessage}</p>
-          </div>}
+          {editPasswordBoolean && (
+            <div className={style.show}>
+              <span>для изменений требуется ваш текущий пароль:</span>
+              <input
+                className={style.input}
+                placeholder="Подтвердите пароль"
+                type="password"
+                value={passwordInput}
+                onChange={(e) => {
+                  setPasswordInput(e.target.value);
+                }}
+              />
+              <p className={style.errors}>{errorMessage && errorMessage}</p>
+            </div>
+          )}
           {emailBoolean && (
             <div className={style.btnWrap}>
               <div className={style.righted}>
                 {!loader ? (
-                  <><Button
-                    text="Cохранить"
-                    click={() => {
-                      if (emailBoolean) {
-                        if (userEmail === email) {
-                          return setErrorMessage(
-                            "Вы не можете ввести такую же электронную почту"
-                          );
+                  <>
+                    <Button
+                      text="Cохранить"
+                      click={() => {
+                        if (emailBoolean) {
+                          if (userEmail === email) {
+                            return setErrorMessage(
+                              "Вы не можете ввести такую же электронную почту"
+                            );
+                          }
+                          if (password === "") {
+                            return setErrorMessage("Поле не может быть пустым");
+                          }
+                          try {
+                            dispatch(addLoading());
+                            dispatch(
+                              fetchUserEditEmail({ userEmail, password, email })
+                            );
+                            setErrorMessage(null);
+                          } catch (e) {
+                            setEmailBoolean(true);
+                          }
+                          setPassword("");
                         }
-                        if (password === "") {
-                          return setErrorMessage("Поле не может быть пустым");
-                        }
-                        try {
-                          dispatch(addLoading());
-                          dispatch(
-                            fetchUserEditEmail({ userEmail, password, email })
-                          );
-                          setErrorMessage(null);
-                        } catch (e) {
-                          setEmailBoolean(true);
-                        }
-                        setPassword("");
-                      }
-                    }}
-                  /><ButtonCls text="Закрыть" click={() => setEmailBoolean(false)}/></>
+                      }}
+                    />
+                    <ButtonCls
+                      text="Закрыть"
+                      click={() => setEmailBoolean(false)}
+                    />
+                  </>
                 ) : (
                   <ButtonLoader />
                 )}
@@ -314,26 +332,33 @@ export const PrivateOffice = () => {
             <div className={style.btnWrap}>
               <div className={style.righted}>
                 {!loader ? (
-                 <> <Button
-                    text="Cохранить"
-                    click={() => {
-                      if (!displayNameInput) {
-                        return setErrorMessage("Вы оставили поле пустым");
-                      }
-                      if (displayNameInput === displayName) {
-                        return setErrorMessage("Вы не внесли изменений");
-                      }
-                      try {
-                        dispatch(addLoading());
-                        dispatch(
-                          fetchUserDisplayName({ uid, displayNameInput })
-                        );
-                        setDisplayNameBoolean(false);
-                      } catch (e) {
-                        console.log(e);
-                      }
-                    }}
-                  /><ButtonCls text="Закрыть" click={() => setDisplayNameBoolean(false)}/></>
+                  <>
+                    {" "}
+                    <Button
+                      text="Cохранить"
+                      click={() => {
+                        if (!displayNameInput) {
+                          return setErrorMessage("Вы оставили поле пустым");
+                        }
+                        if (displayNameInput === displayName) {
+                          return setErrorMessage("Вы не внесли изменений");
+                        }
+                        try {
+                          dispatch(addLoading());
+                          dispatch(
+                            fetchUserDisplayName({ uid, displayNameInput })
+                          );
+                          setDisplayNameBoolean(false);
+                        } catch (e) {
+                          console.log(e);
+                        }
+                      }}
+                    />
+                    <ButtonCls
+                      text="Закрыть"
+                      click={() => setDisplayNameBoolean(false)}
+                    />
+                  </>
                 ) : (
                   <ButtonLoader />
                 )}
@@ -344,29 +369,36 @@ export const PrivateOffice = () => {
             <div className={style.btnWrap}>
               <div className={style.righted}>
                 {!loader ? (
-                 <> <Button
-                    text="Cохранить"
-                    click={() => {
-                      if (password === newPassword) {
-                        return setErrorMessage("Пароли не могут совпадать");
-                      }
-                      try {
-                        dispatch(addLoading());
-                        dispatch(
-                          fetchUserEditPassword({
-                            userEmail,
-                            passwordInput,
-                            newPassword,
-                          })
-                        );
-                        setErrorMessage(null);
-                        // errorMessage ? setEditPasswordBoolean(true) : setEditPasswordBoolean(false)
-                        // !errorMessage && setEditPasswordBoolean(false);
-                      } catch (e) {
-                        setEditPasswordBoolean(true);
-                      }
-                    }}
-                  /><ButtonCls text="Закрыть" click={() => setEditPasswordBoolean(false)}/></>
+                  <>
+                    {" "}
+                    <Button
+                      text="Cохранить"
+                      click={() => {
+                        if (password === newPassword) {
+                          return setErrorMessage("Пароли не могут совпадать");
+                        }
+                        try {
+                          dispatch(addLoading());
+                          dispatch(
+                            fetchUserEditPassword({
+                              userEmail,
+                              passwordInput,
+                              newPassword,
+                            })
+                          );
+                          setErrorMessage(null);
+                          // errorMessage ? setEditPasswordBoolean(true) : setEditPasswordBoolean(false)
+                          // !errorMessage && setEditPasswordBoolean(false);
+                        } catch (e) {
+                          setEditPasswordBoolean(true);
+                        }
+                      }}
+                    />
+                    <ButtonCls
+                      text="Закрыть"
+                      click={() => setEditPasswordBoolean(false)}
+                    />
+                  </>
                 ) : (
                   <ButtonLoader />
                 )}
@@ -375,8 +407,9 @@ export const PrivateOffice = () => {
           )}
         </div>
         <div className="gridItem">
-          <h1>CONTENT</h1>
+          <h1>COntent</h1>
         </div>
+      
       </div>
       {/* )} */}
     </>

@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import { useLoaderContext } from "../../context/LoaderContext";
 import { Loader } from "../loader/Loader";
 import { fetchUserSignIn } from "../../redux/userSliceFetches/fetchUserSignIn";
+import { fetchUserAllFavorites } from "../../redux/userSliceFetches/fetchUserAllFavorites";
+import { fetchUserScrore } from "../../redux/userSliceFetches/fetchUserScore";
 
 const SignIn = () => {
   // const [active, setActive] = useState(true)
@@ -21,20 +23,25 @@ const SignIn = () => {
 
   const [errorMessage, setErrorMessage] = useState(null);
 
+  const { userEmail } = useSelector((state) => state.user);
+  const { error } = useSelector((state) => state.user);
+  const { uid } = useSelector((state) => state.user);
+
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm();
 
-  const { userEmail } = useSelector((state) => state.user);
-  const { error } = useSelector((state) => state.user);
-
   useEffect(() => {
     setErrorMessage(error);
   }, [error]);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUserScrore(uid));
+  }, [dispatch, uid]);
 
   useEffect(() => {
     dispatch(nullErrorAndStatus());
@@ -88,7 +95,10 @@ const SignIn = () => {
                       <input
                         placeholder="Пароль *"
                         type="password"
-                        {...register("password", { required: true, minLength: 6 })}
+                        {...register("password", {
+                          required: true,
+                          minLength: 6,
+                        })}
                       />
                       <p className={style.errors}>{errorMessage}</p>
                     </div>

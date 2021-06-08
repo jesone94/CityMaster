@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import firebase from "../../firebase/firebase";
+import { fetchFavorites } from "../database/firebaseAllFavorites";
 
 export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
   try {
@@ -13,6 +14,7 @@ export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
         }
       );
     }).then((firebaseUser) => {
+      fetchFavorites(firebaseUser.uid);
       return {
         displayName: firebaseUser.displayName,
         email: firebaseUser.email,
