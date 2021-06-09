@@ -46,6 +46,7 @@ li a:hover:not(.active) {
   align-items: center;
   width: 100%;
   height: 100%;
+ 
 }
 .logoWrapper img {
   bottom: 20px;
@@ -54,6 +55,7 @@ li a:hover:not(.active) {
   width: 150px;
   height: 150px;
   border-radius: 50%;
+  z-index: 10000000;
 }
 .modalContent {
   padding: 8px 8px 9px 8px;

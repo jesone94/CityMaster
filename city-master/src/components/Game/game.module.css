@@ -1,7 +1,7 @@
 .gameContainer {
   height: 100vh;
   width: 100vw;
-  top: 0;
+  top: -100px;
   left: 0;
   position: relative;
   display: flex;
@@ -31,6 +31,21 @@
   margin-top: 10px;
   display: flex;
   justify-content: center;
+}
+.counter {
+  display: flex;
+  margin: 10px 0 0 10px;
+  flex-direction: row;
+}
+.counter div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(154,118,78,1);
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 1px 2px 2px 1px #333;
 }
 .btnSmall {
   position: relative;
@@ -62,19 +77,33 @@
   position: absolute;
   transform: rotate(-45deg);
 }
-
+.googleMap {
+  position: relative;
+  width: auto;
+  height: auto;
+}
 .btnThisIsLocation {
+  position: absolute;
+  top: 10px;
+  left: 10px;
   min-width: 150px;
   display: flex;
   justify-content: center;
   z-index: 10000;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1000px) {
+  
   .gameContainer {
-    margin-top: 10rem;
-
+    margin-bottom: 10rem;
     flex-direction: column;
+    height: 85vh;
+    justify-content: center;
+  }
+  .counter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -87,6 +116,6 @@
 .gameButtonLike {
   position: absolute;
   top: 10px;
-  right: 10px;
+  left: 10px;
   z-index: 10;
 }

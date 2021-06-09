@@ -16,16 +16,18 @@ export default function StatsEl({ data, index }) {
       <div className={classNames(style.gridStatsItem, style.gridAvatar)}>
         <div>
           {!data.urlImg ? (
-            <div className={style.gridStatsItemImg}>
-              <PhotoCameraIcon />
+            <div className={style.gridStatsItemImg} >
+              <div>
+              <PhotoCameraIcon style={{ color: "#fff" }}/>
+              </div>
             </div>
           ) : (
             <img
               src={data.urlImg}
               alt="не найдено"
               className={style.gridStatsItemImg}
-              width={"50px"}
-              height={"50px"}
+              width={"150px"}
+              height={"150px"}
             ></img>
           )}
         </div>

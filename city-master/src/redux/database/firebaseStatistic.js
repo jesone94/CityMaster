@@ -12,13 +12,14 @@ export const fetchStatistic = async (uid) => {
     };
   });
   const data = [];
-
-  for (let elem of statistic) {
+ 
+  statistic.forEach((elem) => {
+ 
     if (!data.find((e) => e.data === elem.data)) {
-      if (!elem.add) {
+      if (typeof elem.add !== "number") {
         data.push({ ...elem, add: 0 });
       }
-      if (!elem.reduce) {
+      else {
         data.push({ ...elem, reduce: 0 });
       }
     } else {
@@ -30,7 +31,7 @@ export const fetchStatistic = async (uid) => {
         data[index].reduce += Number(elem.reduce);
       }
     }
-  }
+  })
 
   return data;
 };

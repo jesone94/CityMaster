@@ -1,7 +1,7 @@
 .gridBody {
   display: grid;
   grid-template-columns: minmax(350px, 450px) minmax(350px, 500px) 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr minmax(150px, 200px);
 }
 .gridItem {
   display: grid;

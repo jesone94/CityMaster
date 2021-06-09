@@ -21,19 +21,19 @@ export const Recharts = () => {
         width={800}
         height={300}
         data={data}
-        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        margin={{ top: 25, right: 30, left: 20, bottom: 45 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="data" 
+        <XAxis dataKey="data" angle={45} tickMargin={35}
          label={
           <Text
           x={0}
           y={0}
           dx={50}
-          dy={150}
+          dy={450}
           offset={0}
           angle={-90}
-       >Очки</Text>
+       >Очки:</Text>
          }
         />
         
@@ -43,9 +43,9 @@ export const Recharts = () => {
           x={0}
           y={0}
           dx={80}
-          dy={280}
+          dy={460}
           offset={0}
-       >Дата</Text>
+       >Дата:</Text>
          }/>
         {/* <Legend /> */}
      

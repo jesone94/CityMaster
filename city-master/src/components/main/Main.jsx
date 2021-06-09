@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { allUsers } from '../../redux/database/firebaseDatabse';
 import Game from '../Game/Game';
+import { Paralax } from '../paralax/Paralax';
 import StartMap from '../StartMap/StartMap';
 import './map.css';
 
@@ -13,7 +14,7 @@ export const Main = () => {
     <>
       {/* {!isGameStarted && <StartMap />}
       {isGameStarted && <Game />} */}
-
+    <Paralax />
       <SwitchTransition mode='out-in'>
         <CSSTransition key={isGameStarted} timeout={1000} classNames='fade-map'>
           <div>

@@ -7,10 +7,16 @@
 }
 
 .gridStatsItemImg{
+  background-color: #333;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.gridStatsItemImg div {
+  transform: scale(2.2);
 }
 .spanItem {
   font-size: 30px;
