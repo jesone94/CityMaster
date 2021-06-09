@@ -26,7 +26,7 @@ export const addScore = async (uid, num) => {
         let { score } = snapshot.val();
         score += num;
         firebase.database().ref(`users/${uid}`).update({ score });
-        firebase.database().ref(`users/${uid}/statistic`).push({num, data: new Date().toJSON(), action: "ADD"})
+        firebase.database().ref(`users/${uid}/statistic`).push({add: num, data: new Date().toLocaleDateString()})
           .then(() => console.log('Успешно добавлено в базу ADD'))
           .catch((e) => console.log(e))
       } else {
@@ -48,7 +48,7 @@ export const reduceScore = async (uid, num) => {
         let { score } = snapshot.val();
         score -= num;
         firebase.database().ref(`users/${uid}`).update({ score });
-        firebase.database().ref(`users/${uid}/statistic`).push({num, data: new Date().toJSON(), action: "REDUCE"})
+        firebase.database().ref(`users/${uid}/statistic`).push({reduce: num, data: new Date().toLocaleDateString()})
         .then(() => console.log('Успешно добавлено в базу REDUCE'))
         .catch((e) => console.log(e))
       } else {

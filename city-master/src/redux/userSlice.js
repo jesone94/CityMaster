@@ -112,7 +112,7 @@ const userSlice = createSlice({
     [fetchUserEditEmail.fulfilled]: (state, action) => {
       state.editStatus = true;
       state.loading = false;
-      state.error = null;
+      state.error = "Успешно";
       state.userEmail = action.payload;
     },
     [fetchUserEditEmail.rejected]: (state, { error }) => {
@@ -123,14 +123,14 @@ const userSlice = createSlice({
     [fetchUserDisplayName.fulfilled]: (state, action) => {
       state.editStatus = true;
       state.displayName = action.payload;
-      state.error = null;
+      state.error = "Успешно";
       state.loading = false;
     },
     [fetchUserDisplayName.rejected]: (state, action) => {
       state.editStatus = false;
       state.editStatus = true;
       state.displayName = action.payload;
-      state.error = null;
+      state.error = "Успешно";
       state.loading = false;
     },
     [fetchUserSignIn.pending]: (state) => {
@@ -174,7 +174,7 @@ const userSlice = createSlice({
       console.log('sucsess')
       state.editStatus = true;
       state.loading = false;
-      state.error = null;
+      state.error = "Успешно";
     },
     [fetchUserHandleLike.fulfilled]: (state, { payload }) => {
       state.favorites.push(payload)

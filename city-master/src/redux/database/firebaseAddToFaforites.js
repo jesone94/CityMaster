@@ -10,8 +10,8 @@ export const addToFavorites = async (uid, place, searchCoords) => {
       lat: searchCoords.lat,
       lng: searchCoords.lng
     });
-    const result = await res
-    return result.data.name
+    // const result = await res
+    return res.data.name
   } catch (e) {
     throw new Error(e.message);
   }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Button, ButtonLoader, ButtonCls } from "../button/Button";
 import style from "./privateOffice.module.css";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
-
 import { useDispatch, useSelector } from "react-redux";
 import EditIcon from "@material-ui/icons/Edit";
 import firebase from "../../firebase/firebase";
@@ -27,10 +26,13 @@ import { fetchUserEditPassword } from "../../redux/userSliceFetches/fetchUserEdi
 import { MiniLoaderM } from "../button/Mini-loaderM";
 import { addFileName, addScore } from "../../redux/database/firebaseDatabse";
 import { addLoader } from "../../redux/loaderSlice";
+import { Recharts } from "./Recharts";
 
 
 export const PrivateOffice = () => {
   const { loader, photoLoader } = useLoaderContext();
+
+
 
   const { error, userEmail, displayName, uid, photoURL, score, favorites } = useSelector(
     (state) => state.user
@@ -210,7 +212,8 @@ export const PrivateOffice = () => {
         <div className="gridItem">
  
           <h1>Набрано очков: {score}</h1>
-
+    
+          <Recharts />
         </div>
         <div className="gridItem">
           {displayNameBoolean && (
@@ -304,6 +307,11 @@ export const PrivateOffice = () => {
                           if (password === "") {
                             return setErrorMessage("Поле не может быть пустым");
                           }
+                          if (!(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(email))) {
+                            return setErrorMessage(
+                              "Не соответствует формату электронной почты"
+                            );
+                          }
                           try {
                             dispatch(addLoading());
                             dispatch(
@@ -348,7 +356,7 @@ export const PrivateOffice = () => {
                           dispatch(
                             fetchUserDisplayName({ uid, displayNameInput })
                           );
-                          setDisplayNameBoolean(false);
+      
                         } catch (e) {
                           console.log(e);
                         }
@@ -407,7 +415,8 @@ export const PrivateOffice = () => {
           )}
         </div>
         <div className="gridItem">
-          <h1>COntent</h1>
+          
+
         </div>
       
       </div>

@@ -11,7 +11,10 @@
   flex-direction: row;
 }
 .btnWrapperFav {
-  margin: 10px 0 0 0;
+  margin: 10px 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end
 }
 .modalWrap {
   height: 100vh;
@@ -34,5 +37,5 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px 0 0 0;
+  margin: 10px 0;
 }
