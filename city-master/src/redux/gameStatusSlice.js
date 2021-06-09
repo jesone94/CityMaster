@@ -20,6 +20,7 @@ export const gameStatusSlice = createSlice({
     currentImgCoords: {},
     answerCoords: null,
     answerDistance: 0,
+    auction: false,
   },
   reducers: {
     nullLocation(state) {
@@ -55,6 +56,9 @@ export const gameStatusSlice = createSlice({
       state.answerCoords = null;
       state.answerDistance = 0;
     },
+    toggleAuction(state) {
+      state.auction = !state.auction;
+    },
   },
   extraReducers: {
     [fetchLocation.pending]: (state) => {
@@ -75,4 +79,5 @@ export const {
   toggleAnswerCoords,
   clearCurrentImgUrl,
   resetGameStatus,
+  toggleAuction,
 } = gameStatusSlice.actions;
