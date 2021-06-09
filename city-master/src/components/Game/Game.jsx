@@ -13,6 +13,7 @@ import {
   resetGameStatus,
   searchCoordsToggle,
   toggleAnswerCoords,
+  toggleAuction,
   toggleCurrentImg,
   toggleDistance,
 } from '../../redux/gameStatusSlice';
@@ -35,7 +36,7 @@ export default function Game() {
     enableCloseButton: false,
     showRoadLabels: false,
     clickToGo: false,
-    disableDefaultUI: true,
+    disableDefaultUI: false,
   };
   const options = {
     strokeColor: '#FF0000',
@@ -61,8 +62,15 @@ export default function Game() {
   const dispatch = useDispatch();
   const [click, setClick] = useState(true);
 
-  const { coords, searchCoords, currentImgUrl, currentImgCoords, answerDistance, answerCoords } =
-    state;
+  const {
+    coords,
+    searchCoords,
+    currentImgUrl,
+    currentImgCoords,
+    answerDistance,
+    answerCoords,
+    auction,
+  } = state;
 
   const searchLocation = useCallback(async () => {
     const url = `https://maps.googleapis.com/maps/api/streetview/metadata?size=600x300&location=${searchCoords.lat},${searchCoords.lng}&fov=90&heading=235&pitch=10&key=${process.env.REACT_APP_GMAPS_API_KEY}`;
@@ -116,14 +124,31 @@ export default function Game() {
             ></div>
             <div className={style.modalColumn}>
               <div className='counter2'>
-                {answerDistance !== 0 && (
-                  <h3>Ваше расстояние от точки вопроса {String(answerDistance.toFixed(2))} км </h3>
+                {!auction ? (
+                  <>
+                    {answerDistance !== 0 && (
+                      <h3>
+                        Ваше расстояние от точки вопроса {String(answerDistance.toFixed(2))} км{' '}
+                      </h3>
+                    )}
+                    {answerDistance <= 1 && <h3>Вы заработали 150 очков</h3>}
+                    {answerDistance > 1 && answerDistance <= 3 && <h3>Вы заработали 100 очков</h3>}
+                    {answerDistance > 3 && answerDistance <= 7 && <h3>Вы заработали 50 очков</h3>}
+                    {answerDistance > 7 && answerDistance <= 10 && <h3>Вы заработали 0 очков</h3>}
+                    {answerDistance > 10 && <h3>Вы заработали -50 очков</h3>}
+                  </>
+                ) : (
+                  <>
+                    <h3>Вопрос аукцион</h3>
+                    {answerDistance !== 0 && (
+                      <h3>
+                        Ваше расстояние от точки вопроса {String(answerDistance.toFixed(2))} км{' '}
+                      </h3>
+                    )}
+                    {answerDistance <= 5 && <h3>Вы заработали 250 очков</h3>}
+                    {answerDistance > 5 && <h3>Вы проиграли 250 очков</h3>}
+                  </>
                 )}
-                {answerDistance <= 1 && <h3>Вы заработали 150 очков</h3>}
-                {answerDistance > 1 && answerDistance <= 3 && <h3>Вы заработали 100 очков</h3>}
-                {answerDistance > 3 && answerDistance <= 7 && <h3>Вы заработали 50 очков</h3>}
-                {answerDistance > 7 && answerDistance <= 10 && <h3>Вы заработали 0 очков</h3>}
-                {answerDistance > 10 && <h3>Вы заработали -50 очков</h3>}
               </div>
               <hr />
 
@@ -145,33 +170,98 @@ export default function Game() {
                 <Button
                   text='Продолжить'
                   click={() => {
-                    if (answerDistance <= 1) {
-                      addScore(uid, 150);
-                      dispatch(userAddScore(150));
-                      console.log('+');
-                    } else if (answerDistance > 1 && answerDistance <= 3) {
-                      addScore(uid, 100);
-                      dispatch(userAddScore(100));
-                    } else if (answerDistance > 3 && answerDistance <= 7) {
-                      addScore(uid, 50);
-                      dispatch(userAddScore(50));
-                    } else if (answerDistance > 7 && answerDistance <= 10) {
-                      addScore(uid, 0);
-                      dispatch(userAddScore(0));
+                    if (!auction) {
+                      if (answerDistance <= 1) {
+                        addScore(uid, 150);
+                        dispatch(userAddScore(150));
+                        console.log('+');
+                      } else if (answerDistance > 1 && answerDistance <= 3) {
+                        addScore(uid, 100);
+                        dispatch(userAddScore(100));
+                      } else if (answerDistance > 3 && answerDistance <= 7) {
+                        addScore(uid, 50);
+                        dispatch(userAddScore(50));
+                      } else if (answerDistance > 7 && answerDistance <= 10) {
+                        addScore(uid, 0);
+                        dispatch(userAddScore(0));
+                      } else {
+                        console.log('минус');
+                        reduceScore(uid, 75);
+                        dispatch(userReduceScore(75));
+                      }
+                      dispatch(searchCoordsToggle(cordsRandomazer(coords)));
+                      dispatch(toggleDistance(0));
+                      dispatch(toggleAnswerCoords(null));
+                      dispatch(clearCurrentImgUrl());
+                      setToggler(false);
+                      setClick(true);
                     } else {
-                      console.log('минус');
-                      reduceScore(uid, 75);
-                      dispatch(userReduceScore(75));
+                      if (answerDistance <= 5) {
+                        addScore(uid, 250);
+                        dispatch(userAddScore(250));
+                      } else {
+                        reduceScore(uid, 250);
+                        dispatch(userReduceScore(250));
+                      }
+                      dispatch(toggleAuction());
+                      dispatch(searchCoordsToggle(cordsRandomazer(coords)));
+                      dispatch(toggleDistance(0));
+                      dispatch(toggleAnswerCoords(null));
+                      dispatch(clearCurrentImgUrl());
+                      setToggler(false);
+                      setClick(true);
                     }
-
-                    dispatch(searchCoordsToggle(cordsRandomazer(coords)));
-                    dispatch(toggleDistance(0));
-                    dispatch(toggleAnswerCoords(null));
-                    dispatch(clearCurrentImgUrl());
-                    setToggler(false);
-                    setClick(true);
                   }}
                 ></Button>
+                {!auction && (
+                  <Button
+                    text='Локация аукцион'
+                    click={() => {
+                      if (!auction) {
+                        if (answerDistance <= 1) {
+                          addScore(uid, 150);
+                          dispatch(userAddScore(150));
+                          console.log('+');
+                        } else if (answerDistance > 1 && answerDistance <= 3) {
+                          addScore(uid, 100);
+                          dispatch(userAddScore(100));
+                        } else if (answerDistance > 3 && answerDistance <= 7) {
+                          addScore(uid, 50);
+                          dispatch(userAddScore(50));
+                        } else if (answerDistance > 7 && answerDistance <= 10) {
+                          addScore(uid, 0);
+                          dispatch(userAddScore(0));
+                        } else {
+                          console.log('минус');
+                          reduceScore(uid, 75);
+                          dispatch(userReduceScore(75));
+                        }
+                        dispatch(toggleAuction());
+                        dispatch(searchCoordsToggle(cordsRandomazer(coords)));
+                        dispatch(toggleDistance(0));
+                        dispatch(toggleAnswerCoords(null));
+                        dispatch(clearCurrentImgUrl());
+                        setToggler(false);
+                        setClick(true);
+                      } else {
+                        if (answerDistance <= 5) {
+                          addScore(uid, 250);
+                          dispatch(userAddScore(250));
+                        } else {
+                          reduceScore(uid, 250);
+                          dispatch(userReduceScore(250));
+                        }
+                        dispatch(toggleAuction());
+                        dispatch(searchCoordsToggle(cordsRandomazer(coords)));
+                        dispatch(toggleDistance(0));
+                        dispatch(toggleAnswerCoords(null));
+                        dispatch(clearCurrentImgUrl());
+                        setToggler(false);
+                        setClick(true);
+                      }
+                    }}
+                  ></Button>
+                )}
               </div>
             </div>
           </div>
