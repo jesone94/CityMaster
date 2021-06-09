@@ -39,7 +39,7 @@ export default function ScrollableTabsButtonPrevent() {
   return (
     <>
       {!userEmail ? (
-        <ul>
+        <ul className={style.navbarUL}>
           <li>
             <Link>CityKong</Link>
           </li>

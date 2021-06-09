@@ -60,11 +60,17 @@ const SignUp = () => {
                 <div className={style.modalColumn}>
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
-                      <label>Имя</label>
+                      <label>Имя *</label>
+                      <span className={style.errors}>
+                        {errors.name?.type === "required" &&
+                          " Обязательное для заполнения поле"}
+                          {errors.name?.type === "minLength" &&
+                          " Должно быть более трёх символов"}
+                      </span>
                       <input
                         placeholder="Имя"
                         type="text"
-                        {...register("name")}
+                        {...register("name", { required: true, minLength: 3 })}
                       />
                       <div></div>
                       <label>Электронная почта *</label>
@@ -77,7 +83,7 @@ const SignUp = () => {
                       <input
                         placeholder="Электронная почта"
                         type="text"
-                        {...register("email", { required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/gi })}
+                        {...register("email", { required: true, pattern: /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/gi })}
                       />
                       <div></div>
                       <label>Пароль *</label>{" "}

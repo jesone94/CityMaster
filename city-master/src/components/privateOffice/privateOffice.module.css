@@ -132,3 +132,18 @@
     align-items: center;
   }
 }
+.barSquare {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+.firstSquare {
+  width: 20px;
+  height: 20px;
+  background-color: #9A764E;
+}
+.secondSquare {
+  width: 20px;
+  height: 20px;
+  background-color: #999;
+}
