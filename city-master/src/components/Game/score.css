@@ -1,0 +1,17 @@
+.scoreAnimation-enter-active {
+  animation: scoreAnimation 400ms forwards;
+}
+
+.scoreAnimation-exit-active {
+  animation: scoreAnimation 400ms alternate-reverse;
+}
+@keyframes scoreAnimation {
+  0% {
+    opacity: 0;
+    transform: translateX(-400px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

@@ -59,7 +59,8 @@ function App() {
         <ModalContextProvider>
           <Router>
             <NavBar />
-            <div className="bckgrnd-url"> </div>
+
+            
             <Switch>
 
               

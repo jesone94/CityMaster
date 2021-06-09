@@ -14,7 +14,7 @@ import { CSSTransition } from "react-transition-group";
 import './location.css'
 
 const containerStyle = {
-  width: "1000px",
+  width: "900px",
   height: "750px",
 };
 

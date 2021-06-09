@@ -4,10 +4,10 @@ import {
   Marker,
   Polyline,
   StreetViewPanorama,
-} from '@react-google-maps/api';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { CSSTransition } from 'react-transition-group';
+} from "@react-google-maps/api";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 import {
   clearCurrentImgUrl,
   resetGameStatus,
@@ -16,17 +16,20 @@ import {
   toggleAuction,
   toggleCurrentImg,
   toggleDistance,
-} from '../../redux/gameStatusSlice';
-import cordsRandomazer from '../StartMap/coordRamdomazer';
-import { Button, ButtonLike } from '../button/Button';
-import './modalGame.css';
-import style from './game.module.css';
-import * as geokit from 'geokit';
-import { addScore, reduceScore } from '../../redux/database/firebaseDatabse';
-import { Loader } from '../loader/Loader';
-import { fetchUserHandleLike } from '../../redux/userSliceFetches/fetchUserHandleLike';
-import './btn.css';
-import { userAddScore, userReduceScore } from '../../redux/userSlice';
+} from "../../redux/gameStatusSlice";
+import cordsRandomazer from "../StartMap/coordRamdomazer";
+import { Button, ButtonCls, ButtonLike } from "../button/Button";
+import "./modalGame.css";
+import style from "./game.module.css";
+import * as geokit from "geokit";
+import { addScore, reduceScore } from "../../redux/database/firebaseDatabse";
+import { Loader } from "../loader/Loader";
+import { fetchUserHandleLike } from "../../redux/userSliceFetches/fetchUserHandleLike";
+import "./btn.css";
+import { userAddScore, userReduceScore } from "../../redux/userSlice";
+import "./score.css";
+import "./google.css";
+import { Timer } from "../spinner/Timer";
 
 export default function Game() {
   const panoramaOptions = {
@@ -39,10 +42,10 @@ export default function Game() {
     disableDefaultUI: false,
   };
   const options = {
-    strokeColor: '#FF0000',
+    strokeColor: "#FF0000",
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
+    fillColor: "#FF0000",
     fillOpacity: 0.35,
     clickable: false,
     draggable: false,
@@ -53,14 +56,18 @@ export default function Game() {
     zIndex: 1,
   };
   const containerStyle = {
-    width: '600px',
-    height: '300px',
+    width: "900px",
+    height: "700px",
   };
 
   const state = useSelector((state) => state.gameStatus);
   const { uid, score } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [click, setClick] = useState(true);
+
+
+  const [scoreState, setScoreState] = useState(score);
+
 
   const {
     coords,
@@ -69,7 +76,9 @@ export default function Game() {
     currentImgCoords,
     answerDistance,
     answerCoords,
+
     auction,
+
   } = state;
 
   const searchLocation = useCallback(async () => {
@@ -78,9 +87,7 @@ export default function Game() {
     const response = await fetch(url);
     const result = await response.json();
 
-    console.log(result);
-    if (result.status === 'OK') {
-      console.log(result);
+    if (result.status === "OK") {
       dispatch(toggleCurrentImg(result.location));
       return;
     } else {
@@ -101,28 +108,41 @@ export default function Game() {
   const handleLike = async () => {
     dispatch(fetchUserHandleLike({ searchCoords, uid }));
   };
-  console.log(currentImgCoords, 'CURRENT IMG COORDS');
+
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
-      <div className='counter'>
-        <h1>Ваш счёт {score} </h1>
+      <div className={style.counter}>
+        <h1>
+          Ваш счёт:&nbsp;
+          <SwitchTransition mode="out-in">
+            <CSSTransition
+              key={score}
+              timeout={400}
+              classNames="scoreAnimation"
+            >
+              <div>{score ? `${score}` : `${score}`}</div>
+            </CSSTransition>
+          </SwitchTransition>
+        </h1>
       </div>
+
       <div
         className={style.gameContainer}
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        <CSSTransition in={toggler} timeout={700} classNames='modal' mountOnEnter unmountOnExit>
+        <CSSTransition
+          in={toggler}
+          timeout={700}
+          classNames="modal"
+          mountOnEnter
+          unmountOnExit
+        >
           <div className={style.modalContent}>
-            <div
-              className={style.btnSmall}
-              onClick={async (e) => {
-                e.stopPropagation();
-                setToggler(false);
-              }}
-            ></div>
+
             <div className={style.modalColumn}>
+
               <div className='counter2'>
                 {!auction ? (
                   <>
@@ -149,27 +169,36 @@ export default function Game() {
                     {answerDistance > 5 && <h3>Вы проиграли 250 очков</h3>}
                   </>
                 )}
+
               </div>
               <hr />
 
-              <GoogleMap mapContainerStyle={containerStyle} center={currentImgCoords} zoom={11}>
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={currentImgCoords}
+                zoom={11}
+              >
                 <Marker position={currentImgCoords} key={1} />
                 <Marker
                   position={answerCoords}
                   key={2}
                   icon={
-                    'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+                    "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
                   }
                 />
 
-                <Polyline path={[currentImgCoords, answerCoords]} options={options} />
+                <Polyline
+                  path={[currentImgCoords, answerCoords]}
+                  options={options}
+                />
               </GoogleMap>
 
               <div className={style.btnWrap}></div>
               <div className={style.righted}>
                 <Button
-                  text='Продолжить'
+                  text="Продолжить"
                   click={() => {
+
                     if (!auction) {
                       if (answerDistance <= 1) {
                         addScore(uid, 150);
@@ -210,6 +239,7 @@ export default function Game() {
                       dispatch(clearCurrentImgUrl());
                       setToggler(false);
                       setClick(true);
+
                     }
                   }}
                 ></Button>
@@ -290,7 +320,7 @@ export default function Game() {
             <div className={style.gameButtonLike}>
               <CSSTransition
                 in={click}
-                classNames='btn-like'
+                classNames="btn-like"
                 timeout={400}
                 unmountOnExit
                 mountOnEnter
@@ -301,49 +331,58 @@ export default function Game() {
                     setClick(false);
                   }}
                 />
+               
               </CSSTransition>
             </div>
           </div>
         </div>
-        <div className={style.modalColumn}>
-          {answerCoords && (
+
+        <div>
+          <div className={style.googleMap}>
             <div className={style.btnThisIsLocation}>
-              <Button
-                text='Это здесь!'
+              <ButtonCls
+                text={"Сменить локацию"}
                 click={() => {
-                  dispatch(toggleDistance(geokit.distance(currentImgCoords, answerCoords)));
-                  setToggler((prev) => !prev);
+                  dispatch(resetGameStatus());
                 }}
               />
+
+              {answerCoords && (
+                <Button
+                  text="Это здесь!"
+                  click={() => {
+                    dispatch(
+                      toggleDistance(
+                        geokit.distance(currentImgCoords, answerCoords)
+                      )
+                    );
+                    setToggler((prev) => !prev);
+                  }}
+                />
+              )}
             </div>
-          )}
-          <Button
-            text={'Сменить локацию'}
-            click={() => {
-              dispatch(resetGameStatus());
-            }}
-          />
-        </div>
-        <div>
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={coords}
-            zoom={10}
-            streetView={false}
-            onClick={(ev) => {
-              if (!toggler) {
-                const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
-                dispatch(toggleAnswerCoords(coords));
-              }
-            }}
-          >
-            <Marker
-              position={answerCoords}
-              icon={
-                'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
-              }
-            />
-          </GoogleMap>
+
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={coords}
+              zoom={10}
+              options={{ mapTypeControl: false }}
+              streetView={false}
+              onClick={(ev) => {
+                if (!toggler) {
+                  const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
+                  dispatch(toggleAnswerCoords(coords));
+                }
+              }}
+            >
+              <Marker
+                position={answerCoords}
+                icon={
+                  "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                }
+              />
+            </GoogleMap>
+          </div>
         </div>
       </div>
     </LoadScript>

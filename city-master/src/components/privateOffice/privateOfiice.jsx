@@ -27,6 +27,7 @@ import { MiniLoaderM } from "../button/Mini-loaderM";
 import { addFileName, addScore } from "../../redux/database/firebaseDatabse";
 import { addLoader } from "../../redux/loaderSlice";
 import { Recharts } from "./Recharts";
+import { Paralax } from "../paralax/Paralax";
 
 
 export const PrivateOffice = () => {
@@ -109,6 +110,7 @@ export const PrivateOffice = () => {
       {/* {loader ? (
         <Loader />
       ) : ( */}
+      <Paralax />
       <div className="gridBody">
         <div className="gridItem gridItem1">
           <div>
@@ -123,7 +125,6 @@ export const PrivateOffice = () => {
                 }}
               ></div>
             )}
-
             {!file ? (
               <div className={style.uloadDiv}>
                 <form onSubmit={(e) => handleSubmit(e)}>
@@ -210,9 +211,9 @@ export const PrivateOffice = () => {
           </div>
         </div>
         <div className="gridItem">
- 
+          <div className="subGridItem">
           <h1>Набрано очков: {score}</h1>
-    
+                </div>
           <Recharts />
         </div>
         <div className="gridItem">
@@ -356,7 +357,6 @@ export const PrivateOffice = () => {
                           dispatch(
                             fetchUserDisplayName({ uid, displayNameInput })
                           );
-      
                         } catch (e) {
                           console.log(e);
                         }
