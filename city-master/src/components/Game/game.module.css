@@ -1,7 +1,7 @@
 .gameContainer {
   height: 100vh;
   width: 100vw;
-  top:0;
+  top: 0;
   left: 0;
   position: relative;
   display: flex;
@@ -17,7 +17,7 @@
   padding: 20px;
   background-color: white;
   border-radius: 5px;
- 
+
   z-index: 10000000000000000;
 }
 
@@ -32,7 +32,7 @@
   display: flex;
   justify-content: center;
 }
-.btnSmall{
+.btnSmall {
   position: relative;
   top: -20px;
   left: -20px;
@@ -40,10 +40,10 @@
   height: 30px;
   cursor: pointer;
   border-radius: 50%;
-  transition: .22s ease-in-out;
+  transition: 0.22s ease-in-out;
 }
-.btnSmall:before{
-  background-color:#9A764E;
+.btnSmall:before {
+  background-color: #9a764e;
   top: 14px;
   left: 8px;
   content: '';
@@ -52,8 +52,8 @@
   position: absolute;
   transform: rotate(45deg);
 }
-.btnSmall::after{
-  background-color:#9A764E;
+.btnSmall::after {
+  background-color: #9a764e;
   top: 14px;
   left: 8px;
   content: '';
@@ -75,7 +75,7 @@
     margin-top: 10rem;
 
     flex-direction: column;
- }
+  }
 }
 
 .wrapperPanorama {
