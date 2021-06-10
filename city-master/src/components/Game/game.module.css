@@ -1,3 +1,15 @@
+.auctionText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(154, 118, 78, 1);
+  color: #fff;
+  margin-left: 2rem;
+  border-radius: 5px;
+  box-shadow: 1px 2px 2px 1px #333;
+  font-size: 2rem;
+}
+
 .gameContainer {
   height: 100vh;
   left: 0;
@@ -6,8 +18,9 @@
   flex-direction: row;
   justify-content: space-around;
   flex-wrap: nowrap;
-  align-items: center;
+  align-items: flex-start;
   z-index: 1001;
+  margin-top: 1rem;
 }
 
 .modalContent {
@@ -65,7 +78,7 @@
   background-color: #9a764e;
   top: 14px;
   left: 8px;
-  content: "";
+  content: '';
   width: 25px;
   height: 5px;
   position: absolute;
@@ -75,7 +88,7 @@
   background-color: #9a764e;
   top: 14px;
   left: 8px;
-  content: "";
+  content: '';
   width: 25px;
   height: 5px;
   position: absolute;
@@ -103,14 +116,21 @@
     flex-direction: column;
     height: 85vh;
     justify-content: start;
+    align-items: center;
   }
   .counter {
     display: flex;
     justify-content: center;
     align-items: center;
+    justify-content: center;
+    margin: 0;
+    flex-direction: column;
+  }
+  .auctionText {
+    margin: 0;
+    margin-top: 2rem;
   }
 }
-
 
 .wrapperPanorama {
   width: 100%;
