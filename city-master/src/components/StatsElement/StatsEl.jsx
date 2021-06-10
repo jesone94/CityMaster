@@ -4,19 +4,19 @@ import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import classNames from 'classnames';
 
 export default function StatsEl({ data, index }) {
-  console.log(data, "DATA");
+
   return (
     <>
       <div className={classNames(style.spanItem ,style.gridStatsItem)}>
         <span>
-          №{index + 1}
+          №{index + 1}.
           &nbsp;{data.displayName}
         </span>
       </div>
       <div className={classNames(style.gridStatsItem, style.gridAvatar)}>
         <div>
           {!data.urlImg ? (
-            <div className={style.gridStatsItemImg} >
+            <div className={classNames(style.noAvatar)}>
               <div>
               <PhotoCameraIcon style={{ color: "#fff" }}/>
               </div>
