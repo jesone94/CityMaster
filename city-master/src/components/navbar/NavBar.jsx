@@ -14,7 +14,7 @@ import {
 } from "react-transition-group";
 import { Button, ButtonLike } from "../button/Button";
 import logo from "../../images/logo.png";
-
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
 
 export default function ScrollableTabsButtonPrevent() {
   const [toggler, setToggler] = useState(false);
@@ -62,7 +62,7 @@ export default function ScrollableTabsButtonPrevent() {
             unmountOnExit
           >
             <li>
-              <NavLink to="/">На главную</NavLink>
+              <NavLink to="/">На главную&nbsp;<HomeWorkIcon /></NavLink>
             </li>
           </CSSTransition>
           {userEmail && (

@@ -165,13 +165,13 @@ const userSlice = createSlice({
       state.loading = true;
     },
     [fetchUserEditPassword.rejected]: (state, { error }) => {
-      console.log(error.message);
+
       state.editStatus = false;
       state.loading = false;
       state.error = error.message;
     },
     [fetchUserEditPassword.fulfilled]: (state, payload) => {
-      console.log('sucsess');
+
       state.editStatus = true;
       state.loading = false;
       state.error = 'Успешно';
@@ -186,7 +186,9 @@ const userSlice = createSlice({
       state.score = payload;
     },
     [fetchUserRemoveFavoriteElement.fulfilled]: (state, { payload }) => {
-      state.favorites = state.favorites.filter(({ id }) => id !== payload);
+
+      state.favorites = state.favorites.filter((el) => el.id !== payload);
+
     },
   },
 });

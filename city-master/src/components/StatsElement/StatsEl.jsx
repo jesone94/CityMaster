@@ -6,10 +6,10 @@ import classNames from 'classnames';
 export default function StatsEl({ data, index }) {
 
   return (
-    <>
+    <> 
       <div className={classNames(style.spanItem ,style.gridStatsItem)}>
+      <div className={style.index}>№{index + 1}.</div>
         <span>
-          №{index + 1}.
           &nbsp;{data.displayName}
         </span>
       </div>

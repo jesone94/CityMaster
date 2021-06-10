@@ -4,6 +4,9 @@ const url = process.env.REACT_APP_DATABASE_URL;
 
 export const fetchStatistic = async (uid) => {
   const res = await axios.get(`${url}/users/${uid}/statistic.json`);
+  if (res.data === null){
+    return []
+  }
   const statistic = Object.keys(res.data).map((key) => {
     return {
       ...res.data[key],

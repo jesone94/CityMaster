@@ -61,7 +61,9 @@ export default function Game() {
   const dispatch = useDispatch();
   const [click, setClick] = useState(true);
 
-  const [scoreState, setScoreState] = useState(score);
+
+
+
 
   const {
     coords,

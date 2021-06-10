@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserAllFavorites } from '../../redux/userSliceFetches/fetchUserAllFavorites';
 import { FavoritesElement } from './FavoritesElement';
@@ -8,12 +8,8 @@ import './favoriteTransition.css';
 import { Paralax } from '../paralax/Paralax';
 
 export const Favorites = () => {
-  const dispatch = useDispatch();
-  const { favorites, uid } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    dispatch(fetchUserAllFavorites(uid));
-  }, [dispatch, uid, favorites]);
+  const { favorites, uid } = useSelector((state) => state.user);
 
   return (
     <>
