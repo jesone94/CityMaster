@@ -10,6 +10,7 @@ export const fetchUserAllFavorites = createAsyncThunk(
       const res = await axios.get(`${url}/users/${uid}/favorites.json`);
 
       if (res.data){
+        console.log(res.data)
         const payload = Object.keys(res.data).map((key) => {
           return {
             ...res.data[key],

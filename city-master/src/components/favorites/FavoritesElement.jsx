@@ -38,11 +38,11 @@ export const FavoritesElement = ({ el }) => {
 
   return (
    <>
-      <div className={style.cardFavorit}>
-      <div key={el.id} className={style.favorites}>
+      <div className={style.cardFavorit}  key={el.id}>
+      <div className={style.favorites}>
           <img src={url} alt="не найдено" />
         </div>
-        <div key={el.id} className={style.favorites}>
+        <div className={style.favorites}>
           <h2>{el.place}</h2>
         </div>
         <div className={style.btnWrapperFav}>

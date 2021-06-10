@@ -59,19 +59,19 @@ const userSlice = createSlice({
     removeLoading(state) {
       state.loading = false;
     },
-    nullErrorAndStatus (state) {
+    nullErrorAndStatus(state) {
       state.editStatus = false;
       state.error = null;
     },
-    loadFavorites (state, { payload }) {
-      state.favorites = payload
+    loadFavorites(state, { payload }) {
+      state.favorites = payload;
     },
     userAddScore(state, { payload }) {
-      state.score += payload
+      state.score += payload;
     },
     userReduceScore(state, { payload }) {
-      state.score -= payload
-    }
+      state.score -= payload;
+    },
   },
   extraReducers: {
     // Add reducers for additional action types here, and handle loading state as needed
@@ -165,29 +165,27 @@ const userSlice = createSlice({
       state.loading = true;
     },
     [fetchUserEditPassword.rejected]: (state, { error }) => {
-      console.log(error.message)
       state.editStatus = false;
       state.loading = false;
       state.error = error.message;
     },
     [fetchUserEditPassword.fulfilled]: (state, payload) => {
-      console.log('sucsess')
       state.editStatus = true;
       state.loading = false;
       state.error = "Успешно";
     },
     [fetchUserHandleLike.fulfilled]: (state, { payload }) => {
-      state.favorites.push(payload)
+      state.favorites.push(payload);
     },
     [fetchUserAllFavorites.fulfilled]: (state, { payload }) => {
       state.favorites = payload;
     },
     [fetchUserScrore.fulfilled]: (state, { payload }) => {
-      state.score = payload
+      state.score = payload;
     },
     [fetchUserRemoveFavoriteElement.fulfilled]: (state, { payload }) => {
-     state.favorites.filter(({id}) => id !== payload)
-    }
+      state.favorites = state.favorites.filter((el) => el.id !== payload);
+    },
   },
 });
 
@@ -203,5 +201,5 @@ export const {
   addPhotoLoading,
   removePhotoLoading,
   userAddScore,
-  userReduceScore
+  userReduceScore,
 } = userSlice.actions;

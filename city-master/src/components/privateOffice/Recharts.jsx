@@ -49,7 +49,7 @@ export const Recharts = () => {
         margin={{ top: 25, right: 30, left: 20, bottom: 45 }}
       >
         <CartesianGrid strokeDasharray="3 3" fill="#fff" stroke="#333"/>
-        <XAxis dataKey="data" angle={45} tickMargin={35} stroke="#000"
+        <XAxis dataKey="data" angle={45} tickMargin={35} stroke="#000" tick={{ fontSize: 20 }}
          label={
           <Text
           x={0}
@@ -63,7 +63,7 @@ export const Recharts = () => {
         />
         
         <Tooltip />
-        <YAxis stroke="#000" label={
+        <YAxis stroke="#000" tick={{ fontSize: 20 }} label={
           <Text
           x={0}
           y={0}

@@ -41,7 +41,7 @@ function App() {
   useEffect(() => {
     dispatch(fetchUserAllFavorites(uid));
     dispatch(fetchUserScrore(uid))
-  }, [dispatch, uid]);
+  }, [uid]);
 
   const routes = [
     { path: '/', Component: Main },
@@ -103,9 +103,8 @@ function App() {
              
 
               <PrivateRoute exact path='/private-office' component={PrivateOffice} />
-              <Route exact path='/stats'>
-                <Statistic />
-              </Route>
+              <PrivateRoute exact path='/stats' component={Statistic} />
+          
               <Route exact path='/'></Route>
 
             </Switch>

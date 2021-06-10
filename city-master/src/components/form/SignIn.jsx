@@ -10,6 +10,7 @@ import { Loader } from "../loader/Loader";
 import { fetchUserSignIn } from "../../redux/userSliceFetches/fetchUserSignIn";
 import { fetchUserAllFavorites } from "../../redux/userSliceFetches/fetchUserAllFavorites";
 import { fetchUserScrore } from "../../redux/userSliceFetches/fetchUserScore";
+import { MyLogotip } from "../MyLogotip/MyLogotip";
 
 const SignIn = () => {
   // const [active, setActive] = useState(true)
@@ -59,11 +60,13 @@ const SignIn = () => {
       ) : (
         <div className={style.containerForm}>
           <div onClick={() => {}} className={style.modalWrap}>
+          
             <div
               className={style.modalColumn}
               onClick={(e) => e.stopPropagation()}
             >
               <div className={style.modalContent}>
+              <MyLogotip />
                 <div className={style.modalColumn}>
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div>

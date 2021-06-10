@@ -68,8 +68,8 @@
 }
 
 .errors {
-  color:#9A764E;
-  font-size: 18px;
+  color:#000000;
+  font-size: 22px;
   animation: errors forwards .6s ease-in;
 }
 .buttonCLSwrap {
