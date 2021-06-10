@@ -5,6 +5,7 @@ import { FavoritesElement } from './FavoritesElement';
 import style from './favorites.module.css';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './favoriteTransition.css';
+import { Paralax } from '../paralax/Paralax';
 
 export const Favorites = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,8 @@ export const Favorites = () => {
   }, [dispatch, uid, favorites]);
 
   return (
+    <>
+    <Paralax />
     <div className={style.favoritesContainer}>
       <div className={style.favoritesWrapper}>
         <TransitionGroup component='div'>
@@ -28,5 +31,6 @@ export const Favorites = () => {
         </TransitionGroup>
       </div>
     </div>
+    </>
   );
 };

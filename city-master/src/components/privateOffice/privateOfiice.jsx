@@ -29,15 +29,11 @@ import { addLoader } from "../../redux/loaderSlice";
 import { Recharts } from "./Recharts";
 import { Paralax } from "../paralax/Paralax";
 
-
 export const PrivateOffice = () => {
   const { loader, photoLoader } = useLoaderContext();
 
-
-
-  const { error, userEmail, displayName, uid, photoURL, score, favorites } = useSelector(
-    (state) => state.user
-  );
+  const { error, userEmail, displayName, uid, photoURL, score, favorites } =
+    useSelector((state) => state.user);
   const { editStatus } = useSelector((state) => state.user);
 
   const [email, setEmail] = useState(userEmail);
@@ -115,15 +111,16 @@ export const PrivateOffice = () => {
         <div className="gridItem gridItem1">
           <div>
             {file && (
-              <div
-                className={style.btnSmall}
-                onClick={async (e) => {
-                  dispatch(nullErrorAndStatus());
-                  e.stopPropagation();
+              <div className={style.buttonCLSwrap}>
+              <ButtonCls
+                text="Удалить"
+                click={async () => {
+                  dispatch(nullErrorAndStatus());           
                   dispatch(addPhotoLoading());
                   dispatch(fetchUserRemovePhoto({ uid }));
                 }}
-              ></div>
+              />
+              </div>
             )}
             {!file ? (
               <div className={style.uloadDiv}>
@@ -178,7 +175,7 @@ export const PrivateOffice = () => {
             </h1>
           </div>
           <div className="subGridItem">
-            <p>
+            <h2>
               {userEmail}&nbsp;
               <EditIcon
                 className="pointer"
@@ -189,7 +186,7 @@ export const PrivateOffice = () => {
                   setEditPasswordBoolean(false);
                 }}
               />
-            </p>
+            </h2>
           </div>
           <div className="subGridItem">
             <p>
@@ -212,8 +209,8 @@ export const PrivateOffice = () => {
         </div>
         <div className="gridItem">
           <div className="subGridItem">
-          <h1>Набрано очков: {score}</h1>
-                </div>
+            <h1>Набрано очков: {score}</h1>
+          </div>
           <Recharts />
         </div>
         <div className="gridItem">
@@ -308,7 +305,11 @@ export const PrivateOffice = () => {
                           if (password === "") {
                             return setErrorMessage("Поле не может быть пустым");
                           }
-                          if (!(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(email))) {
+                          if (
+                            !/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(
+                              email
+                            )
+                          ) {
                             return setErrorMessage(
                               "Не соответствует формату электронной почты"
                             );
@@ -414,11 +415,7 @@ export const PrivateOffice = () => {
             </div>
           )}
         </div>
-        <div className="gridItem">
-          
-
-        </div>
-      
+        <div className="gridItem"></div>
       </div>
       {/* )} */}
     </>

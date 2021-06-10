@@ -1,7 +1,9 @@
 .gridBody {
+  margin: 3rem 0 0 0;
   display: grid;
-  grid-template-columns: minmax(350px, 450px) minmax(350px, 500px) 1fr;
+  grid-template-columns: minmax(250px, 450px) minmax(250px, 500px) 1fr;
   grid-template-rows: 1fr minmax(150px, 200px);
+
 }
 .gridItem {
   display: grid;
@@ -12,7 +14,7 @@
   grid-row-start: 1;
   grid-row-end: 3;
   grid-column-start: auto;
-  grid-column-end: auto;
+  grid-column-end: auto;  
   justify-content: center;
 }
 
@@ -25,7 +27,7 @@
 .pointer {
   cursor: pointer;
 }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1100px) {
   .gridItem {
     justify-content: center;
     align-items: center;

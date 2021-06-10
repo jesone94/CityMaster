@@ -55,10 +55,7 @@ export default function Game() {
 
     zIndex: 1,
   };
-  const containerStyle = {
-    width: "900px",
-    height: "700px",
-  };
+  
 
   const state = useSelector((state) => state.gameStatus);
   const { uid, score } = useSelector((state) => state.user);
@@ -108,6 +105,29 @@ export default function Game() {
   const handleLike = async () => {
     dispatch(fetchUserHandleLike({ searchCoords, uid }));
   };
+
+
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
+  useEffect(() => {
+    if (window.innerWidth > 1000) {
+      setWindowSize(window.innerWidth/2 - 100);
+    } 
+    if (window.innerWidth < 1000) {
+      setWindowSize(760);
+    }
+  }, [])
+  const handleWindowResize = useCallback((event) => {
+    if (window.innerWidth > 1000) {
+      setWindowSize(window.innerWidth/2 - 100);
+    } 
+    if (window.innerWidth < 1000) {
+      setWindowSize(760);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+  }, [handleWindowResize]);
 
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
@@ -172,9 +192,12 @@ export default function Game() {
 
               </div>
               <hr />
-
+             
               <GoogleMap
-                mapContainerStyle={containerStyle}
+                mapContainerStyle={{
+                  width: "600px",
+                  height: "500px",
+                }}
                 center={currentImgCoords}
                 zoom={11}
               >
@@ -192,7 +215,7 @@ export default function Game() {
                   options={options}
                 />
               </GoogleMap>
-
+             
               <div className={style.btnWrap}></div>
               <div className={style.righted}>
                 <Button
@@ -298,9 +321,14 @@ export default function Game() {
         </CSSTransition>
 
         <div>
+       
           <div className={style.wrapperPanorama}>
+          <div className={style.map}>
             <GoogleMap
-              mapContainerStyle={containerStyle}
+              mapContainerStyle={{
+                width: `${windowSize}px`,
+                height: "500px",
+              }}
               center={coords}
               zoom={10}
               streetView={false}
@@ -335,9 +363,11 @@ export default function Game() {
               </CSSTransition>
             </div>
           </div>
+          </div>
         </div>
 
         <div>
+          
           <div className={style.googleMap}>
             <div className={style.btnThisIsLocation}>
               <ButtonCls
@@ -361,9 +391,12 @@ export default function Game() {
                 />
               )}
             </div>
-
+            <div className={style.map}>
             <GoogleMap
-              mapContainerStyle={containerStyle}
+              mapContainerStyle={{
+                width: `${windowSize}px`,
+                height: "500px",
+              }}
               center={coords}
               zoom={10}
               options={{ mapTypeControl: false }}
@@ -382,6 +415,7 @@ export default function Game() {
                 }
               />
             </GoogleMap>
+            </div>
           </div>
         </div>
       </div>

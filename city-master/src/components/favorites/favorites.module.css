@@ -10,6 +10,11 @@
   display: flex;
   flex-direction: row;
 }
+.cardFavorit {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+}
 .btnWrapperFav {
   margin: 10px 0;
   display: flex;

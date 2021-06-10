@@ -1,4 +1,4 @@
-import React, { Children, useEffect, useState } from "react";
+import React, { Children, useCallback, useEffect, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -13,15 +13,6 @@ import { Button } from '../button/Button'
 import { CSSTransition } from "react-transition-group";
 import './location.css'
 
-const containerStyle = {
-  width: "900px",
-  height: "750px",
-};
-
-let center = {
-  lat: 55.76063062407006,
-  lng: 37.6363135809925,
-};
 
 // console.log(navigator.geolocation.getCurrentPosition());
 
@@ -31,6 +22,36 @@ export default function StartMap() {
   );
   const dispatch = useDispatch();
   let [markerPosition, setMarkerPosition] = useState({});
+
+
+  let center = {
+    lat: 55.76063062407006,
+    lng: 37.6363135809925,
+  };  
+
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
+  useEffect(() => {
+    if (window.innerWidth > 1000) {
+      setWindowSize(900);
+    } 
+    if (window.innerWidth < 1000) {
+      setWindowSize(700);
+    }
+  }, [])
+  
+  const handleWindowResize = useCallback((event) => {
+    if (window.innerWidth > 1000) {
+      setWindowSize(900);
+    } 
+    if (window.innerWidth < 1000) {
+      setWindowSize(700);
+    }
+  }, [window.innerWidth]);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+  }, [handleWindowResize]);
+
 
   return (
     <>
@@ -71,7 +92,10 @@ export default function StartMap() {
         <LoadScript googleMapsApiKey={process.env.REACT_APP_GMAPS_API_KEY}>
         <div className={style.map}>
           <GoogleMap
-            mapContainerStyle={containerStyle}
+            mapContainerStyle={{
+              width: `${windowSize}px`,
+              height: "750px",
+            }}
             center={center}
             zoom={10}
             onClick={(ev) => {

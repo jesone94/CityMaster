@@ -26,7 +26,7 @@
   width: 100%;
   display: flex;
   flex-flow: row wrap;
-  margin-top: 10px;
+  margin-top: 10px 0 20px 0;
 }
 .righted {
   flex-grow: 0;
@@ -39,13 +39,16 @@
 }
 .avatar {
   width: 300px;
-  height: 300px;
-  border-radius: 50%;
+  height: 350px;
+  padding: 10px 10px 60px 10px;
+  background-color: #fff;
+  border-radius: 10px;
 }
 .uloadDiv {
   width: 300px;
   height: 300px;
-  border-radius: 50%;
+
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,15 +72,20 @@
   font-size: 18px;
   animation: errors forwards .6s ease-in;
 }
-
-.editPasswordWrap {
-  
+.buttonCLSwrap {
+  position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  top: 345px
 }
 
 .btnSmall{
   position: relative;
-  top: 20px;
-  left: 0;
+  background-color: #333;
+  top: 45px;
+  left: 86%;
   width: 30px;
   height: 30px;
   cursor: pointer;
@@ -85,9 +93,9 @@
   transition: .22s ease-in-out;
 }
 .btnSmall:before{
-  background-color:#000000;
+  background-color:#ffffff;
   top: 11px;
-  left: 1px;
+  left: 0px;
   content: '';
   width: 25px;
   height: 5px;
@@ -95,9 +103,9 @@
   transform: rotate(45deg);
 }
 .btnSmall::after{
-  background-color:#000000;
+  background-color:#ffffff;
   top: 11px;
-  left: 1px;
+  left: 0px;
   content: '';
   width: 25px;
   height: 5px;
@@ -118,6 +126,24 @@
 }
 
 
+.barSquare {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  font-size: 20px;
+}
+.firstSquare {
+  width: 20px;
+  height: 20px;
+  background-color: #9A764E;
+  border: 1px solid #fff;
+}
+.secondSquare {
+  width: 20px;
+  height: 20px;
+  background-color: #999;
+  border: 1px solid #fff;
+}
 
 @media screen and (max-width: 1000px) {
   .uploadDiv {
@@ -131,19 +157,19 @@
     justify-content: center;
     align-items: center;
   }
-}
-.barSquare {
-  display: flex;
-  flex-direction: row;
-  padding: 10px;
-}
-.firstSquare {
-  width: 20px;
-  height: 20px;
-  background-color: #9A764E;
-}
-.secondSquare {
-  width: 20px;
-  height: 20px;
-  background-color: #999;
+  .barSquare span {
+    font-size: 36px;
+  }
+  .barSquare div {
+    width: 36px;
+    height: 36px;
+  }
+  .secondSquare {
+    width: 36px;
+    height: 36px;
+  }
+  .buttonCLSwrap {
+    top: 370px;
+    transform: scale(.5);
+  }
 }

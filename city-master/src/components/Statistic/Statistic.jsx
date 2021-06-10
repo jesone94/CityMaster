@@ -6,6 +6,7 @@ import StatsEl from '../StatsElement/StatsEl';
 import style from './Stats.module.css';
 
 import classNames from 'classnames';
+import { Paralax } from '../paralax/Paralax';
 
 export default function Statistic() {
   const { data } = useSelector((state) => state.stats);
@@ -19,6 +20,7 @@ export default function Statistic() {
 
   return  (
     <>
+    <Paralax />
     <div className={style.wrapperRaitings}>
     {data !== null ? <><div className={style.title}><h1>Лучшие игроки:</h1></div>
     <div className={style.gridStatsBody}>

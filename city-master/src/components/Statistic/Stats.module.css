@@ -18,6 +18,7 @@
 .gridStatsItem {
   display: grid;
   padding: 20px;
+  white-space: nowrap;
 }
 .gridAvatar {
   justify-content: center;
@@ -28,6 +29,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 .spanItem {
   font-size: 30px;

@@ -33,9 +33,15 @@ export const FavoritesElement = ({ el }) => {
 
   const dispatch = useDispatch();
   const { uid } = useSelector((state) => state.user);
+
+  const url = `https://maps.googleapis.com/maps/api/streetview?size=600x300&location=${el.lat},${el.lng}&heading=151.78&pitch=-0.76&key=AIzaSyD3H4_6o49rkozd-z0jJZWH-4GbRFpMsMU&return_error_codes=true`;
+
   return (
    <>
-      <div>
+      <div className={style.cardFavorit}>
+      <div key={el.id} className={style.favorites}>
+          <img src={url} alt="не найдено" />
+        </div>
         <div key={el.id} className={style.favorites}>
           <h2>{el.place}</h2>
         </div>
