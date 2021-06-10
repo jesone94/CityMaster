@@ -1,19 +1,19 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchUser } from "./userSliceFetches/fetchUserStart";
-import { fetchUserRemovePhoto } from "./userSliceFetches/fetchUserRemovePhoto";
-import { fetchUserAddPhotoURL } from "./userSliceFetches/fetchUserAddPhotoURL";
-import { fetchUserEditEmail } from "./userSliceFetches/fetchUserEditEmail";
-import { fetchUserDisplayName } from "./userSliceFetches/fetchUserDisplayName";
-import { fetchUserSignIn } from "./userSliceFetches/fetchUserSignIn";
-import { fetchUserSignUp } from "./userSliceFetches/fetchUserSignUp";
-import { fetchUserEditPassword } from "./userSliceFetches/fetchUserEditPassword";
-import { fetchUserHandleLike } from "./userSliceFetches/fetchUserHandleLike";
-import { fetchUserAllFavorites } from "./userSliceFetches/fetchUserAllFavorites";
-import { fetchUserScrore } from "./userSliceFetches/fetchUserScore";
-import { fetchUserRemoveFavoriteElement } from "./userSliceFetches/fetchUserRemoveFavoriteElement";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { fetchUser } from './userSliceFetches/fetchUserStart';
+import { fetchUserRemovePhoto } from './userSliceFetches/fetchUserRemovePhoto';
+import { fetchUserAddPhotoURL } from './userSliceFetches/fetchUserAddPhotoURL';
+import { fetchUserEditEmail } from './userSliceFetches/fetchUserEditEmail';
+import { fetchUserDisplayName } from './userSliceFetches/fetchUserDisplayName';
+import { fetchUserSignIn } from './userSliceFetches/fetchUserSignIn';
+import { fetchUserSignUp } from './userSliceFetches/fetchUserSignUp';
+import { fetchUserEditPassword } from './userSliceFetches/fetchUserEditPassword';
+import { fetchUserHandleLike } from './userSliceFetches/fetchUserHandleLike';
+import { fetchUserAllFavorites } from './userSliceFetches/fetchUserAllFavorites';
+import { fetchUserScrore } from './userSliceFetches/fetchUserScore';
+import { fetchUserRemoveFavoriteElement } from './userSliceFetches/fetchUserRemoveFavoriteElement';
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState: {
     userEmail: null,
     displayName: null,
@@ -59,19 +59,19 @@ const userSlice = createSlice({
     removeLoading(state) {
       state.loading = false;
     },
-    nullErrorAndStatus (state) {
+    nullErrorAndStatus(state) {
       state.editStatus = false;
       state.error = null;
     },
-    loadFavorites (state, { payload }) {
-      state.favorites = payload
+    loadFavorites(state, { payload }) {
+      state.favorites = payload;
     },
     userAddScore(state, { payload }) {
-      state.score += payload
+      state.score += payload;
     },
     userReduceScore(state, { payload }) {
-      state.score -= payload
-    }
+      state.score -= payload;
+    },
   },
   extraReducers: {
     // Add reducers for additional action types here, and handle loading state as needed
@@ -112,7 +112,7 @@ const userSlice = createSlice({
     [fetchUserEditEmail.fulfilled]: (state, action) => {
       state.editStatus = true;
       state.loading = false;
-      state.error = "Успешно";
+      state.error = 'Успешно';
       state.userEmail = action.payload;
     },
     [fetchUserEditEmail.rejected]: (state, { error }) => {
@@ -123,14 +123,14 @@ const userSlice = createSlice({
     [fetchUserDisplayName.fulfilled]: (state, action) => {
       state.editStatus = true;
       state.displayName = action.payload;
-      state.error = "Успешно";
+      state.error = 'Успешно';
       state.loading = false;
     },
     [fetchUserDisplayName.rejected]: (state, action) => {
       state.editStatus = false;
       state.editStatus = true;
       state.displayName = action.payload;
-      state.error = "Успешно";
+      state.error = 'Успешно';
       state.loading = false;
     },
     [fetchUserSignIn.pending]: (state) => {
@@ -165,29 +165,29 @@ const userSlice = createSlice({
       state.loading = true;
     },
     [fetchUserEditPassword.rejected]: (state, { error }) => {
-      console.log(error.message)
+      console.log(error.message);
       state.editStatus = false;
       state.loading = false;
       state.error = error.message;
     },
     [fetchUserEditPassword.fulfilled]: (state, payload) => {
-      console.log('sucsess')
+      console.log('sucsess');
       state.editStatus = true;
       state.loading = false;
-      state.error = "Успешно";
+      state.error = 'Успешно';
     },
     [fetchUserHandleLike.fulfilled]: (state, { payload }) => {
-      state.favorites.push(payload)
+      state.favorites.push(payload);
     },
     [fetchUserAllFavorites.fulfilled]: (state, { payload }) => {
       state.favorites = payload;
     },
     [fetchUserScrore.fulfilled]: (state, { payload }) => {
-      state.score = payload
+      state.score = payload;
     },
     [fetchUserRemoveFavoriteElement.fulfilled]: (state, { payload }) => {
-     state.favorites.filter(({id}) => id !== payload)
-    }
+      state.favorites = state.favorites.filter(({ id }) => id !== payload);
+    },
   },
 });
 
@@ -203,5 +203,5 @@ export const {
   addPhotoLoading,
   removePhotoLoading,
   userAddScore,
-  userReduceScore
+  userReduceScore,
 } = userSlice.actions;
