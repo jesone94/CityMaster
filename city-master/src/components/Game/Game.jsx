@@ -4,10 +4,10 @@ import {
   Marker,
   Polyline,
   StreetViewPanorama,
-} from '@react-google-maps/api';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { CSSTransition, SwitchTransition } from 'react-transition-group';
+} from "@react-google-maps/api";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 import {
   clearCurrentImgUrl,
   resetGameStatus,
@@ -16,20 +16,19 @@ import {
   toggleAuction,
   toggleCurrentImg,
   toggleDistance,
-} from '../../redux/gameStatusSlice';
-import cordsRandomazer from '../StartMap/coordRamdomazer';
-import { Button, ButtonCls, ButtonLike } from '../button/Button';
-import './modalGame.css';
-import style from './game.module.css';
-import * as geokit from 'geokit';
-import { addScore, reduceScore } from '../../redux/database/firebaseDatabse';
-import { Loader } from '../loader/Loader';
-import { fetchUserHandleLike } from '../../redux/userSliceFetches/fetchUserHandleLike';
-import './btn.css';
-import { userAddScore, userReduceScore } from '../../redux/userSlice';
-import './score.css';
-import './google.css';
-import { Timer } from '../spinner/Timer';
+} from "../../redux/gameStatusSlice";
+import cordsRandomazer from "../StartMap/coordRamdomazer";
+import { Button, ButtonCls, ButtonLike } from "../button/Button";
+import "./modalGame.css";
+import style from "./game.module.css";
+import * as geokit from "geokit";
+import { addScore, reduceScore } from "../../redux/database/firebaseDatabse";
+
+import { fetchUserHandleLike } from "../../redux/userSliceFetches/fetchUserHandleLike";
+import "./btn.css";
+import { userAddScore, userReduceScore } from "../../redux/userSlice";
+import "./score.css";
+import "./google.css";
 
 export default function Game() {
   const panoramaOptions = {
@@ -42,10 +41,10 @@ export default function Game() {
     disableDefaultUI: false,
   };
   const options = {
-    strokeColor: '#FF0000',
+    strokeColor: "#FF0000",
     strokeOpacity: 0.8,
     strokeWeight: 2,
-    fillColor: '#FF0000',
+    fillColor: "#FF0000",
     fillOpacity: 0.35,
     clickable: false,
     draggable: false,
@@ -60,10 +59,6 @@ export default function Game() {
   const { uid, score } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [click, setClick] = useState(true);
-
-
-
-
 
   const {
     coords,
@@ -82,7 +77,7 @@ export default function Game() {
     const response = await fetch(url);
     const result = await response.json();
 
-    if (result.status === 'OK') {
+    if (result.status === "OK") {
       dispatch(toggleCurrentImg(result.location));
       return;
     } else {
@@ -123,7 +118,7 @@ export default function Game() {
   }, []);
 
   useEffect(() => {
-    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
   }, [handleWindowResize]);
 
   return (
@@ -131,12 +126,16 @@ export default function Game() {
       <div className={style.counter}>
         <h1>
           Ваш счёт:&nbsp;
-          <SwitchTransition mode='out-in'>
-            <CSSTransition key={score} timeout={400} classNames='scoreAnimation'>
+          <SwitchTransition mode="out-in">
+            <CSSTransition
+              key={score}
+              timeout={400}
+              classNames="scoreAnimation"
+            >
               <div>{score ? `${score}` : `${score}`}</div>
             </CSSTransition>
           </SwitchTransition>
-        </h1>{' '}
+        </h1>{" "}
         {auction && <div className={style.auctionText}>Игра аукцион</div>}
       </div>
 
@@ -146,21 +145,34 @@ export default function Game() {
           e.stopPropagation();
         }}
       >
-        <CSSTransition in={toggler} timeout={700} classNames='modal' mountOnEnter unmountOnExit>
+        <CSSTransition
+          in={toggler}
+          timeout={700}
+          classNames="modal"
+          mountOnEnter
+          unmountOnExit
+        >
           <div className={style.modalContent}>
             <div className={style.modalColumn}>
-              <div className='counter2'>
+              <div className="counter2">
                 {!auction ? (
                   <>
                     {answerDistance !== 0 && (
                       <h3>
-                        Ваше расстояние от точки вопроса {String(answerDistance.toFixed(2))} км{' '}
+                        Ваше расстояние от точки вопроса{" "}
+                        {String(answerDistance.toFixed(2))} км{" "}
                       </h3>
                     )}
                     {answerDistance <= 1 && <h3>Вы заработали 150 очков</h3>}
-                    {answerDistance > 1 && answerDistance <= 3 && <h3>Вы заработали 100 очков</h3>}
-                    {answerDistance > 3 && answerDistance <= 7 && <h3>Вы заработали 50 очков</h3>}
-                    {answerDistance > 7 && answerDistance <= 10 && <h3>Вы заработали 0 очков</h3>}
+                    {answerDistance > 1 && answerDistance <= 3 && (
+                      <h3>Вы заработали 100 очков</h3>
+                    )}
+                    {answerDistance > 3 && answerDistance <= 7 && (
+                      <h3>Вы заработали 50 очков</h3>
+                    )}
+                    {answerDistance > 7 && answerDistance <= 10 && (
+                      <h3>Вы заработали 0 очков</h3>
+                    )}
                     {answerDistance > 10 && <h3>Вы заработали -50 очков</h3>}
                   </>
                 ) : (
@@ -168,7 +180,8 @@ export default function Game() {
                     <h3>Вопрос аукцион</h3>
                     {answerDistance !== 0 && (
                       <h3>
-                        Ваше расстояние от точки вопроса {String(answerDistance.toFixed(2))} км{' '}
+                        Ваше расстояние от точки вопроса{" "}
+                        {String(answerDistance.toFixed(2))} км{" "}
                       </h3>
                     )}
                     {answerDistance <= 5 && <h3>Вы заработали 250 очков</h3>}
@@ -180,8 +193,8 @@ export default function Game() {
 
               <GoogleMap
                 mapContainerStyle={{
-                  width: '600px',
-                  height: '500px',
+                  width: "600px",
+                  height: "500px",
                 }}
                 center={currentImgCoords}
                 zoom={11}
@@ -191,23 +204,26 @@ export default function Game() {
                   position={answerCoords}
                   key={2}
                   icon={
-                    'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+                    "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
                   }
                 />
 
-                <Polyline path={[currentImgCoords, answerCoords]} options={options} />
+                <Polyline
+                  path={[currentImgCoords, answerCoords]}
+                  options={options}
+                />
               </GoogleMap>
 
               <div className={style.btnWrap}></div>
               <div className={style.righted}>
                 <Button
-                  text='Продолжить'
+                  text="Продолжить"
                   click={() => {
                     if (!auction) {
                       if (answerDistance <= 1) {
                         addScore(uid, 150);
                         dispatch(userAddScore(150));
-                        console.log('+');
+                        console.log("+");
                       } else if (answerDistance > 1 && answerDistance <= 3) {
                         addScore(uid, 100);
                         dispatch(userAddScore(100));
@@ -218,7 +234,7 @@ export default function Game() {
                         addScore(uid, 0);
                         dispatch(userAddScore(0));
                       } else {
-                        console.log('минус');
+                        console.log("минус");
                         reduceScore(uid, 75);
                         dispatch(userReduceScore(75));
                       }
@@ -248,13 +264,13 @@ export default function Game() {
                 ></Button>
                 {!auction && (
                   <Button
-                    text='Локация аукцион'
+                    text="Локация аукцион"
                     click={() => {
                       if (!auction) {
                         if (answerDistance <= 1) {
                           addScore(uid, 150);
                           dispatch(userAddScore(150));
-                          console.log('+');
+                        
                         } else if (answerDistance > 1 && answerDistance <= 3) {
                           addScore(uid, 100);
                           dispatch(userAddScore(100));
@@ -265,7 +281,7 @@ export default function Game() {
                           addScore(uid, 0);
                           dispatch(userAddScore(0));
                         } else {
-                          console.log('минус');
+                        
                           reduceScore(uid, 75);
                           dispatch(userReduceScore(75));
                         }
@@ -306,14 +322,17 @@ export default function Game() {
               <GoogleMap
                 mapContainerStyle={{
                   width: `${windowSize}px`,
-                  height: '500px',
+                  height: "500px",
                 }}
                 center={coords}
                 zoom={10}
                 streetView={false}
                 onClick={(ev) => {
                   if (!toggler) {
-                    const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
+                    const coords = {
+                      lat: ev.latLng.lat(),
+                      lng: ev.latLng.lng(),
+                    };
                     dispatch(toggleAnswerCoords(coords));
                   }
                 }}
@@ -327,7 +346,7 @@ export default function Game() {
               <div className={style.gameButtonLike}>
                 <CSSTransition
                   in={click}
-                  classNames='btn-like'
+                  classNames="btn-like"
                   timeout={400}
                   unmountOnExit
                   mountOnEnter
@@ -348,7 +367,7 @@ export default function Game() {
           <div className={style.googleMap}>
             <div className={style.btnThisIsLocation}>
               <ButtonCls
-                text={'Сменить локацию'}
+                text={"Сменить локацию"}
                 click={() => {
                   dispatch(resetGameStatus());
                 }}
@@ -356,9 +375,13 @@ export default function Game() {
 
               {answerCoords && (
                 <Button
-                  text='Это здесь!'
+                  text="Это здесь!"
                   click={() => {
-                    dispatch(toggleDistance(geokit.distance(currentImgCoords, answerCoords)));
+                    dispatch(
+                      toggleDistance(
+                        geokit.distance(currentImgCoords, answerCoords)
+                      )
+                    );
                     setToggler((prev) => !prev);
                   }}
                 />
@@ -368,7 +391,7 @@ export default function Game() {
               <GoogleMap
                 mapContainerStyle={{
                   width: `${windowSize}px`,
-                  height: '500px',
+                  height: "500px",
                 }}
                 center={coords}
                 zoom={10}
@@ -376,7 +399,10 @@ export default function Game() {
                 streetView={false}
                 onClick={(ev) => {
                   if (!toggler) {
-                    const coords = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
+                    const coords = {
+                      lat: ev.latLng.lat(),
+                      lng: ev.latLng.lng(),
+                    };
                     dispatch(toggleAnswerCoords(coords));
                   }
                 }}
@@ -384,7 +410,7 @@ export default function Game() {
                 <Marker
                   position={answerCoords}
                   icon={
-                    'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+                    "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
                   }
                 />
               </GoogleMap>

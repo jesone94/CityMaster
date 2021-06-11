@@ -53,3 +53,26 @@
     transform: scale(1);
   }
 }
+@media screen and (max-width: 1000px) {
+  .modal-enter-active {
+    z-index: 1000;
+    position: absolute;
+    animation: gameModalShowMW1000 700ms forwards;
+  }
+  .modal-enter-done {
+    animation: unset;
+  }
+  .modal-exit-active {
+    z-index: 1000;
+    position: absolute;
+    animation: gameModalShowMW1000 700ms alternate-reverse;
+  }
+  @keyframes gameModalShowMW1000 {
+    0% {
+      transform: rotateX(90deg);
+    }
+    100% {
+      transform: rotateX(0deg);
+    }
+  }
+}

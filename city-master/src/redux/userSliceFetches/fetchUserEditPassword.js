@@ -20,15 +20,6 @@ export const fetchUserEditPassword = createAsyncThunk(
     } catch (error) {
       throw new Error(error);
     }
-    // try {
-    //   await firebase.auth().signInWithEmailAndPassword(userEmail, password)
-    //     .catch(function(error) {
-    //        return new Error(error) 
-    //      })
-    //   await firebase.auth().currentUser.updatePassword(newPassword);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 
-    // } catch (error) {
-    //   throw new Error(error);
-    // }
   }
 );

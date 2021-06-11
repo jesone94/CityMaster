@@ -9,8 +9,7 @@ export const fetchUserAllFavorites = createAsyncThunk(
     try {
       const res = await axios.get(`${url}/users/${uid}/favorites.json`);
 
-      if (res.data){
-        console.log(res.data)
+      if (res.data) {
         const payload = Object.keys(res.data).map((key) => {
           return {
             ...res.data[key],
@@ -19,7 +18,7 @@ export const fetchUserAllFavorites = createAsyncThunk(
         });
         return payload;
       }
-      return []
+      return [];
     } catch (e) {
       return console.log(e);
     }

@@ -10,11 +10,11 @@ import "./logout.css";
 import {
   CSSTransition,
   SwitchTransition,
-  TransitionGroup,
+
 } from "react-transition-group";
-import { Button, ButtonLike } from "../button/Button";
+import { Button, ButtonCls } from "../button/Button";
 import logo from "../../images/logo.png";
-import HomeWorkIcon from '@material-ui/icons/HomeWork';
+
 
 export default function ScrollableTabsButtonPrevent() {
   const [toggler, setToggler] = useState(false);
@@ -62,7 +62,7 @@ export default function ScrollableTabsButtonPrevent() {
             unmountOnExit
           >
             <li>
-              <NavLink to="/">На главную&nbsp;<HomeWorkIcon /></NavLink>
+              <NavLink to="/">на главную</NavLink>
             </li>
           </CSSTransition>
           {userEmail && (
@@ -74,7 +74,7 @@ export default function ScrollableTabsButtonPrevent() {
               unmountOnExit
             >
               <li>
-                <NavLink to="/private-office">Личный кабинет</NavLink>
+                <NavLink to="/private-office">личный кабинет</NavLink>
               </li>
             </CSSTransition>
           )}
@@ -88,7 +88,7 @@ export default function ScrollableTabsButtonPrevent() {
               unmountOnExit
             >
               <li>
-                <NavLink to="/favorites">Избранное</NavLink>
+                <NavLink to="/favorites">избранное</NavLink>
               </li>
             </CSSTransition>
           )}
@@ -102,15 +102,11 @@ export default function ScrollableTabsButtonPrevent() {
               unmountOnExit
             >
               <li>
-                <NavLink to="/stats">Рейтинги</NavLink>
+                <NavLink to="/stats">рейтинги</NavLink>
               </li>
             </CSSTransition>
           )}
 
-          {/* {!userEmail && <li><Link to="/signin">Войти</Link ></li>}
-        {!userEmail && <li><Link to="/signup">Зарегистрироваться</Link ></li>} */}
-          {/* </CSSTransition>
-        </TransitionGroup > */}
           <CSSTransition
             in={togglerMenu}
             timeout={400}
@@ -131,7 +127,7 @@ export default function ScrollableTabsButtonPrevent() {
                         setToggler((prev) => !prev);
                       }}
                     >
-                      Выйти
+                      выйти
                     </Link>
                   ) : (
                     <div className={style.modalContent}>
@@ -143,16 +139,16 @@ export default function ScrollableTabsButtonPrevent() {
                         }}
                       ></div>
                       <div className={style.modalRow}>
-                        <h3>Вы точно хотите выйти?&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                        <h3>вы точно хотите выйти?&nbsp;&nbsp;&nbsp;&nbsp;</h3>
                         <div className={style.btnWrap}></div>
-                        <Button
+                        <ButtonCls
                           text="Да"
                           click={async () => {
                             setToggler(false);
                             dispatch(removeUser());
                             await firebase.auth().signOut();
                           }}
-                        ></Button>
+                        ></ButtonCls>
                       </div>
                     </div>
                   )}
@@ -162,9 +158,9 @@ export default function ScrollableTabsButtonPrevent() {
           </CSSTransition>
         </ul>
       )}
-      <div className={style.logoWrapper}>
+      {userEmail && <div className={style.logoWrapper}>
         <img alt="не найдено" src={logo} />
-      </div>
+      </div>}
     </>
   );
 }

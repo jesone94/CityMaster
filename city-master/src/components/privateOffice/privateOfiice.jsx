@@ -20,20 +20,21 @@ import { fetchUserEditEmail } from "../../redux/userSliceFetches/fetchUserEditEm
 import { fetchUserDisplayName } from "../../redux/userSliceFetches/fetchUserDisplayName";
 import { useLoaderContext } from "../../context/LoaderContext";
 import "./gridOfiice.css";
-import { Link } from "react-router-dom";
+
 import { fetchUserEditPassword } from "../../redux/userSliceFetches/fetchUserEditPassword";
 
 import { MiniLoaderM } from "../button/Mini-loaderM";
-import { addFileName, addScore } from "../../redux/database/firebaseDatabse";
-import { addLoader } from "../../redux/loaderSlice";
+import { addFileName } from "../../redux/database/firebaseDatabse";
+
 import { Recharts } from "./Recharts";
 import { Paralax } from "../paralax/Paralax";
 
 export const PrivateOffice = () => {
   const { loader, photoLoader } = useLoaderContext();
 
-  const { error, userEmail, displayName, uid, photoURL, score, favorites } =
-    useSelector((state) => state.user);
+  const { error, userEmail, displayName, uid, photoURL, score } = useSelector(
+    (state) => state.user
+  );
   const { editStatus } = useSelector((state) => state.user);
 
   const [email, setEmail] = useState(userEmail);
@@ -59,10 +60,6 @@ export const PrivateOffice = () => {
     editStatus && setErrorMessage("Успешно");
     setErrorMessage(error);
   }, [error, editStatus]);
-
-  // useEffect(() => {
-  //   dispatch(nullErrorAndStatus());
-  // }, [dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -92,10 +89,6 @@ export const PrivateOffice = () => {
       },
       async () => {
         const link = await ref.getDownloadURL();
-        // console.log(link);
-        // await firebase.auth().currentUser.updateProfile({
-        //   photoURL: link,
-        // });
         dispatch(fetchUserAddPhotoURL({ uid, link }));
       }
     );
@@ -103,23 +96,20 @@ export const PrivateOffice = () => {
 
   return (
     <>
-      {/* {loader ? (
-        <Loader />
-      ) : ( */}
       <Paralax />
       <div className="gridBody">
         <div className="gridItem gridItem1">
           <div>
             {file && (
               <div className={style.buttonCLSwrap}>
-              <ButtonCls
-                text="Удалить"
-                click={async () => {
-                  dispatch(nullErrorAndStatus());           
-                  dispatch(addPhotoLoading());
-                  dispatch(fetchUserRemovePhoto({ uid }));
-                }}
-              />
+                <ButtonCls
+                  text="Удалить"
+                  click={async () => {
+                    dispatch(nullErrorAndStatus());
+                    dispatch(addPhotoLoading());
+                    dispatch(fetchUserRemovePhoto({ uid }));
+                  }}
+                />
               </div>
             )}
             {!file ? (
@@ -417,7 +407,6 @@ export const PrivateOffice = () => {
         </div>
         <div className="gridItem"></div>
       </div>
-      {/* )} */}
     </>
   );
 };
