@@ -15,3 +15,18 @@
     transform: translateX(0);
   }
 }
+.auction-enter-active {
+  animation: auction 400ms forwards;
+}
+
+.auction-exit-active {
+  animation: auction 400ms alternate-reverse;
+}
+@keyframes auction {
+  0% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}

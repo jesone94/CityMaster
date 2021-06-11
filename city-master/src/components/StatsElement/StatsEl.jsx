@@ -8,21 +8,22 @@ export default function StatsEl({ data, index }) {
   return (
     <> 
       <div className={classNames(style.spanItem ,style.gridStatsItem)}>
-      <div className={style.index}>№{index + 1}.</div>
+      <div className={style.index}><strong>{index + 1}</strong></div>
         <span>
           &nbsp;{data.displayName}
         </span>
       </div>
       <div className={classNames(style.gridStatsItem, style.gridAvatar)}>
-        <div>
+        <div className={style.avatarka}>
           {!data.urlImg ? (
-            <div className={classNames(style.noAvatar)}>
-              <div>
-              <PhotoCameraIcon style={{ color: "#fff" }}/>
+            <div className={classNames(style.gridStatsItemImg)}>
+              <div className={style.noAvatar}>
+              <PhotoCameraIcon className={style.noAvatarScale} style={{ color: "#fff" }}/>
               </div>
             </div>
           ) : (
             <img
+          
               src={data.urlImg}
               alt="не найдено"
               className={style.gridStatsItemImg}
@@ -32,8 +33,10 @@ export default function StatsEl({ data, index }) {
           )}
         </div>
       </div>
-      <div className={classNames(style.spanItem ,style.gridStatsItem, style.points)}>
-        <span>{data.score}</span>
+      <div className={style.points}>
+        <div>
+        <span>{data.score}</span>    
+        </div>  
       </div>
     </>
   );

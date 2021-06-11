@@ -16,7 +16,7 @@ export default function Statistic() {
     dispatch(fetchStatsData());
   }, [dispatch]);
 
-  console.log(data);
+
 
   return  (
     <>

@@ -3,13 +3,14 @@ import { Button } from "../button/Button";
 import { useForm } from "react-hook-form";
 
 import { useDispatch, useSelector } from "react-redux";
-import {  nullErrorAndStatus } from "../../redux/userSlice";
+import { nullErrorAndStatus } from "../../redux/userSlice";
 import style from "./form.module.css";
 import { Link } from "react-router-dom";
 import { fetchUserSignUp } from "../../redux/userSliceFetches/fetchUserSignUp";
 import { useLoaderContext } from "../../context/LoaderContext";
 import { Loader } from "../loader/Loader";
 import { fetchUserScrore } from "../../redux/userSliceFetches/fetchUserScore";
+import { MyLogotip } from "../MyLogotip/MyLogotip";
 
 const SignUp = () => {
   const { loader } = useLoaderContext();
@@ -22,7 +23,6 @@ const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const { userEmail, uid, error } = useSelector((state) => state.user);
-
 
   useEffect(() => {
     setErrorMessage(error);
@@ -57,6 +57,7 @@ const SignUp = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className={style.modalContent}>
+                <MyLogotip />
                 <div className={style.modalColumn}>
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
@@ -64,7 +65,7 @@ const SignUp = () => {
                       <span className={style.errors}>
                         {errors.name?.type === "required" &&
                           " Обязательное для заполнения поле"}
-                          {errors.name?.type === "minLength" &&
+                        {errors.name?.type === "minLength" &&
                           " Должно быть более трёх символов"}
                       </span>
                       <input
@@ -83,7 +84,11 @@ const SignUp = () => {
                       <input
                         placeholder="Электронная почта"
                         type="text"
-                        {...register("email", { required: true, pattern: /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/gi })}
+                        {...register("email", {
+                          required: true,
+                          pattern:
+                            /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/gi,
+                        })}
                       />
                       <div></div>
                       <label>Пароль *</label>{" "}
@@ -96,10 +101,10 @@ const SignUp = () => {
                       <input
                         placeholder="Пароль"
                         type="password"
-                        {...register(
-                          "password",
-                          { required: true, minLength: 6 },
-                        )}
+                        {...register("password", {
+                          required: true,
+                          minLength: 6,
+                        })}
                       />
                       <span className={style.errors}>{errorMessage}</span>
                     </div>

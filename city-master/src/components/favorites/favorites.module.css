@@ -45,3 +45,9 @@
   align-items: center;
   margin: 10px 0;
 }
+@media screen and (max-width: 1000px) {
+  .modalWrap {
+    background-color: transparent;
+  }
+}
+

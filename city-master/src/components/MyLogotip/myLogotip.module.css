@@ -1,23 +1,19 @@
 .formImg {
-  display: block;
-  position: absolute;
-  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   left: 0;
-  z-index: -1;
-
 }
 .formImg img {
-  /* animation-play-state: paused; */
-  /* animation-name: cityKong;
-  animation-duration: 0.75s;
-  animation-delay: 1500ms;
-  animation-iteration-count: 1; */
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
 }
 
-
 @media screen and (max-width: 1000px) {
-  .formImg img {
-    /* transform: rotate(90deg); */
-    transform: scale(2);
+  .formImg {
+    position: relative;
+    top: -300px;
   }
 }

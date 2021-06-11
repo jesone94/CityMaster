@@ -1,8 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import firebase from "../../firebase/firebase";
 
-const url = process.env.REACT_APP_DATABASE_URL;
+import firebase from "../../firebase/firebase";
 
 export const fetchUserScrore = createAsyncThunk(
   "user/fetchUserScrore",

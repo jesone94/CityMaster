@@ -1,22 +1,25 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchLocation = createAsyncThunk('gameStatus/fetchLocation', async (coords) => {
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.lat},${coords.lng}&key=${process.env.REACT_APP_GMAPS_API_KEY}`;
+export const fetchLocation = createAsyncThunk(
+  "gameStatus/fetchLocation",
+  async (coords) => {
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coords.lat},${coords.lng}&key=${process.env.REACT_APP_GMAPS_API_KEY}`;
 
-  const response = await fetch(url);
-  const result = await response.json();
-  // console.log(result.results[5].formatted_address);
-  return { coords, location: result.results[5].formatted_address };
-});
+    const response = await fetch(url);
+    const result = await response.json();
+
+    return { coords, location: result.results[5].formatted_address };
+  }
+);
 
 export const gameStatusSlice = createSlice({
-  name: 'gameStatus',
+  name: "gameStatus",
   initialState: {
     coords: {},
-    location: '',
+    location: "",
     isGameStarted: false,
     searchCoords: {},
-    currentImgUrl: '',
+    currentImgUrl: "",
     currentImgCoords: {},
     answerCoords: null,
     answerDistance: 0,
@@ -24,7 +27,7 @@ export const gameStatusSlice = createSlice({
   },
   reducers: {
     nullLocation(state) {
-      state.location = '';
+      state.location = "";
     },
     gameStartToggle(state) {
       state.isGameStarted = !state.isGameStarted;
@@ -48,10 +51,10 @@ export const gameStatusSlice = createSlice({
     },
     resetGameStatus(state) {
       state.coords = {};
-      state.location = '';
+      state.location = "";
       state.isGameStarted = false;
       state.searchCoords = {};
-      state.currentImgUrl = '';
+      state.currentImgUrl = "";
       state.currentImgCoords = {};
       state.answerCoords = null;
       state.answerDistance = 0;
@@ -61,9 +64,7 @@ export const gameStatusSlice = createSlice({
     },
   },
   extraReducers: {
-    [fetchLocation.pending]: (state) => {
-      console.log('pending');
-    },
+    [fetchLocation.pending]: (state) => {},
     [fetchLocation.fulfilled]: (state, { payload }) => {
       return { ...state, ...payload };
     },

@@ -10,7 +10,6 @@ export const fetchStatistic = async (uid) => {
   const statistic = Object.keys(res.data).map((key) => {
     return {
       ...res.data[key],
-      // data: new Date(res.data.data).toLocaleDateString(),
       id: key,
     };
   });

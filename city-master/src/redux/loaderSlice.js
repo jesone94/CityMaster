@@ -1,11 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import firebase from "../firebase/firebase";
-
 
 const loaderSlice = createSlice({
   name: "loader",
   initialState: {
-    display: false
+    display: false,
   },
   reducers: {
     addLoader(state) {
@@ -15,9 +13,7 @@ const loaderSlice = createSlice({
       state.display = false;
     },
   },
-
 });
 
 export default loaderSlice;
-export const { addLoader, removeLoader } =
-  loaderSlice.actions;
+export const { addLoader, removeLoader } = loaderSlice.actions;

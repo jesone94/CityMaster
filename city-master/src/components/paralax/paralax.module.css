@@ -4,13 +4,12 @@
   top:0;
   left:0;
   z-index: -1;
-  animation: paralax 500ms ease-in-out forwards;
+  animation: paralax 1500ms ease-in-out forwards;
   opacity: .5;
 }
 .parallaxImg img {
   width: 100vw;
   height: 100vh;
-
 }
 @keyframes paralax {
   0% {
@@ -23,8 +22,6 @@
 
 @media screen and (max-width: 1000px) {
   .parallaxImg img {
-    /* transform: rotate(90deg); */
     transform: scale(2);
   }
-
 }
