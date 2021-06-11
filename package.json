@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd city-master && npm i && npm run build",
+    "build": "cd city-master && npm i && npm audit fix && npm run build",
     "start": "cd back && npm i && npm run start"
   },
   "repository": {
