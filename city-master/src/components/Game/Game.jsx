@@ -61,10 +61,6 @@ export default function Game() {
   const dispatch = useDispatch();
   const [click, setClick] = useState(true);
 
-
-
-
-
   const {
     coords,
     searchCoords,
@@ -161,7 +157,7 @@ export default function Game() {
                     {answerDistance > 1 && answerDistance <= 3 && <h3>Вы заработали 100 очков</h3>}
                     {answerDistance > 3 && answerDistance <= 7 && <h3>Вы заработали 50 очков</h3>}
                     {answerDistance > 7 && answerDistance <= 10 && <h3>Вы заработали 0 очков</h3>}
-                    {answerDistance > 10 && <h3>Вы заработали -50 очков</h3>}
+                    {answerDistance > 10 && <h3>Вы заработали -75 очков</h3>}
                   </>
                 ) : (
                   <>
