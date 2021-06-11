@@ -1,0 +1,22 @@
+{
+  "name": "city-kong",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd city-master && npm i && npm run build",
+    "start": "cd back && npm i && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesone94/CityMaster.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jesone94/CityMaster/issues"
+  },
+  "homepage": "https://github.com/jesone94/CityMaster#readme"
+}
