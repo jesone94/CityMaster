@@ -132,11 +132,20 @@ export default function Game() {
               timeout={400}
               classNames="scoreAnimation"
             >
-              <div>{score ? `${score}` : `${score}`}</div>
+              <div>{score && `${score}`}</div>
             </CSSTransition>
           </SwitchTransition>
         </h1>{" "}
-        {auction && <div className={style.auctionText}>Игра аукцион</div>}
+        <SwitchTransition mode="out-in">
+            <CSSTransition
+              key={auction}
+              timeout={400}
+              classNames="auction"
+            >
+              <>{auction ? <div className={style.auctionText}>Игра аукцион</div> : null}</>
+            </CSSTransition>
+          </SwitchTransition>
+        
       </div>
 
       <div

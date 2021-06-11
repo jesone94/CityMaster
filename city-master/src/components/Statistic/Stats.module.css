@@ -70,7 +70,7 @@
   .gridStatsBody {
     margin-top: 5rem;
     display: grid;
-    grid-template-columns: minmax(150px, 250px) minmax(150px, 250px) minmax(
+    grid-template-columns: minmax(150px, auto) minmax(150px, 250px) minmax(
         150px,
         250px
       );
