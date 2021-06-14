@@ -18,3 +18,5 @@ CITYKONG - это уникальное Web-приложение, в которо
 - google maps api
 - google maps url api
 - google street view panorama api
+
+** Вёрстка адаптирована не только под ПК, но и под мобильные устройства
